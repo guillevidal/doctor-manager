@@ -140,7 +140,7 @@ export default function RegisterForm(props) {
             <span className="error-text">Por favor, introduce un nombre.</span>
           )}
         </Form.Field>
-        <Button type="submit" loading={isLoading}>
+        <Button type="submit" loading={isLoadings}>
           Continuar
         </Button>
       </Form>
