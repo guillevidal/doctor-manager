@@ -12,8 +12,8 @@
 /build
 
 # muestra
-./utils/Firebase.js
-./utils/Api.js
+/src/utils/Firebase.js
+/src/utils/Api.js
 # misc
 .DS_Store
 .env.local
