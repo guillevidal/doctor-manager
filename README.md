@@ -6,6 +6,15 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
+### Scripts necesarios
+
+yarn global add electron@latest
+
+//en la carpeta 
+yarn add electron electron-builder --dev
+yarn add wait-on concurrently --dev
+yarn add electron-is-dev
+
 ### `yarn electron-dev`
 
 Runs the app in the development mode.\
