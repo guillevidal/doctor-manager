@@ -1,0 +1,108 @@
+@import "../../../scss/index.scss";
+
+.login-form {
+  margin-top: 50px;
+
+  h1 {
+    color: $font-sky;
+    text-align: center;
+    font-size: 35px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid green;
+  }
+
+  .ui.form {
+    .field {
+      margin-bottom: 15px;
+      .input {
+        margin-bottom: 5px;
+
+        input {
+          background-color: $background-light;
+          border: 0;
+          font-size: 16px;
+          color: $font-dark;
+
+          &:hover,
+          &:active,
+          &:focus {
+            background-color: $background-grey-hover;
+            border: 0;
+          }
+        }
+
+        i {
+          color: $font-dark;
+          font-size: 19px;
+        }
+        &.error {
+          input {
+            border-bottom: 3px solid $danger;
+          }
+        }
+      }
+    }
+
+    .button {
+      width: 100%;
+      background-color: $primary-color;
+      color: $font-dark;
+      text-transform: uppercase;
+      margin-top: 10px;
+      border-radius: 50px;
+      padding: 17px 0;
+      font-size: 14px;
+      letter-spacing: 3px;
+    }
+
+    .error-text {
+      color: $font-dark;
+      padding-left: 15px;
+    }
+  }
+
+  .resend-verification-email {
+    color: $font-dark;
+    padding: 20px 20px 0 20px;
+    text-align: center;
+
+    span {
+      color: $primary-color;
+      font-weight: bold;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+
+  &__options {
+    margin-top: 50px;
+    color: $font-dark;
+    text-align: center;
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: bold;
+
+    p {
+      &:first-of-type {
+        margin-bottom: 40px;
+        &:hover {
+          cursor: pointer;
+        }
+      }
+
+      &:last-of-type {
+        color: $font-grey;
+
+        span {
+          color: $font-dark;
+          text-decoration: underline;
+          padding-left: 5px;
+          &:hover {
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+}
