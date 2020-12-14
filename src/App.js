@@ -26,7 +26,7 @@ function App() {
 
   return (
     <>
-      {!user ? <Auth /> : <UserLogged />}
+      {!user ? <Auth /> : <LoggedLayout />}
       <ToastContainer
         position="top-center"
         autoClose={5000}
@@ -42,24 +42,6 @@ function App() {
   );
 }
 
-function UserLogged(params) {
-  const logout = () => {
-    firebase.auth().signOut();
-  };
-  return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        flexDirection: "column",
-        height: "100vh",
-      }}
-    >
-      <h1>Usuario logeado</h1>
-      <button onClick={logout}>Cerrar Sesión</button>
-    </div>
-  );
-}
+
 
 export default App;
