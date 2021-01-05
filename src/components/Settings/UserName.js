@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form, Input, Button } from "semantic-ui-react";
 import { toast } from "react-toastify";
 import firebase from "../../utils/Firebase";
@@ -29,20 +29,37 @@ export default function UserName(props) {
 
 function ChangeDisplayNameForm(props) {
   const { displayName, setShowModal } = props;
-  const onSubmit = () =>{
-      console.log("Actualizando");
-      setShowModal(false); 
-  }
+  const [formData, setFormData] = useState({ displayName: displayName });
+  const [isLoading, setIsLoading] = useState(false);
+
+  const onSubmit = () => {
+    if (!formData.displayName || formData.displayName === displayName) {
+      setShowModal(false);
+    } else {
+      setIsLoading(true);
+      firebase
+        .auth()
+        .currentUser.updateProfile({ displayName: formData.displayName })
+        .then(()=>{
+          toast.success("Nombre actualizado");
+          setShowModal(false);
+        }).catch(()=>{
+          toast.error("Error al actualizar el nombre");
+          setIsLoading(false);
+          setShowModal(false);
+        });
+    }
+  };
   return (
     <Form onSubmit={onSubmit}>
       <Form.Field>
-          <Input 
-            defaultValue={displayName}
-            // onChange ={}
-          />
+        <Input
+          defaultValue={displayName}
+          onChange={(e) => setFormData({ displayName: e.target.value })}
+        />
       </Form.Field>
-      <Button type="submit">
-          Actualizar nombre
+      <Button type="submit" loading={isLoading}>
+        Actualizar nombre
       </Button>
     </Form>
   );
