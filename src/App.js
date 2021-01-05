@@ -8,7 +8,7 @@ import LoggedLayout from "./layouts/LoggedLayout";
 function App() {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [reloadApp, setReloadApp] = useState(false);
+  const [reloadApp, setReloadApp] = useState(false)
 
   firebase.auth().onAuthStateChanged(currentUser => {
     if (!currentUser?.emailVerified) {
@@ -29,7 +29,7 @@ function App() {
       {!user ? (
         <Auth />
       ) : (
-        <LoggedLayout user={user} setReloadApp={setReloadApp} />
+        <LoggedLayout user={user} setReloadApp={setReloadApp}/>
       )}
       <ToastContainer
         position="top-center"

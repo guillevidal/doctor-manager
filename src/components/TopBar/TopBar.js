@@ -8,13 +8,13 @@ import UserImage from "../../assets/png/user.png";
 import "./TopBar.scss";
 
 function Topbar(props) {
-  const { user } = props;
+  const { user,history } = props;
 
   const goBack = () =>{
-      console.log("Ir atras");
+      history.goBack();
   }
   const logout = () =>{
-      console.log("Cerrar sesion");
+      firebase.auth().signOut();
   }
   return (
   <div className="top-bar">
@@ -24,7 +24,7 @@ function Topbar(props) {
 
       <div className="top-bar__right">
           <Link to="/settings" >
-              <Image src={UserImage} />
+              <Image src={user.photoURL ? user.photoURL : UserImage} />
               {user.displayName}
           </Link>
           <Icon name="power off" onClick={logout} />

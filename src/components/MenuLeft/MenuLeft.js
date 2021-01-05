@@ -14,7 +14,10 @@ function MenuLeft(props) {
   const [titleModal, setTitleModal] = useState("");
   const [contentModal, setContentModal] = useState(null);
 
-  console.log(userAdmin);
+ useEffect(() => {
+   setActiveMenu(location.pathname);
+ }, [location]);
+
   useEffect(() => {
     isUserAdmin(user.uid).then((response) => setuserAdmin(response));
   }, [user]);
