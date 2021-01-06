@@ -5,7 +5,7 @@ import firebase from "../../utils/Firebase";
 import "firebase/auth";
 
 export default function UserName(props) {
-  const { user, setShowModal, setTitleModal, setContentModal } = props;
+  const { user, setShowModal, setTitleModal, setContentModal,setReloadApp } = props;
 
   const onEdit = () => {
     setTitleModal("Actualizar Nombre");
@@ -13,6 +13,7 @@ export default function UserName(props) {
       <ChangeDisplayNameForm
         displayName={user.displayName}
         setShowModal={setShowModal}
+        setReloadApp={setReloadApp}
       />
     );
     setShowModal(true);
@@ -28,7 +29,7 @@ export default function UserName(props) {
 }
 
 function ChangeDisplayNameForm(props) {
-  const { displayName, setShowModal } = props;
+  const { displayName, setShowModal,setReloadApp } = props;
   const [formData, setFormData] = useState({ displayName: displayName });
   const [isLoading, setIsLoading] = useState(false);
 
@@ -41,7 +42,9 @@ function ChangeDisplayNameForm(props) {
         .auth()
         .currentUser.updateProfile({ displayName: formData.displayName })
         .then(()=>{
+          setReloadApp(prevState => !prevState);
           toast.success("Nombre actualizado");
+          setIsLoading(false);
           setShowModal(false);
         }).catch(()=>{
           toast.error("Error al actualizar el nombre");

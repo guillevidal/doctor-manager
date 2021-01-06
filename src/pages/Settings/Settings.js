@@ -20,6 +20,7 @@ export default function Settings(props) {
           setShowModal={setShowModal}
           setTitleModal={setTitleModal}
           setContentModal={setContentModal}
+          setReloadApp={setReloadApp}
         />
       </div>
 
