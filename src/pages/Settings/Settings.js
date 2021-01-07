@@ -3,6 +3,8 @@ import UploadAvatar from "../../components/Settings/UploadAvatar";
 import BasicModal from "../../components/Modal/BasicModal";
 import UserName from "../../components/Settings/UserName";
 import UserEmail from "../../components/Settings/UserEmail";
+import UserPassword from "../../components/Settings/UserPassword";
+
 
 import "./Settings.scss";
 export default function Settings(props) {
@@ -30,6 +32,7 @@ export default function Settings(props) {
         setTitleModal={setTitleModal}
         setContentModal={setContentModal}
       />
+      <UserPassword />
       <BasicModal show={showModal} setShow={setShowModal} title={titleModal}>
         {contentModal}
       </BasicModal>
