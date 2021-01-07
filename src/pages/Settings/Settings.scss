@@ -37,4 +37,15 @@
             margin: 0 20px !important;
         }
     }
+
+    .user-email,.user-password{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 40px;
+
+        h3{
+            margin: 0;
+        }
+    }
 }
