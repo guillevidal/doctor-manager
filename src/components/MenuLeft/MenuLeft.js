@@ -3,7 +3,7 @@ import { Menu, Icon } from "semantic-ui-react";
 import { Link, withRouter } from "react-router-dom";
 import { isUserAdmin } from "../../utils/Api";
 import BasicModal from "../Modal/BasicModal";
-
+import RegisterForm from "../Auth/RegisterForm";
 import "./MenuLeft.scss";
 
 function MenuLeft(props) {
@@ -28,14 +28,13 @@ function MenuLeft(props) {
   };
   const handlerModal = (type) => {
     switch (type) {
-      case "artist":
-        setTitleModal("Nuevo artista");
-        setContentModal(<h2>Formulario nuevo artista</h2>);
+      case "paciente":
+        setTitleModal("Nuevo paciente");
+        setContentModal(<h2>Formulario nuevo paciente</h2>);
         setShowModal(true);
         break;
-      case "song":
-        setTitleModal("Nueva cancion");
-        setContentModal(<h2>Formulario nueva cancion</h2>);
+      case "usuario":
+        setContentModal(<RegisterForm titleModal={titleModal} />);
         setShowModal(true);
         break;
       default:
@@ -70,10 +69,10 @@ function MenuLeft(props) {
 
         {userAdmin && (
           <div className="footer">
-            <Menu.Item name="artists" onClick={()=>handlerModal("artist")}>
+            <Menu.Item name="usuario" onClick={()=>handlerModal("usuario")}>
               <Icon name="plus square outline" /> Nuevo Usuario
             </Menu.Item>
-            <Menu.Item name="artists" onClick={()=>handlerModal("song")}>
+            <Menu.Item name="paciente" onClick={()=>handlerModal("paciente")}>
               <Icon name="plus square outline" /> Nueva Paciente
             </Menu.Item>
           </div>

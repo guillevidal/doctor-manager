@@ -3,7 +3,7 @@
 
 
 .register-form {
-  margin-top: 50px;
+  margin-top: 5px;
 
   h1 {
     color: $font-sky;
@@ -58,7 +58,7 @@
     }
 
     .error-text {
-      color: $font-dark;
+      color: red;
       padding-left: 15px;
     }
   }

@@ -18,9 +18,8 @@ const FormUser = (
   props,
   { uid, email = "", username = "", password = "", passwordConfirmation = "" }
 ) => {
-  const { setSelectedForm } = props;
+
   const [showPassword, setShowPassword] = useState(false);
-  const [formError, setFormError] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const handlerShowPassword = () => {
     setShowPassword(!showPassword);
@@ -79,7 +78,7 @@ const FormUser = (
           .required("Please Enter your password")
           .matches(
             /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-            "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
+            "Debe tener al menos 8 caracteres, una mayúscula, una minúscula, un numero y un carácter especial"
           ),
         passwordConfirmation: Yup.string()
           .oneOf([Yup.ref("password"), null], "La contraseña no coincide")
@@ -112,26 +111,14 @@ const FormUser = (
           })
           .finally(() => {
             setIsLoading(false);
-            // const data = {
-            //   name: 'Los Angeles',
-            //   state: 'CA',
-            //   country: 'USA'
-            // };
 
-            // // Add a new document in collection "cities" with ID 'LA'
-            // db.collection('cities').doc('LA').set(data).then(resd=>console.log(resd));
-            setSelectedForm(null);
           });
       }}
     >
       {({
-        isValid,
-        isSubmitting,
-        setFieldValue,
         errors,
         touched,
         handleSubmit,
-        handleReset,
         handleChange,
       }) => {
         return (
@@ -139,8 +126,8 @@ const FormUser = (
             <h1>Registrar usuario</h1>
             <Form onSubmit={handleSubmit} onChange={handleChange}>
               <Field name="email">
-                {({ field, form, meta }) => (
-                  <div>
+                {({ field }) => (
+                  <Form.Field>
                     <Input
                       type="text"
                       {...field}
@@ -148,15 +135,15 @@ const FormUser = (
                       icon="mail outline"
                     />
                     {errors.email && touched.email ? (
-                      <div>{errors.email}</div>
+                      <div className="error-text">{errors.email}</div>
                     ) : null}
-                  </div>
+                  </Form.Field>
                 )}
               </Field>
 
               <Field name="password">
-                {({ field, form, meta }) => (
-                  <div>
+                {({ field}) => (
+                  <Form.Field>
                     <Input
                       type={showPassword ? "text" : "password"}
                       {...field}
@@ -174,15 +161,15 @@ const FormUser = (
                       }
                     />
                     {errors.password && touched.password ? (
-                      <div>{errors.password}</div>
+                      <div className="error-text">{errors.password}</div>
                     ) : null}
-                  </div>
+                  </Form.Field>
                 )}
               </Field>
 
               <Field name="passwordConfirmation">
-                {({ field, form, meta }) => (
-                  <div>
+                {({ field }) => (
+                  <Form.Field>
                     <Input
                       type={showPassword ? "text" : "password"}
                       {...field}
@@ -201,15 +188,15 @@ const FormUser = (
                     />
                     {errors.passwordConfirmation &&
                     touched.passwordConfirmation ? (
-                      <div>{errors.passwordConfirmation}</div>
+                      <div className="error-text">{errors.passwordConfirmation}</div>
                     ) : null}
-                  </div>
+                  </Form.Field>
                 )}
               </Field>
 
-              <Field name="username">
-                {({ field, form, meta }) => (
-                  <div>
+              <Field name="username" className="field">
+                {({ field }) => (
+                  <Form.Field>
                     <Input
                       type="text"
                       {...field}
@@ -217,24 +204,16 @@ const FormUser = (
                       icon="user circle outline"
                     />
                     {errors.username && touched.username ? (
-                      <div>{errors.username}</div>
+                      <div className="error-text">{errors.username}</div>
                     ) : null}
-                  </div>
+                  </Form.Field>
                 )}
               </Field>
 
               <Button type="submit" loading={isLoading}>
-                Continuar
+                Enviar
               </Button>
             </Form>
-
-            <div className="register-form__options">
-              <p onClick={() => setSelectedForm(null)}>Volver</p>
-              {/* <p>
-          ¿Ya tienes Musicfy?{" "}
-          <span onClick={() => setSelectedForm("login")}>Iniciar sesión</span>
-        </p> */}
-            </div>
           </div>
         );
       }}
