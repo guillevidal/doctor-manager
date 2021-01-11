@@ -4,6 +4,7 @@ import {Switch,Route} from 'react-router-dom';
 // Pages
 import Home from "../pages/Home";
 import Settings from "../pages/Settings";
+
 export default function Routes(props) {
     const {user,setReloadApp} = props;
 

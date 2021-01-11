@@ -4,6 +4,8 @@ import { Link, withRouter } from "react-router-dom";
 import { isUserAdmin } from "../../utils/Api";
 import BasicModal from "../Modal/BasicModal";
 import RegisterForm from "../Auth/RegisterForm";
+import AddPatient from "../Patient/AddPatient";
+
 import "./MenuLeft.scss";
 
 function MenuLeft(props) {
@@ -29,12 +31,11 @@ function MenuLeft(props) {
   const handlerModal = (type) => {
     switch (type) {
       case "paciente":
-        setTitleModal("Nuevo paciente");
-        setContentModal(<h2>Formulario nuevo paciente</h2>);
+        setContentModal(<AddPatient />);
         setShowModal(true);
         break;
       case "usuario":
-        setContentModal(<RegisterForm titleModal={titleModal} />);
+        setContentModal(<RegisterForm />);
         setShowModal(true);
         break;
       default:
@@ -65,6 +66,8 @@ function MenuLeft(props) {
           >
             <Icon name="archive" /> Archivo
           </Menu.Item>
+
+
         </div>
 
         {userAdmin && (

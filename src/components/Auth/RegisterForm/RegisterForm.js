@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Icon, Input, Form } from "semantic-ui-react";
 import { Formik, Field } from "formik";
 import { toast } from "react-toastify";
-import { validateEmail } from "../../../utils/Validations";
+
 import * as Yup from "yup";
 
 import firebase from "../../../utils/Firebase";
@@ -98,13 +98,13 @@ const FormUser = (
               pacientes:[]
             };
 
-            // Add a new document in collection "cities" with ID 'LA'
-            setTimeout(() => {
-              db.collection("users")
-                .doc(response.user.uid)
-                .set(data)
-                .then(() => console.log("ok"));
-            }, 3000);
+            // // Add a new document in collection "cities" with ID 'LA'
+            // setTimeout(() => {
+            //   db.collection("users")
+            //     .doc(response.user.uid)
+            //     .set(data)
+            //     .then(() => console.log("ok"));
+            // }, 3000);
           })
           .catch(() => {
             toast.error("Error al crear la cuenta.");
