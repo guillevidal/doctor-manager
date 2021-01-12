@@ -18,7 +18,7 @@ const FormUser = (
   props,
   { uid, email = "", username = "", password = "", passwordConfirmation = "" }
 ) => {
-
+  const {setShowModal} = props; 
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const handlerShowPassword = () => {
@@ -85,18 +85,20 @@ const FormUser = (
           .required("Password confirm is required"),
       })}
       onSubmit={async (values, { setSubmitting, resetForm }) => {
+        setIsLoading(true);
         firebase
           .auth()
           .createUserWithEmailAndPassword(values.email, values.password)
           .then((response) => {
             changeUserName(values);
             sendVerificationEmail();
-            const data = {
-              uid: response.user.uid,
-              username:values.username,
-              email: values.email,
-              pacientes:[]
-            };
+            setShowModal(false);
+            // const data = {
+            //   uid: response.user.uid,
+            //   username:values.username,
+            //   email: values.email,
+            //   pacientes:[]
+            // };
 
             // // Add a new document in collection "cities" with ID 'LA'
             // setTimeout(() => {
@@ -111,7 +113,6 @@ const FormUser = (
           })
           .finally(() => {
             setIsLoading(false);
-
           });
       }}
     >

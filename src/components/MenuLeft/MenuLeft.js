@@ -31,11 +31,11 @@ function MenuLeft(props) {
   const handlerModal = (type) => {
     switch (type) {
       case "paciente":
-        setContentModal(<AddPatient />);
+        setContentModal(<AddPatient setShowModal={setShowModal} />);
         setShowModal(true);
         break;
       case "usuario":
-        setContentModal(<RegisterForm />);
+        setContentModal(<RegisterForm setShowModal={setShowModal} />);
         setShowModal(true);
         break;
       default:

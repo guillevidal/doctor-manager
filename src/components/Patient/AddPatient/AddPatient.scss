@@ -1,7 +1,5 @@
 @import "../../../scss/index.scss";
 
-
-
 .register-form {
   margin-top: 5px;
 
@@ -42,6 +40,13 @@
             border-bottom: 3px solid $danger;
           }
         }
+      }
+
+      .react-datepicker-wrapper {
+        
+      }
+      i {
+        margin-top: 10px;
       }
     }
 

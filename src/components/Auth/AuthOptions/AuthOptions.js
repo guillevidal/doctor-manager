@@ -9,9 +9,6 @@ export default function AuthOptions(props) {
   return (
     <div className="auth-options">
       <h2>La mejor interfaz para dentistas</h2>
-      <Button className="register" onClick={()=>setSelectedForm("register")}>
-          Registrar usuario
-      </Button>
       <Button className="login" onClick={()=>setSelectedForm("login")}>
           Iniciar sesión
       </Button>
