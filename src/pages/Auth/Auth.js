@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import AuthOptions from "../../components/Auth/AuthOptions";
 import LoginForm from "../../components/Auth/LoginForm";
-import RegisterForm from "../../components/Auth/RegisterForm";
 import BackgroundAuth from "../../assets/jpg/background.jpg";
 import LogoNameColor from "../../assets/svg/logo-name-color.svg";
 
