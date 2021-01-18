@@ -136,6 +136,7 @@ const AddPatient = (
             resetForm();
             setIsLoading(false);
             setShowModal(false);
+            window.location.replace('/');
           })
           .catch(() => {
             toast.warning("Error al crear el paciente.");
