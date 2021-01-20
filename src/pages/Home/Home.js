@@ -12,9 +12,11 @@ import "firebase/storage";
 
 const columns = [
   {
+    cell: () => <Button  primary >Action</Button>,
     name: "Apellido",
     selector: "surname",
     sortable: true,
+    
   },
   {
     name: "Nombre",
