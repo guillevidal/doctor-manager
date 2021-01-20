@@ -1,7 +1,7 @@
 import { map } from "lodash";
 import React, { useEffect, useState } from "react";
 import { Button, Icon, Input, Form } from "semantic-ui-react";
-import styled from 'styled-components';
+import styled from "styled-components";
 import DataTable, { createTheme } from "react-data-table-component";
 import firebase from "../../utils/Firebase";
 import "firebase/auth";
@@ -12,11 +12,9 @@ import "firebase/storage";
 
 const columns = [
   {
-    cell: () => <Button  primary >Action</Button>,
     name: "Apellido",
     selector: "surname",
     sortable: true,
-    
   },
   {
     name: "Nombre",
@@ -43,35 +41,79 @@ const columns = [
     selector: "phone_number",
     sortable: true,
   },
+  {
+    name: "Acciones",
+    sortable: true,
+    cell: (row) => (
+      <Button
+        className="ui inverted red button"
+        icon="trash"
+        onClick={()=>handleButtonClick(row.id)}
+        id={row.id}
+      ></Button>
+    ),
+  },
 ];
 const db = firebase.firestore(firebase);
 
+const handleButtonClick = async (id) => {
+  await db
+    .collection("pacientes")
+    .doc(id)
+    .delete()
+    .then(function () {
+      console.log("Document successfully deleted!");
+    })
+    .catch(function (error) {
+      console.error("Error removing document: ", error);
+    });
+};
 
 //Componentes
 const FilterComponent = ({ filterText, onFilter, onClear }) => (
   <>
-    <TextField id="search" type="text" placeholder="Filter By Name" aria-label="Search Input" value={filterText} onChange={onFilter} />
-    <ClearButton type="button" onClick={onClear}>X</ClearButton>
+    <TextField
+      id="search"
+      type="text"
+      placeholder="Filter By Name"
+      aria-label="Search Input"
+      value={filterText}
+      onChange={onFilter}
+    />
+    <ClearButton type="button" onClick={onClear}>
+      X
+    </ClearButton>
   </>
 );
 
 const Home = () => {
   const [pacientes, setPacientes] = useState([]);
-  const [filterText, setFilterText] = React.useState('');
-  const [resetPaginationToggle, setResetPaginationToggle] = React.useState(false);
-  const filteredItems = pacientes.filter(item => item.name && item.name.toLowerCase().includes(filterText.toLowerCase()));
-  
+  const [filterText, setFilterText] = React.useState("");
+  const [resetPaginationToggle, setResetPaginationToggle] = React.useState(
+    false
+  );
+  const filteredItems = pacientes.filter(
+    (item) =>
+      item.name && item.name.toLowerCase().includes(filterText.toLowerCase())
+  );
+
   const subHeaderComponentMemo = React.useMemo(() => {
     const handleClear = () => {
       if (filterText) {
         setResetPaginationToggle(!resetPaginationToggle);
-        setFilterText('');
+        setFilterText("");
       }
     };
 
-    return <FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} />;
+    return (
+      <FilterComponent
+        onFilter={(e) => setFilterText(e.target.value)}
+        onClear={handleClear}
+        filterText={filterText}
+      />
+    );
   }, [filterText, resetPaginationToggle]);
-  
+
   useEffect(() => {
     db.collection("pacientes")
       .get()
