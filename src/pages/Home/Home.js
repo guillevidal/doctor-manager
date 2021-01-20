@@ -1,11 +1,14 @@
 import { map } from "lodash";
 import React, { useEffect, useState } from "react";
+import { Button, Icon, Input, Form } from "semantic-ui-react";
+import styled from 'styled-components';
 import DataTable, { createTheme } from "react-data-table-component";
-
 import firebase from "../../utils/Firebase";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
+
+//Vars
 
 const columns = [
   {
@@ -41,8 +44,32 @@ const columns = [
 ];
 const db = firebase.firestore(firebase);
 
+
+//Componentes
+const FilterComponent = ({ filterText, onFilter, onClear }) => (
+  <>
+    <TextField id="search" type="text" placeholder="Filter By Name" aria-label="Search Input" value={filterText} onChange={onFilter} />
+    <ClearButton type="button" onClick={onClear}>X</ClearButton>
+  </>
+);
+
 const Home = () => {
   const [pacientes, setPacientes] = useState([]);
+  const [filterText, setFilterText] = React.useState('');
+  const [resetPaginationToggle, setResetPaginationToggle] = React.useState(false);
+  const filteredItems = pacientes.filter(item => item.name && item.name.toLowerCase().includes(filterText.toLowerCase()));
+  
+  const subHeaderComponentMemo = React.useMemo(() => {
+    const handleClear = () => {
+      if (filterText) {
+        setResetPaginationToggle(!resetPaginationToggle);
+        setFilterText('');
+      }
+    };
+
+    return <FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} />;
+  }, [filterText, resetPaginationToggle]);
+  
   useEffect(() => {
     db.collection("pacientes")
       .get()
@@ -50,7 +77,6 @@ const Home = () => {
         const arrayPacientes = [];
         map(response?.docs, (paciente) => {
           const data = paciente.data();
-          console.log(data);
           data.id = paciente.id;
           arrayPacientes.push(data);
         });
@@ -63,11 +89,19 @@ const Home = () => {
     <DataTable
       title="Pacientes"
       columns={columns}
-      data={pacientes}
+      data={filteredItems}
+      pagination
+      paginationResetDefaultPage={resetPaginationToggle} // optionally, a hook to reset pagination to page 1
+      subHeader
+      subHeaderComponent={subHeaderComponentMemo}
+      selectableRows
+      persistTableHead
       theme="solarized"
     />
   );
 };
+
+//Estilos
 
 createTheme("solarized", {
   text: {
@@ -90,5 +124,33 @@ createTheme("solarized", {
     disabled: "rgba(0,0,0,.12)",
   },
 });
+const TextField = styled.input`
+  height: 32px;
+  width: 200px;
+  border-radius: 3px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border: 1px solid #e5e5e5;
+  padding: 0 32px 0 16px;
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const ClearButton = styled(Button)`
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  height: 34px;
+  width: 32px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
 export default Home;
