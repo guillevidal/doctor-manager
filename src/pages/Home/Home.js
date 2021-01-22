@@ -3,13 +3,16 @@ import React, { useEffect, useState } from "react";
 import { Button, Icon, Input, Form } from "semantic-ui-react";
 import styled from "styled-components";
 import DataTable, { createTheme } from "react-data-table-component";
+import { toast } from "react-toastify";
+import { confirmAlert } from "react-confirm-alert"; // Import
+//Firebase
 import firebase from "../../utils/Firebase";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
-
+//css
+import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 //Vars
-
 const columns = [
   {
     name: "Apellido",
@@ -48,25 +51,41 @@ const columns = [
       <Button
         className="ui inverted red button"
         icon="trash"
-        onClick={()=>handleButtonClick(row.id)}
+        onClick={() => handleButtonClick(row.id)}
         id={row.id}
       ></Button>
     ),
   },
 ];
+//Conexion a firestore
 const db = firebase.firestore(firebase);
 
 const handleButtonClick = async (id) => {
-  await db
-    .collection("pacientes")
-    .doc(id)
-    .delete()
-    .then(function () {
-      console.log("Document successfully deleted!");
-    })
-    .catch(function (error) {
-      console.error("Error removing document: ", error);
-    });
+  confirmAlert({
+    title: "Confirme para eliminar",
+    message: "¿Esta seguro de eliminar al paciente?.",
+    buttons: [
+      {
+        label: "Yes",
+        onClick: async () => {
+          await db
+            .collection("pacientes")
+            .doc(id)
+            .delete()
+            .then(function () {
+              toast.success("Paciente Eliminado con exito");
+            })
+            .catch(function (error) {
+              toast.warning("Error al eliminar el paciente.");
+            });
+        },
+      },
+      {
+        label: "No",
+        onClick: () => alert("Click No"),
+      },
+    ],
+  });
 };
 
 //Componentes
@@ -127,13 +146,14 @@ const Home = () => {
         console.log(arrayPacientes);
         setPacientes(arrayPacientes);
       });
-  }, []);
+  }, [pacientes]);
 
   return (
     <DataTable
       title="Pacientes"
       columns={columns}
       data={filteredItems}
+      
       pagination
       paginationResetDefaultPage={resetPaginationToggle} // optionally, a hook to reset pagination to page 1
       subHeader
