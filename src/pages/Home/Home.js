@@ -1,17 +1,17 @@
 import { map } from "lodash";
-import React, { useEffect, useState } from "react";
-import { Button, Icon, Input, Form } from "semantic-ui-react";
-import styled from "styled-components";
+import React, { useEffect, useState,useMemo } from "react";
 import DataTable, { createTheme } from "react-data-table-component";
 import { toast } from "react-toastify";
-import { confirmAlert } from "react-confirm-alert"; // Import
+import { confirmAlert } from "react-confirm-alert"; 
+//Components
+import {Buttons,FilterComponent} from "./MicroComponents/Buttons"
 //Firebase
 import firebase from "../../utils/Firebase";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
 //css
-import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
+import "react-confirm-alert/src/react-confirm-alert.css";
 //Vars
 const columns = [
   {
@@ -48,75 +48,29 @@ const columns = [
     name: "Acciones",
     sortable: true,
     cell: (row) => (
-      <Button
-        className="ui inverted red button"
-        icon="trash"
-        onClick={() => handleButtonClick(row.id)}
-        id={row.id}
-      ></Button>
+      <Buttons row={row} confirmAlert={confirmAlert} db={db} toast={toast} />
+
     ),
   },
 ];
 //Conexion a firestore
 const db = firebase.firestore(firebase);
 
-const handleButtonClick = async (id) => {
-  confirmAlert({
-    title: "Confirme para eliminar",
-    message: "¿Esta seguro de eliminar al paciente?.",
-    buttons: [
-      {
-        label: "Yes",
-        onClick: async () => {
-          await db
-            .collection("pacientes")
-            .doc(id)
-            .delete()
-            .then(function () {
-              toast.success("Paciente Eliminado con exito");
-            })
-            .catch(function (error) {
-              toast.warning("Error al eliminar el paciente.");
-            });
-        },
-      },
-      {
-        label: "No",
-        onClick: () => alert("Click No"),
-      },
-    ],
-  });
-};
-
-//Componentes
-const FilterComponent = ({ filterText, onFilter, onClear }) => (
-  <>
-    <TextField
-      id="search"
-      type="text"
-      placeholder="Filter By Name"
-      aria-label="Search Input"
-      value={filterText}
-      onChange={onFilter}
-    />
-    <ClearButton type="button" onClick={onClear}>
-      X
-    </ClearButton>
-  </>
-);
-
+//
 const Home = () => {
   const [pacientes, setPacientes] = useState([]);
-  const [filterText, setFilterText] = React.useState("");
-  const [resetPaginationToggle, setResetPaginationToggle] = React.useState(
+  const [filterText, setFilterText] = useState("");
+  const [resetPaginationToggle, setResetPaginationToggle] = useState(
     false
   );
+
   const filteredItems = pacientes.filter(
     (item) =>
       item.name && item.name.toLowerCase().includes(filterText.toLowerCase())
   );
 
-  const subHeaderComponentMemo = React.useMemo(() => {
+  const subHeaderComponentMemo = useMemo(() => {
+
     const handleClear = () => {
       if (filterText) {
         setResetPaginationToggle(!resetPaginationToggle);
@@ -146,7 +100,7 @@ const Home = () => {
         console.log(arrayPacientes);
         setPacientes(arrayPacientes);
       });
-  }, [pacientes]);
+  }, []);
 
   return (
     <DataTable
@@ -166,7 +120,6 @@ const Home = () => {
 };
 
 //Estilos
-
 createTheme("solarized", {
   text: {
     primary: "#268bd2",
@@ -188,33 +141,7 @@ createTheme("solarized", {
     disabled: "rgba(0,0,0,.12)",
   },
 });
-const TextField = styled.input`
-  height: 32px;
-  width: 200px;
-  border-radius: 3px;
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-  border: 1px solid #e5e5e5;
-  padding: 0 32px 0 16px;
 
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
-const ClearButton = styled(Button)`
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
-  height: 34px;
-  width: 32px;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
 
 export default Home;
+

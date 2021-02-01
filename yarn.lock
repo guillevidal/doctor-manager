@@ -10677,6 +10677,11 @@ react-app-polyfill@^1.0.6:
     regenerator-runtime "^0.13.3"
     whatwg-fetch "^3.0.0"
 
+react-confirm-alert@^2.7.0:
+  version "2.7.0"
+  resolved "https://registry.yarnpkg.com/react-confirm-alert/-/react-confirm-alert-2.7.0.tgz#7cdbf2e052e03554ac6a7d8956c9c227010c8a53"
+  integrity sha512-21NWtGK/e85+ZX3TLRpMc3IsU5Kj6Z9ElCOrkTIlwMzV9EancyXNlkqHGbtKP63a2iS6g5hOxROokmJOqKQiXA==
+
 react-data-table-component@^7.0.0-alpha-5:
   version "7.0.0-alpha-5"
   resolved "https://registry.yarnpkg.com/react-data-table-component/-/react-data-table-component-7.0.0-alpha-5.tgz#1b33aa0219d815b0899fb16c7ac2070843e86f9e"
