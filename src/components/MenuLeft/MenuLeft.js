@@ -35,7 +35,7 @@ function MenuLeft(props) {
         setShowModal(true);
         break;
       case "usuario":
-        setContentModal(<RegisterForm setShowModal={setShowModal} />);
+        setContentModal(<RegisterForm setShowModal={setShowModal} setContentModal={setContentModal} />);
         setShowModal(true);
         break;
       default:

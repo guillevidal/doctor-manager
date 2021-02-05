@@ -2,11 +2,12 @@ import React, { useState, useRef } from "react";
 import { Button, Icon, Input, Form } from "semantic-ui-react";
 import { Formik, Field } from "formik";
 import { toast } from "react-toastify";
-import { date } from "yup/lib/locale";
-import { getEdad, formatDate, validarFecha } from "../../../utils/utils";
+import { withRouter } from "react-router-dom";
+import { getEdad } from "../../../utils/utils";
 import * as Yup from "yup";
 
 import DatePicker, { registerLocale } from "react-datepicker";
+import CompleteRecord from "../CompleteRecord";
 import es from "date-fns/locale/es";
 
 import firebase from "../../../utils/Firebase";
@@ -39,10 +40,10 @@ const AddPatient = (
     user_id = "",
   }
 ) => {
-  const { setShowModal, user } = props;
+  const { setShowModal,setContentModal, user,history } = props;
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
-
+ 
   return (
     <Formik
       initialValues={{
@@ -81,30 +82,8 @@ const AddPatient = (
           .max(10, "Debe tener 10 caracteres o menos"),
 
         birthdate: Yup.date().required("Completa el campo"),
-        // email: Yup.string()
-        //   .email("Introduzca un email valido por favor")
-        //   .required("Debes completar este campo"),
-        // address: Yup.string()
-        //   .min(6, "Debe tener al menos 4 caracteres")
-        //   .max(50, "Debe tener 50 caracteres o menos")
-        //   .required("Debes completar este campo"),
-        // phoneNumber: Yup.string()
-        //   .required("Please Enter your Phone Number")
-        //   .matches(
-        //     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
-        //     "Phone number is not valid"
-        //   ),
-        // password: Yup.string()
-        //   .required("Please Enter your password")
-        //   .matches(
-        //     /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-        //     "Debe tener al menos 8 caracteres, una mayúscula, una minúscula, un numero y un carácter especial"
-        //   ),
-        // passwordConfirmation: Yup.string()
-        //   .oneOf([Yup.ref("password"), null], "La contraseña no coincide")
-        //   .required("Password confirm is required"),
       })}
-      onSubmit={async (values, { setSubmitting, resetForm }) => {
+      onSubmit={async (values, {resetForm }) => {
         const {
           name,
           surname,
@@ -135,7 +114,8 @@ const AddPatient = (
             toast.success("Paciente guardado con exito");
             resetForm();
             setIsLoading(false);
-            setShowModal(false);            
+            setShowModal(false)
+
           })
           .catch(() => {
             toast.warning("Error al crear el paciente.");
@@ -276,4 +256,5 @@ const AddPatient = (
   );
 };
 
-export default AddPatient;
+
+export default withRouter(AddPatient);

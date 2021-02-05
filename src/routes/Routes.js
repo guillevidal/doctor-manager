@@ -5,6 +5,7 @@ import { Switch, Route } from "react-router-dom";
 import Home from "../pages/Home";
 import Settings from "../pages/Settings";
 import Pacient from "../pages/Pacient";
+import CompleteRecord from "../components/Patient/CompleteRecord";
 export default function Routes(props) {
   const { user, setReloadApp } = props;
 
@@ -23,6 +24,9 @@ export default function Routes(props) {
       </Route>
       <Route path="/pacient" exact>
         <Pacient />
+      </Route>
+      <Route path="/complete" exact>
+        <CompleteRecord />
       </Route>
     </Switch>
   );

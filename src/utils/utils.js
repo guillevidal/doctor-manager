@@ -11,9 +11,4 @@ function getEdad(dateString) {
     }
     return edad;
   }
-
-  function formatDate(date) {
-    return new Date(date).toLocaleDateString()
-  }
-
-  export{getEdad,formatDate};
+  export{getEdad};
