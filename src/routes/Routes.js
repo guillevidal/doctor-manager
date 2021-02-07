@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect,useRef } from "react";
 import { Switch, Route } from "react-router-dom";
 
 // Pages
@@ -8,6 +8,15 @@ import Pacient from "../pages/Pacient";
 import CompleteRecord from "../components/Patient/CompleteRecord";
 export default function Routes(props) {
   const { user, setReloadApp } = props;
+  let isRendered = useRef(false);
+
+  useEffect(() => {
+    isRendered = true;
+
+    return () => {
+      isRendered = false;
+    };
+  }, []);
 
   return (
     <Switch>

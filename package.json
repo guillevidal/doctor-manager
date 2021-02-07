@@ -27,6 +27,7 @@
     "semantic-ui-react": "^0.88.2",
     "slick-carousel": "^1.8.1",
     "styled-components": "^5.2.1",
+    "use-state-if-mounted": "^1.0.4",
     "uuid": "^7.0.2",
     "yup": "^0.32.6"
   },

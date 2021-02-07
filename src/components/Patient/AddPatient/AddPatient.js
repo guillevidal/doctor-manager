@@ -38,12 +38,22 @@ const AddPatient = (
     job = "",
     medical_insurance = "",
     user_id = "",
+    gp = "", //Medico de cabecera
+    gp_phone = "",
+    medical_treatment = "", //Recibe algun tratamiento medico? Cual?
+    allergies = "", //Alergia a algun medicamento?
+    tooth_info = "", //Cuando se lastima o extrae algun diente sangra y necesita atencion?
+    affections = "", //..
+    medicines = "", //Toma algun medicamento ¿cual?
+    cigarettes = "", //Cuantos cigarrillos fuma?
+    sex = "",
+    pregnat = "",
   }
 ) => {
-  const { setShowModal,setContentModal, user,history } = props;
+  const { setShowModal, setContentModal, user, history } = props;
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
- 
+
   return (
     <Formik
       initialValues={{
@@ -83,7 +93,7 @@ const AddPatient = (
 
         birthdate: Yup.date().required("Completa el campo"),
       })}
-      onSubmit={async (values, {resetForm }) => {
+      onSubmit={async (values, { resetForm }) => {
         const {
           name,
           surname,
@@ -114,8 +124,7 @@ const AddPatient = (
             toast.success("Paciente guardado con exito");
             resetForm();
             setIsLoading(false);
-            setShowModal(false)
-
+            setShowModal(false);
           })
           .catch(() => {
             toast.warning("Error al crear el paciente.");
@@ -128,122 +137,129 @@ const AddPatient = (
       {({ errors, touched, handleSubmit, handleChange, setFieldValue }) => {
         return (
           <div className="register-form">
-            <h1>Agregar Paciente</h1>
             <Form onSubmit={handleSubmit} onChange={handleChange}>
-              <Field name="name">
-                {({ field }) => (
-                  <Form.Field>
-                    <Input
-                      type="text"
-                      {...field}
-                      placeholder="Nombre"
-                      icon="user circle"
-                    />
-                    {errors.name && touched.name ? (
-                      <div className="error-text">{errors.name}</div>
-                    ) : null}
-                  </Form.Field>
-                )}
-              </Field>
+              <h1>Agregar Paciente</h1>
+              <div>
+                <Field name="name">
+                  {({ field }) => (
+                    <Form.Field>
+                      <Input
+                        type="text"
+                        {...field}
+                        placeholder="Nombre"
+                        icon="user circle"
+                      />
+                      {errors.name && touched.name ? (
+                        <div className="error-text">{errors.name}</div>
+                      ) : null}
+                    </Form.Field>
+                  )}
+                </Field>
 
-              <Field name="surname">
-                {({ field }) => (
-                  <Form.Field>
-                    <Input
-                      type="text"
-                      {...field}
-                      placeholder="Apellido"
-                      icon="user circle"
-                    />
-                    {errors.surname && touched.surname ? (
-                      <div className="error-text">{errors.surname}</div>
-                    ) : null}
-                  </Form.Field>
-                )}
-              </Field>
+                <Field name="surname">
+                  {({ field }) => (
+                    <Form.Field>
+                      <Input
+                        type="text"
+                        {...field}
+                        placeholder="Apellido"
+                        icon="user circle"
+                      />
+                      {errors.surname && touched.surname ? (
+                        <div className="error-text">{errors.surname}</div>
+                      ) : null}
+                    </Form.Field>
+                  )}
+                </Field>
 
-              <Field name="dni">
-                {({ field }) => (
-                  <Form.Field>
-                    <Input
-                      type="text"
-                      {...field}
-                      placeholder="DNI"
-                      icon="user circle"
-                    />
-                    {errors.dni && touched.dni ? (
-                      <div className="error-text">{errors.dni}</div>
-                    ) : null}
-                  </Form.Field>
-                )}
-              </Field>
+                <Field name="dni">
+                  {({ field }) => (
+                    <Form.Field>
+                      <Input
+                        type="text"
+                        {...field}
+                        placeholder="DNI"
+                        icon="user circle"
+                      />
+                      {errors.dni && touched.dni ? (
+                        <div className="error-text">{errors.dni}</div>
+                      ) : null}
+                    </Form.Field>
+                  )}
+                </Field>
 
-              <Field name="phone_number">
-                {({ field }) => (
-                  <Form.Field>
-                    <Input
-                      type="text"
-                      {...field}
-                      placeholder="Numero de teléfono o celular"
-                      icon="phone"
-                    />
-                    {errors.phone_number && touched.phone_number ? (
-                      <div className="error-text">{errors.phone_number}</div>
-                    ) : null}
-                  </Form.Field>
-                )}
-              </Field>
+                <Field name="phone_number">
+                  {({ field }) => (
+                    <Form.Field>
+                      <Input
+                        type="text"
+                        {...field}
+                        placeholder="Numero de teléfono o celular"
+                        icon="phone"
+                      />
+                      {errors.phone_number && touched.phone_number ? (
+                        <div className="error-text">{errors.phone_number}</div>
+                      ) : null}
+                    </Form.Field>
+                  )}
+                </Field>
 
-              <Field name="medical_insurance">
-                {({ field }) => (
-                  <Form.Field>
-                    <Input
-                      type="text"
-                      {...field}
-                      placeholder="Obra social"
-                      icon="pencil alternate"
-                    />
-                    {errors.medical_insurance && touched.medical_insurance ? (
-                      <div className="error-text">
-                        {errors.medical_insurance}
-                      </div>
-                    ) : null}
-                  </Form.Field>
-                )}
-              </Field>
+                <Field name="medical_insurance">
+                  {({ field }) => (
+                    <Form.Field>
+                      <Input
+                        type="text"
+                        {...field}
+                        placeholder="Obra social"
+                        icon="pencil alternate"
+                      />
+                      {errors.medical_insurance && touched.medical_insurance ? (
+                        <div className="error-text">
+                          {errors.medical_insurance}
+                        </div>
+                      ) : null}
+                    </Form.Field>
+                  )}
+                </Field>
 
-              <Field name="birthdate">
-                {({ field }) => (
-                  <Form.Field>
-                    <Icon
-                      name="calendar alternate"
-                      size="large"
-                      className="icon"
-                      onClick={() => setOpen(!open)}
-                    />
-                    <DatePicker
-                      {...field}
-                      open={open}
-                      readOnly
-                      locale="es"
-                      selected={(field.value && new Date(field.value)) || null}
-                      popperModifiers
-                      peekNextMonth
-                      placeholderText="12/31/2000"
-                      showYearDropdown
-                      showMonthDropdown
-                      dropdownMode="select"
-                      onChange={(val) => {
-                        setFieldValue(field.name, val);
-                      }}
-                    />
+                <Field name="birthdate">
+                  {({ field }) => (
+                    <Form.Field>
+                      <Icon
+                        name="calendar alternate"
+                        size="large"
+                        className="icon"
+                        onClick={() => setOpen(!open)}
+                      />
+                      <DatePicker
+                        {...field}
+                        open={open}
+                        readOnly
+                        locale="es"
+                        selected={
+                          (field.value && new Date(field.value)) || null
+                        }
+                        popperModifiers
+                        peekNextMonth
+                        placeholderText="12/31/2000"
+                        showYearDropdown
+                        showMonthDropdown
+                        dropdownMode="select"
+                        onChange={(val) => {
+                          setFieldValue(field.name, val);
+                        }}
+                      />
 
-                    {errors.birthdate && touched.birthdate ? (
-                      <div className="error-text">{errors.birthdate}</div>
-                    ) : null}
-                  </Form.Field>
-                )}
-              </Field>
+                      {errors.birthdate && touched.birthdate ? (
+                        <div className="error-text">{errors.birthdate}</div>
+                      ) : null}
+                    </Form.Field>
+                  )}
+                </Field>
+              </div>
+              <div>
+                <h1>Ficha Medica</h1>
+              </div>
 
               <Button type="submit" loading={isLoading}>
                 Enviar
@@ -255,6 +271,5 @@ const AddPatient = (
     </Formik>
   );
 };
-
 
 export default withRouter(AddPatient);

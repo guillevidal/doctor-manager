@@ -1,10 +1,10 @@
+import React, { useEffect, useState, useMemo, useRef } from "react";
 import { map } from "lodash";
-import React, { useEffect, useState,useMemo } from "react";
 import DataTable, { createTheme } from "react-data-table-component";
 import { toast } from "react-toastify";
-import { confirmAlert } from "react-confirm-alert"; 
+import { confirmAlert } from "react-confirm-alert";
 //Components
-import {Buttons,FilterComponent} from "./MicroComponents/Buttons"
+import { Buttons, FilterComponent } from "../../components/DataTable/Buttons";
 //Firebase
 import firebase from "../../utils/Firebase";
 import "firebase/auth";
@@ -49,7 +49,6 @@ const columns = [
     sortable: true,
     cell: (row) => (
       <Buttons row={row} confirmAlert={confirmAlert} db={db} toast={toast} />
-
     ),
   },
 ];
@@ -60,17 +59,15 @@ const db = firebase.firestore(firebase);
 const Home = () => {
   const [pacientes, setPacientes] = useState([]);
   const [filterText, setFilterText] = useState("");
-  const [resetPaginationToggle, setResetPaginationToggle] = useState(
-    false
-  );
 
+  const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
+  const [pageLoading, setPageLoading] = useState(false)
   const filteredItems = pacientes.filter(
     (item) =>
       item.name && item.name.toLowerCase().includes(filterText.toLowerCase())
   );
 
   const subHeaderComponentMemo = useMemo(() => {
-
     const handleClear = () => {
       if (filterText) {
         setResetPaginationToggle(!resetPaginationToggle);
@@ -88,26 +85,32 @@ const Home = () => {
   }, [filterText, resetPaginationToggle]);
 
   useEffect(() => {
+    let unmounted = false;
+    setPageLoading(true);
     db.collection("pacientes")
       .get()
       .then((response) => {
+        if (!unmounted) {
+          setPageLoading(false);
+        }
         const arrayPacientes = [];
         map(response?.docs, (paciente) => {
           const data = paciente.data();
           data.id = paciente.id;
           arrayPacientes.push(data);
         });
-        console.log(arrayPacientes);
         setPacientes(arrayPacientes);
       });
-  }, []);
+    return () => {
+      unmounted = true;
+    };
+  }, [pacientes]);
 
   return (
     <DataTable
       title="Pacientes"
       columns={columns}
       data={filteredItems}
-      
       pagination
       paginationResetDefaultPage={resetPaginationToggle} // optionally, a hook to reset pagination to page 1
       subHeader
@@ -142,6 +145,4 @@ createTheme("solarized", {
   },
 });
 
-
 export default Home;
-
