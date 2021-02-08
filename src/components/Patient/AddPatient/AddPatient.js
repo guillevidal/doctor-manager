@@ -65,6 +65,7 @@ const AddPatient = (
         location,
         job,
         medical_insurance,
+        gp,
       }}
       validationSchema={Yup.object({
         name: Yup.string()
@@ -92,6 +93,10 @@ const AddPatient = (
           .max(10, "Debe tener 10 caracteres o menos"),
 
         birthdate: Yup.date().required("Completa el campo"),
+        gp: Yup.string()
+          .min(4, "Debe tener al menos 4 caracteres")
+          .max(20, "Debe tener 20 caracteres o menos")
+          .required("Debes completar este campo"),
       })}
       onSubmit={async (values, { resetForm }) => {
         const {
@@ -138,8 +143,11 @@ const AddPatient = (
         return (
           <div className="register-form">
             <Form onSubmit={handleSubmit} onChange={handleChange}>
+              <div className="flex0">
               <h1>Agregar Paciente</h1>
-              <div>
+              </div>
+              <div className="flex">
+                <h1>Información</h1>
                 <Field name="name">
                   {({ field }) => (
                     <Form.Field>
@@ -257,13 +265,29 @@ const AddPatient = (
                   )}
                 </Field>
               </div>
-              <div>
+              <div className="flex2">
                 <h1>Ficha Medica</h1>
+                <Field name="gp">
+                  {({ field }) => (
+                    <Form.Field>
+                      <Input
+                        type="text"
+                        {...field}
+                        placeholder="Apellido"
+                        icon="user circle"
+                      />
+                      {errors.surname && touched.surname ? (
+                        <div className="error-text">{errors.surname}</div>
+                      ) : null}
+                    </Form.Field>
+                  )}
+                </Field>
               </div>
-
-              <Button type="submit" loading={isLoading}>
-                Enviar
-              </Button>
+              <div className="flex3">
+                <Button type="submit" loading={isLoading}>
+                  Enviar
+                </Button>
+              </div>
             </Form>
           </div>
         );
