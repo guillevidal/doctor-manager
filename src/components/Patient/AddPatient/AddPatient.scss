@@ -2,7 +2,7 @@
 
 .register-form {
   margin-top: 5px;
-
+  
   h1 {
     color: $font-sky;
     text-align: center;
@@ -10,38 +10,12 @@
     padding-bottom: 20px;
     border-bottom: 2px solid green;
   }
-
+  .ui.checkbox{
+    label{
+      color: white;
+    }
+  }
   .ui.form {
-    display: grid;
-    grid-template-columns: 50% 50%;
-    grid-template-rows: 70% 20% 10%;
-
-    .flex0{
-      grid-column-start:0 ;
-
-      grid-row-start: 0;
-      grid-row-end: 1;
-
-    }
-    .flex{
-      grid-column-start:0 ;
-      grid-column-end: 1;
-      grid-row-start: 1;
-      grid-row-end: 2;
-
-    }
-    .flex2{
-      grid-column-start:1 ;
-      grid-column-end: 1;
-      grid-row-start: 1;
-      grid-row-end: 2;
-    }
-    .flex3{
-      grid-column-start: 0;
-      grid-column-end: 1;
-      grid-row-start: 2;
-
-    }
     .field {
       margin-bottom: 15px;
       .input {

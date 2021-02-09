@@ -4,8 +4,7 @@ import { Modal, Icon } from "semantic-ui-react";
 import "./BasicModal.scss";
 
 export default function BasicModal(props) {
-  const { show, setShow, title, children } = props;
-
+  const { show, setShow, title, children,size } = props;
   const onClose = () => {
     setShow(false);
   };
@@ -15,7 +14,7 @@ export default function BasicModal(props) {
       open={show}
       onClose={onClose}
       className="basic-modal"
-      size="tiny"
+      size={size}
     >
        <Modal.Header>
            <h3>{title}</h3>

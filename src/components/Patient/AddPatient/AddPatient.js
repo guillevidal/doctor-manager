@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { Button, Icon, Input, Form } from "semantic-ui-react";
+import { Button, Icon, Input, Form, Grid, Checkbox } from "semantic-ui-react";
 import { Formik, Field } from "formik";
 import { toast } from "react-toastify";
 import { withRouter } from "react-router-dom";
@@ -50,9 +50,10 @@ const AddPatient = (
     pregnat = "",
   }
 ) => {
-  const { setShowModal, setContentModal, user, history } = props;
+  const { setShowModal, user } = props;
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const [openCheck, setOpenCheck] = useState(false);
 
   return (
     <Formik
@@ -66,6 +67,8 @@ const AddPatient = (
         job,
         medical_insurance,
         gp,
+        gp_phone,
+        medical_treatment,
       }}
       validationSchema={Yup.object({
         name: Yup.string()
@@ -97,45 +100,54 @@ const AddPatient = (
           .min(4, "Debe tener al menos 4 caracteres")
           .max(20, "Debe tener 20 caracteres o menos")
           .required("Debes completar este campo"),
+        gp_phone: Yup.string()
+          .max(10, "máximo 10 caracteres")
+          .matches(
+            phoneRegExp,
+            "Numero de teléfono no valido,introduzca solo numeros"
+          ),
+        medical_treatment: Yup.string()
+          .min(4, "Debe tener al menos 4 caracteres")
+          .max(20, "Debe tener 20 caracteres o menos"),
       })}
       onSubmit={async (values, { resetForm }) => {
-        const {
-          name,
-          surname,
-          birthdate,
-          dni,
-          medical_insurance,
-          phone_number,
-        } = values;
-        const age = getEdad(birthdate);
+        // const {
+        //   name,
+        //   surname,
+        //   birthdate,
+        //   dni,
+        //   medical_insurance,
+        //   phone_number,
+        // } = values;
+        // const age = getEdad(birthdate);
 
-        setIsLoading(true);
+        // setIsLoading(true);
 
-        const data = {
-          user_id: user.uid,
-          name: name,
-          surname: surname,
-          dni: dni,
-          birthdate: birthdate,
-          age: age,
-          phone_number: phone_number,
-          medical_insurance: medical_insurance,
-        };
-        await db
-          .collection("pacientes")
-          .doc(dni)
-          .set(data)
-          .then(() => {
-            toast.success("Paciente guardado con exito");
-            resetForm();
-            setIsLoading(false);
-            setShowModal(false);
-          })
-          .catch(() => {
-            toast.warning("Error al crear el paciente.");
-            setIsLoading(false);
-          });
-        console.log(data);
+        // const data = {
+        //   user_id: user.uid,
+        //   name: name,
+        //   surname: surname,
+        //   dni: dni,
+        //   birthdate: birthdate,
+        //   age: age,
+        //   phone_number: phone_number,
+        //   medical_insurance: medical_insurance,
+        // };
+        // await db
+        //   .collection("pacientes")
+        //   .doc(dni)
+        //   .set(data)
+        //   .then(() => {
+        //     toast.success("Paciente guardado con exito");
+        //     resetForm();
+        //     setIsLoading(false);
+        //     setShowModal(false);
+        //   })
+        //   .catch(() => {
+        //     toast.warning("Error al crear el paciente.");
+        //     setIsLoading(false);
+        //   });
+        console.log(values);
         // setShowModal(false);
       }}
     >
@@ -143,151 +155,206 @@ const AddPatient = (
         return (
           <div className="register-form">
             <Form onSubmit={handleSubmit} onChange={handleChange}>
-              <div className="flex0">
-              <h1>Agregar Paciente</h1>
-              </div>
-              <div className="flex">
-                <h1>Información</h1>
-                <Field name="name">
-                  {({ field }) => (
-                    <Form.Field>
-                      <Input
-                        type="text"
-                        {...field}
-                        placeholder="Nombre"
-                        icon="user circle"
-                      />
-                      {errors.name && touched.name ? (
-                        <div className="error-text">{errors.name}</div>
-                      ) : null}
-                    </Form.Field>
-                  )}
-                </Field>
+              <Grid>
+                <Grid.Row columns={1}>
+                  <Grid.Column>
+                    <h1>Agregar Paciente</h1>
+                  </Grid.Column>
+                </Grid.Row>
 
-                <Field name="surname">
-                  {({ field }) => (
-                    <Form.Field>
-                      <Input
-                        type="text"
-                        {...field}
-                        placeholder="Apellido"
-                        icon="user circle"
-                      />
-                      {errors.surname && touched.surname ? (
-                        <div className="error-text">{errors.surname}</div>
-                      ) : null}
-                    </Form.Field>
-                  )}
-                </Field>
+                <Grid.Row columns={2}>
+                  <Grid.Column>
+                    <h1>Información del Paciente</h1>
+                    <Field name="name">
+                      {({ field }) => (
+                        <Form.Field>
+                          <Input
+                            type="text"
+                            {...field}
+                            placeholder="Nombre"
+                            icon="user circle"
+                          />
+                          {errors.name && touched.name ? (
+                            <div className="error-text">{errors.name}</div>
+                          ) : null}
+                        </Form.Field>
+                      )}
+                    </Field>
 
-                <Field name="dni">
-                  {({ field }) => (
-                    <Form.Field>
-                      <Input
-                        type="text"
-                        {...field}
-                        placeholder="DNI"
-                        icon="user circle"
-                      />
-                      {errors.dni && touched.dni ? (
-                        <div className="error-text">{errors.dni}</div>
-                      ) : null}
-                    </Form.Field>
-                  )}
-                </Field>
+                    <Field name="surname">
+                      {({ field }) => (
+                        <Form.Field>
+                          <Input
+                            type="text"
+                            {...field}
+                            placeholder="Apellido"
+                            icon="user circle"
+                          />
+                          {errors.surname && touched.surname ? (
+                            <div className="error-text">{errors.surname}</div>
+                          ) : null}
+                        </Form.Field>
+                      )}
+                    </Field>
 
-                <Field name="phone_number">
-                  {({ field }) => (
-                    <Form.Field>
-                      <Input
-                        type="text"
-                        {...field}
-                        placeholder="Numero de teléfono o celular"
-                        icon="phone"
-                      />
-                      {errors.phone_number && touched.phone_number ? (
-                        <div className="error-text">{errors.phone_number}</div>
-                      ) : null}
-                    </Form.Field>
-                  )}
-                </Field>
+                    <Field name="dni">
+                      {({ field }) => (
+                        <Form.Field>
+                          <Input
+                            type="text"
+                            {...field}
+                            placeholder="DNI"
+                            icon="user circle"
+                          />
+                          {errors.dni && touched.dni ? (
+                            <div className="error-text">{errors.dni}</div>
+                          ) : null}
+                        </Form.Field>
+                      )}
+                    </Field>
 
-                <Field name="medical_insurance">
-                  {({ field }) => (
-                    <Form.Field>
-                      <Input
-                        type="text"
-                        {...field}
-                        placeholder="Obra social"
-                        icon="pencil alternate"
-                      />
-                      {errors.medical_insurance && touched.medical_insurance ? (
-                        <div className="error-text">
-                          {errors.medical_insurance}
-                        </div>
-                      ) : null}
-                    </Form.Field>
-                  )}
-                </Field>
+                    <Field name="phone_number">
+                      {({ field }) => (
+                        <Form.Field>
+                          <Input
+                            type="text"
+                            {...field}
+                            placeholder="Numero de teléfono o celular"
+                            icon="phone"
+                          />
+                          {errors.phone_number && touched.phone_number ? (
+                            <div className="error-text">
+                              {errors.phone_number}
+                            </div>
+                          ) : null}
+                        </Form.Field>
+                      )}
+                    </Field>
 
-                <Field name="birthdate">
-                  {({ field }) => (
-                    <Form.Field>
-                      <Icon
-                        name="calendar alternate"
-                        size="large"
-                        className="icon"
-                        onClick={() => setOpen(!open)}
-                      />
-                      <DatePicker
-                        {...field}
-                        open={open}
-                        readOnly
-                        locale="es"
-                        selected={
-                          (field.value && new Date(field.value)) || null
-                        }
-                        popperModifiers
-                        peekNextMonth
-                        placeholderText="12/31/2000"
-                        showYearDropdown
-                        showMonthDropdown
-                        dropdownMode="select"
-                        onChange={(val) => {
-                          setFieldValue(field.name, val);
-                        }}
-                      />
+                    <Field name="medical_insurance">
+                      {({ field }) => (
+                        <Form.Field>
+                          <Input
+                            type="text"
+                            {...field}
+                            placeholder="Obra social"
+                            icon="clipboard"
+                          />
+                          {errors.medical_insurance &&
+                          touched.medical_insurance ? (
+                            <div className="error-text">
+                              {errors.medical_insurance}
+                            </div>
+                          ) : null}
+                        </Form.Field>
+                      )}
+                    </Field>
 
-                      {errors.birthdate && touched.birthdate ? (
-                        <div className="error-text">{errors.birthdate}</div>
-                      ) : null}
-                    </Form.Field>
-                  )}
-                </Field>
-              </div>
-              <div className="flex2">
-                <h1>Ficha Medica</h1>
-                <Field name="gp">
-                  {({ field }) => (
-                    <Form.Field>
-                      <Input
-                        type="text"
-                        {...field}
-                        placeholder="Apellido"
-                        icon="user circle"
-                      />
-                      {errors.surname && touched.surname ? (
-                        <div className="error-text">{errors.surname}</div>
-                      ) : null}
-                    </Form.Field>
-                  )}
-                </Field>
-              </div>
-              <div className="flex3">
-                <Button type="submit" loading={isLoading}>
-                  Enviar
-                </Button>
-              </div>
+                    <Field name="birthdate">
+                      {({ field }) => (
+                        <Form.Field>
+                          <Icon
+                            name="calendar alternate"
+                            size="large"
+                            className="icon"
+                            onClick={() => setOpen(!open)}
+                          />
+                          <DatePicker
+                            {...field}
+                            open={open}
+                            readOnly
+                            locale="es"
+                            selected={
+                              (field.value && new Date(field.value)) || null
+                            }
+                            popperModifiers
+                            peekNextMonth
+                            placeholderText="12/31/2000"
+                            showYearDropdown
+                            showMonthDropdown
+                            dropdownMode="select"
+                            onChange={(val) => {
+                              setFieldValue(field.name, val);
+                            }}
+                          />
+
+                          {errors.birthdate && touched.birthdate ? (
+                            <div className="error-text">{errors.birthdate}</div>
+                          ) : null}
+                        </Form.Field>
+                      )}
+                    </Field>
+                  </Grid.Column>
+
+                  <Grid.Column>
+                    <h1>Ficha Medica</h1>
+                    <Field name="gp">
+                      {({ field }) => (
+                        <Form.Field>
+                          <Input
+                            type="text"
+                            {...field}
+                            placeholder="Nombre completo de medico de cabecera"
+                            icon="user circle"
+                          />
+                          {errors.gp && touched.gp ? (
+                            <div className="error-text">{errors.gp}</div>
+                          ) : null}
+                        </Form.Field>
+                      )}
+                    </Field>
+
+                    <Field name="gp_phone">
+                      {({ field }) => (
+                        <Form.Field>
+                          <Input
+                            type="text"
+                            {...field}
+                            placeholder="Numero de teléfono o celular medico de cabecera"
+                            icon="phone"
+                          />
+                          {errors.gp_phone && touched.gp_phone ? (
+                            <div className="error-text">{errors.gp_phone}</div>
+                          ) : null}
+                        </Form.Field>
+                      )}
+                    </Field>
+
+                    <Checkbox
+                      label="¿Recibe tratamiento medico?"
+                      onChange={() => setOpenCheck(!open)}
+                    />
+
+                    {openCheck && (
+                      <Field name="medical_treatment">
+                        {({ field }) => (
+                          <Form.Field>
+                            <Input
+                              type="text"
+                              {...field}
+                              placeholder="¿Que tratamiento medico recibe?"
+                              icon="clipboard"
+                            />
+                            {errors.medical_treatment &&
+                            touched.medical_treatment ? (
+                              <div className="error-text">
+                                {errors.medical_treatment}
+                              </div>
+                            ) : null}
+                          </Form.Field>
+                        )}
+                      </Field>
+                    )}
+                  </Grid.Column>
+                </Grid.Row>
+                <Grid.Row columns={1}>
+                  <Grid.Column>
+                    <Button type="submit" loading={isLoading}>
+                      Enviar
+                    </Button>
+                  </Grid.Column>
+                </Grid.Row>
+              </Grid>
             </Form>
           </div>
         );

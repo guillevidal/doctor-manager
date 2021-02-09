@@ -15,6 +15,7 @@ function MenuLeft(props) {
   const [showModal, setShowModal] = useState(false);
   const [titleModal, setTitleModal] = useState("");
   const [contentModal, setContentModal] = useState(null);
+  const [size, setSize] = useState("tiny")
 
  useEffect(() => {
    setActiveMenu(location.pathname);
@@ -32,17 +33,19 @@ function MenuLeft(props) {
     switch (type) {
       case "paciente":
         setContentModal(<AddPatient user={user} setShowModal={setShowModal} />);
+        setSize("large");
         setShowModal(true);
         break;
       case "usuario":
         setContentModal(<RegisterForm setShowModal={setShowModal} setContentModal={setContentModal} />);
+        setSize("tiny");
         setShowModal(true);
         break;
       default:
         setTitleModal(null);
         setContentModal(null);
         setShowModal(false);
-
+        setSize("tiny");
         break;
     }
   };
@@ -81,7 +84,7 @@ function MenuLeft(props) {
           </div>
         )}
       </Menu>
-      <BasicModal show={showModal} setShow={setShowModal} title={titleModal}>
+      <BasicModal show={showModal} setShow={setShowModal} title={titleModal} size={size} setSize={setSize}>
         {contentModal}
       </BasicModal>
     </>
