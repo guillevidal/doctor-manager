@@ -93,20 +93,18 @@ const FormUser = (
             changeUserName(values);
             sendVerificationEmail();
             setShowModal(false);
-            // const data = {
-            //   uid: response.user.uid,
-            //   username:values.username,
-            //   email: values.email,
-            //   pacientes:[]
-            // };
-
-            // // Add a new document in collection "cities" with ID 'LA'
-            // setTimeout(() => {
-            //   db.collection("users")
-            //     .doc(response.user.uid)
-            //     .set(data)
-            //     .then(() => console.log("ok"));
-            // }, 3000);
+            const data = {
+              uid: response.user.uid,
+              username:values.username,
+              email: values.email,
+              pacientes:[]
+            };
+            setTimeout(() => {
+              db.collection("users")
+                .doc(response.user.uid)
+                .set(data)
+                .then(() => console.log("ok"));
+            }, 3000);
           })
           .catch(() => {
             toast.error("Error al crear la cuenta.");

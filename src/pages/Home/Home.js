@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useRef } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { map } from "lodash";
 import DataTable, { createTheme } from "react-data-table-component";
 import { toast } from "react-toastify";

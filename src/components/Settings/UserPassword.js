@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Form, Input, Icon, FormInput } from "semantic-ui-react";
+import { Button, Form, Input, Icon } from "semantic-ui-react";
 import {toast} from "react-toastify";
 import {reauthenticate} from "../../utils/Api"
 import alertErrors from "../../utils/AlertErrors";

@@ -1,30 +1,69 @@
-import React, { useState, useRef } from "react";
-import { Button, Icon, Input, Form, Grid, Checkbox } from "semantic-ui-react";
+import React, { useState } from "react";
+import {
+  Button,
+  Icon,
+  Input,
+  Form,
+  Grid,
+  Checkbox,
+  Dropdown,
+} from "semantic-ui-react";
+//
 import { Formik, Field } from "formik";
-import { toast } from "react-toastify";
-import { withRouter } from "react-router-dom";
-import { getEdad } from "../../../utils/utils";
 import * as Yup from "yup";
-
+//
+import { toast } from "react-toastify";
+//
+import { withRouter } from "react-router-dom";
+//
+import { getEdad } from "../../../utils/utils";
+//
 import DatePicker, { registerLocale } from "react-datepicker";
-import CompleteRecord from "../CompleteRecord";
 import es from "date-fns/locale/es";
-
+//
 import firebase from "../../../utils/Firebase";
-
-import "react-datepicker/dist/react-datepicker.css";
-
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
-
+//
+import "react-datepicker/dist/react-datepicker.css";
+//
 import "./AddPatient.scss";
-
+//
 registerLocale("es", es);
 
 //Const global scope
 const db = firebase.firestore(firebase);
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+const options = [
+  { key: "pc", text: "Problemas cardiacos", value: "Problemas cardiacos" },
+  { key: "hep", text: "Hepatitis", value: "Hepatitis" },
+  { key: "art", text: "Artritis", value: "Artritis" },
+  {
+    key: "psa",
+    text: "Presion sanguinea alta",
+    value: "Presion sanguinea alta",
+  },
+  { key: "ulce", text: "Úlcera de estómago", value: "Úlcera de estómago" },
+  { key: "canc", text: "Cáncer", value: "Cáncer" },
+  {
+    key: "psb",
+    text: "Presión sanguinea baja",
+    value: "Presión sanguinea baja",
+  },
+  { key: "dc", text: "Dolor de cabeza", value: "Dolor de cabeza" },
+  { key: "db", text: "Diabetes", value: "Diabetes" },
+  {
+    key: "enfv",
+    text: "Enfermedades venéreas",
+    value: "Enfermedades venéreas",
+  },
+  { key: "vih", text: "SIDA", value: "SIDA" },
+  { key: "altn", text: "Alt. Nerviosas", value: "Alt. Nerviosas" },
+  { key: "fbr", text: "Fiebre reumática", value: "Fiebre reumática" },
+  { key: "epil", text: "Epilepsia", value: "Epilepsia" },
+  { key: "sn", text: "Sinusitis", value: "Sinusitis" },
+];
 
 const AddPatient = (
   props,
@@ -37,24 +76,34 @@ const AddPatient = (
     location,
     job = "",
     medical_insurance = "",
-    user_id = "",
     gp = "", //Medico de cabecera
     gp_phone = "",
     medical_treatment = "", //Recibe algun tratamiento medico? Cual?
     allergies = "", //Alergia a algun medicamento?
     tooth_info = "", //Cuando se lastima o extrae algun diente sangra y necesita atencion?
-    affections = "", //..
     medicines = "", //Toma algun medicamento ¿cual?
     cigarettes = "", //Cuantos cigarrillos fuma?
     sex = "",
     pregnat = "",
   }
 ) => {
+  //Vars
   const { setShowModal, user } = props;
+  const affectionsArr = [];
+
+  //Estados
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [openCheck, setOpenCheck] = useState(false);
+  const [openCheckA, setOpenCheckA] = useState(false);
+  const [openCheckTooth, setOpenCheckTooth] = useState(false);
 
+  //Handlers
+  const handleChangeDropdown = (e, { value }) => {
+    affectionsArr.push(value);
+    console.log(affectionsArr);
+  };
+  //
   return (
     <Formik
       initialValues={{
@@ -69,15 +118,18 @@ const AddPatient = (
         gp,
         gp_phone,
         medical_treatment,
+        allergies,
+        tooth_info,
+        
       }}
       validationSchema={Yup.object({
         name: Yup.string()
           .min(4, "Debe tener al menos 4 caracteres")
-          .max(20, "Debe tener 20 caracteres o menos")
+          .max(15, "Debe tener 15 caracteres o menos")
           .required("Debes completar este campo"),
         surname: Yup.string()
           .min(4, "Debe tener al menos 4 caracteres")
-          .max(8, "Debe tener 8 caracteres o menos")
+          .max(15, "Debe tener 15 caracteres o menos")
           .required("Debes completar este campo"),
         birthdate: Yup.date().required("Debes compltear este campo"),
         dni: Yup.string()
@@ -92,10 +144,7 @@ const AddPatient = (
             "Numero de teléfono no valido,introduzca solo numeros"
           ),
         medical_insurance: Yup.string()
-          .required("En caso de que no tenga ponga SIN")
-          .max(10, "Debe tener 10 caracteres o menos"),
-
-        birthdate: Yup.date().required("Completa el campo"),
+          .max(15, "Debe tener 15 caracteres o menos"),
         gp: Yup.string()
           .min(4, "Debe tener al menos 4 caracteres")
           .max(20, "Debe tener 20 caracteres o menos")
@@ -108,47 +157,68 @@ const AddPatient = (
           ),
         medical_treatment: Yup.string()
           .min(4, "Debe tener al menos 4 caracteres")
-          .max(20, "Debe tener 20 caracteres o menos"),
+          .max(40, "Debe tener 40 caracteres o menos"),
+        allergies: Yup.string()
+          .min(4, "Debe tener al menos 4 caracteres")
+          .max(30, "Debe tener 30 caracteres o menos"),
       })}
       onSubmit={async (values, { resetForm }) => {
-        // const {
-        //   name,
-        //   surname,
-        //   birthdate,
-        //   dni,
-        //   medical_insurance,
-        //   phone_number,
-        // } = values;
-        // const age = getEdad(birthdate);
+        const {
+          name,
+          surname,
+          birthdate,
+          dni,
+          medical_insurance,
+          phone_number,
+          gp,
+          gp_phone,
+          medical_treatment,
+          allergies
+        } = values;
+        const age = getEdad(birthdate);
 
-        // setIsLoading(true);
+        if (openCheckTooth) {
+          values.tooth_info = "Si";
+        } else {
+          values.tooth_info = "No";
+        }
 
-        // const data = {
-        //   user_id: user.uid,
-        //   name: name,
-        //   surname: surname,
-        //   dni: dni,
-        //   birthdate: birthdate,
-        //   age: age,
-        //   phone_number: phone_number,
-        //   medical_insurance: medical_insurance,
-        // };
-        // await db
-        //   .collection("pacientes")
-        //   .doc(dni)
-        //   .set(data)
-        //   .then(() => {
-        //     toast.success("Paciente guardado con exito");
-        //     resetForm();
-        //     setIsLoading(false);
-        //     setShowModal(false);
-        //   })
-        //   .catch(() => {
-        //     toast.warning("Error al crear el paciente.");
-        //     setIsLoading(false);
-        //   });
+        setIsLoading(true);
+
+        const data = {
+          user_id: user.uid,
+          name: name,
+          surname: surname,
+          dni: dni,
+          birthdate: birthdate,
+          age: age,
+          phone_number: phone_number,
+          medical_insurance: medical_insurance,
+          gp:gp,
+          gp_phone:gp_phone,
+          medical_treatment:medical_treatment,
+          allergies:allergies,
+          affections:affectionsArr[affectionsArr.length - 1]
+
+        };
+        await db
+          .collection("pacientes")
+          .doc(dni)
+          .set(data)
+          .then(() => {
+            toast.success("Paciente guardado con exito");
+            resetForm();
+            setIsLoading(false);
+            setShowModal(false);
+          })
+          .catch(() => {
+            toast.warning("Error al crear el paciente.");
+            setIsLoading(false);
+          });
         console.log(values);
-        // setShowModal(false);
+        console.log(affectionsArr);
+
+        setShowModal(false);
       }}
     >
       {({ errors, touched, handleSubmit, handleChange, setFieldValue }) => {
@@ -156,15 +226,17 @@ const AddPatient = (
           <div className="register-form">
             <Form onSubmit={handleSubmit} onChange={handleChange}>
               <Grid>
+                {/* --- */}
                 <Grid.Row columns={1}>
                   <Grid.Column>
                     <h1>Agregar Paciente</h1>
                   </Grid.Column>
                 </Grid.Row>
-
+                {/* --- */}
                 <Grid.Row columns={2}>
                   <Grid.Column>
                     <h1>Información del Paciente</h1>
+                    {/* --- */}
                     <Field name="name">
                       {({ field }) => (
                         <Form.Field>
@@ -180,7 +252,7 @@ const AddPatient = (
                         </Form.Field>
                       )}
                     </Field>
-
+                    {/* --- */}
                     <Field name="surname">
                       {({ field }) => (
                         <Form.Field>
@@ -196,7 +268,7 @@ const AddPatient = (
                         </Form.Field>
                       )}
                     </Field>
-
+                    {/* --- */}
                     <Field name="dni">
                       {({ field }) => (
                         <Form.Field>
@@ -212,7 +284,7 @@ const AddPatient = (
                         </Form.Field>
                       )}
                     </Field>
-
+                    {/* --- */}
                     <Field name="phone_number">
                       {({ field }) => (
                         <Form.Field>
@@ -230,7 +302,7 @@ const AddPatient = (
                         </Form.Field>
                       )}
                     </Field>
-
+                    {/* --- */}
                     <Field name="medical_insurance">
                       {({ field }) => (
                         <Form.Field>
@@ -241,15 +313,15 @@ const AddPatient = (
                             icon="clipboard"
                           />
                           {errors.medical_insurance &&
-                          touched.medical_insurance ? (
-                            <div className="error-text">
-                              {errors.medical_insurance}
-                            </div>
-                          ) : null}
+                            touched.medical_insurance ? (
+                              <div className="error-text">
+                                {errors.medical_insurance}
+                              </div>
+                            ) : null}
                         </Form.Field>
                       )}
                     </Field>
-
+                    {/* --- */}
                     <Field name="birthdate">
                       {({ field }) => (
                         <Form.Field>
@@ -284,8 +356,9 @@ const AddPatient = (
                         </Form.Field>
                       )}
                     </Field>
+                    {/* --- */}
                   </Grid.Column>
-
+                  {/* --- */}
                   <Grid.Column>
                     <h1>Ficha Medica</h1>
                     <Field name="gp">
@@ -303,7 +376,7 @@ const AddPatient = (
                         </Form.Field>
                       )}
                     </Field>
-
+                    {/* --- */}
                     <Field name="gp_phone">
                       {({ field }) => (
                         <Form.Field>
@@ -319,12 +392,11 @@ const AddPatient = (
                         </Form.Field>
                       )}
                     </Field>
-
+                    {/* --- */}
                     <Checkbox
                       label="¿Recibe tratamiento medico?"
-                      onChange={() => setOpenCheck(!open)}
+                      onChange={() => setOpenCheck(!openCheck)}
                     />
-
                     {openCheck && (
                       <Field name="medical_treatment">
                         {({ field }) => (
@@ -336,17 +408,57 @@ const AddPatient = (
                               icon="clipboard"
                             />
                             {errors.medical_treatment &&
-                            touched.medical_treatment ? (
+                              touched.medical_treatment ? (
+                                <div className="error-text">
+                                  {errors.medical_treatment}
+                                </div>
+                              ) : null}
+                          </Form.Field>
+                        )}
+                      </Field>
+                    )}
+                    {/* --- */}
+                    <Checkbox
+                      label="¿Tiene alergia a medicamentos?"
+                      onChange={() => setOpenCheckA(!openCheckA)}
+                    />
+                    {openCheckA && (
+                      <Field name="allergies">
+                        {({ field }) => (
+                          <Form.Field>
+                            <Input
+                              type="text"
+                              {...field}
+                              placeholder="¿cuales?"
+                              icon="clipboard"
+                            />
+                            {errors.allergies && touched.allergies ? (
                               <div className="error-text">
-                                {errors.medical_treatment}
+                                {errors.allergies}
                               </div>
                             ) : null}
                           </Form.Field>
                         )}
                       </Field>
                     )}
+                    {/* --- */}
+                    <Checkbox
+                      label="¿Los dientes le sangran excesivamente al lastimarse o salirse?"
+                      onChange={() => setOpenCheckTooth(!openCheckTooth)}
+                    />
+                    {/* --- */}
+                    <Dropdown
+                      placeholder="Afecciones"
+                      fluid
+                      multiple
+                      selection
+                      options={options}
+                      onChange={handleChangeDropdown.bind(this)}
+                    />
+                    {/* --- */}
                   </Grid.Column>
                 </Grid.Row>
+                {/* --- */}
                 <Grid.Row columns={1}>
                   <Grid.Column>
                     <Button type="submit" loading={isLoading}>
@@ -354,6 +466,7 @@ const AddPatient = (
                     </Button>
                   </Grid.Column>
                 </Grid.Row>
+                {/* --- */}
               </Grid>
             </Form>
           </div>

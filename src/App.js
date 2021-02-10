@@ -29,7 +29,7 @@ function App() {
       {!user ? (
         <Auth />
       ) : (
-        <LoggedLayout user={user} setReloadApp={setReloadApp}/>
+        <LoggedLayout user={user}  reloadApp={reloadApp}  setReloadApp={setReloadApp}/>
       )}
       <ToastContainer
         position="top-center"

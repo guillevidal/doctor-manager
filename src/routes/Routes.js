@@ -1,22 +1,14 @@
-import React, { useEffect,useRef } from "react";
+import React from "react";
 import { Switch, Route } from "react-router-dom";
 
 // Pages
 import Home from "../pages/Home";
 import Settings from "../pages/Settings";
 import Pacient from "../pages/Pacient";
-import CompleteRecord from "../components/Patient/CompleteRecord";
+
 export default function Routes(props) {
   const { user, setReloadApp } = props;
-  let isRendered = useRef(false);
 
-  useEffect(() => {
-    isRendered = true;
-
-    return () => {
-      isRendered = false;
-    };
-  }, []);
 
   return (
     <Switch>
@@ -33,9 +25,6 @@ export default function Routes(props) {
       </Route>
       <Route path="/pacient" exact>
         <Pacient />
-      </Route>
-      <Route path="/complete" exact>
-        <CompleteRecord />
       </Route>
     </Switch>
   );

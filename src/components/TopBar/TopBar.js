@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { Icon, Image } from "semantic-ui-react";
 import { Link, withRouter } from "react-router-dom";
 import firebase from "../../utils/Firebase";
