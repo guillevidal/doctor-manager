@@ -7,13 +7,13 @@ import Settings from "../pages/Settings";
 import Pacient from "../pages/Pacient";
 
 export default function Routes(props) {
-  const { user, setReloadApp } = props;
+  const { user, setReloadApp,render,setRender } = props;
 
 
   return (
     <Switch>
-      <Route path="/" exact>
-        <Home />
+      <Route path="/"  exact>
+        <Home render={render} setRender={setRender}/>
       </Route>
       <Route path="/archivo" exact>
         <h1>Archivo</h1>

@@ -1,0 +1,105 @@
+@import "../../scss/index.scss";
+
+.register-form {
+  margin-top: 5px;
+  
+  h1 {
+    color: $font-sky;
+    text-align: center;
+    font-size: 35px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid green;
+  }
+  .ui.checkbox{
+    label{
+      color: white;
+    }
+  }
+  .ui.form {
+    .field {
+      margin-bottom: 15px;
+      .input {
+        margin-bottom: 5px;
+
+        input {
+          background-color: $background-light;
+          border: 0;
+          font-size: 16px;
+          color: $font-dark;
+
+          &:hover,
+          &:active,
+          &:focus {
+            background-color: $background-grey-hover;
+            border: 0;
+          }
+        }
+
+        i {
+          color: $font-dark;
+          font-size: 19px;
+        }
+        &.error {
+          input {
+            border-bottom: 3px solid $danger;
+          }
+        }
+      }
+
+      .react-datepicker-wrapper {
+        
+      }
+      i {
+        margin-top: 10px;
+      }
+    }
+
+    .button {
+      width: 100%;
+      background-color: $primary-color;
+      color: $font-dark;
+      text-transform: uppercase;
+      margin-top: 10px;
+      border-radius: 50px;
+      padding: 17px 0;
+      font-size: 14px;
+      letter-spacing: 3px;
+    }
+
+    .error-text {
+      color: red;
+      padding-left: 15px;
+    }
+  }
+
+  &__options {
+    margin-top: 50px;
+    color: $font-light;
+    text-align: center;
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: bold;
+
+    p {
+      &:first-of-type {
+        margin-bottom: 40px;
+        &:hover {
+          cursor: pointer;
+        }
+      }
+
+      &:last-of-type {
+        color: $font-grey;
+
+        span {
+          color: $font-light;
+          text-decoration: underline;
+          padding-left: 5px;
+          &:hover {
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+}

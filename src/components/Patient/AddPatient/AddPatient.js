@@ -88,9 +88,8 @@ const AddPatient = (
   }
 ) => {
   //Vars
-  const { setShowModal, user } = props;
+  const { setShowModal, user,setRender } = props;
   const affectionsArr = [];
-
   //Estados
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
@@ -217,7 +216,7 @@ const AddPatient = (
           });
         console.log(values);
         console.log(affectionsArr);
-
+        setRender(false);
         setShowModal(false);
       }}
     >

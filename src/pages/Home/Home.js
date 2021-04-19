@@ -56,17 +56,17 @@ const columns = [
 const db = firebase.firestore(firebase);
 
 //
-const Home = () => {
+const Home = (props) => {
+  const { render, setRender } = props;
   const [pacientes, setPacientes] = useState([]);
   const [filterText, setFilterText] = useState("");
-
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
-  const [pageLoading, setPageLoading] = useState(false)
+  const [pageLoading, setPageLoading] = useState(false);
+
   const filteredItems = pacientes.filter(
     (item) =>
       item.name && item.name.toLowerCase().includes(filterText.toLowerCase())
   );
-
   const subHeaderComponentMemo = useMemo(() => {
     const handleClear = () => {
       if (filterText) {
@@ -85,26 +85,20 @@ const Home = () => {
   }, [filterText, resetPaginationToggle]);
 
   useEffect(() => {
-    let unmounted = false;
-    setPageLoading(true);
-    db.collection("pacientes")
-      .get()
-      .then((response) => {
-        if (!unmounted) {
-          setPageLoading(false);
-        }
-        const arrayPacientes = [];
-        map(response?.docs, (paciente) => {
-          const data = paciente.data();
-          data.id = paciente.id;
-          arrayPacientes.push(data);
+      setRender(true);
+      db.collection("pacientes")
+        .get()
+        .then((response) => {
+          const arrayPacientes = [];
+          map(response?.docs, (paciente) => {
+            const data = paciente.data();
+            data.id = paciente.id;
+            arrayPacientes.push(data);
+          });
+          setPacientes(arrayPacientes);
         });
-        setPacientes(arrayPacientes);
-      });
-    return () => {
-      unmounted = true;
-    };
-  }, [pacientes]);
+      console.log("hola");
+  }, [render]);
 
   return (
     <DataTable
