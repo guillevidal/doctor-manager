@@ -1,85 +1,86 @@
-import React from 'react'
+import React, { useContext, useState } from "react";
+import { DataContext } from "../../context/DataContext";
 import { useHistory } from "react-router-dom";
 import { Button } from "semantic-ui-react";
 import styled from "styled-components";
 
-
 const Buttons = (props) => {
-    const {row,confirmAlert,db,toast} = props;
-    const history = useHistory();
-    const handleButtonClick = async (id) => {
-      confirmAlert({
-        title: "Confirme para eliminar",
-        message: "¿Esta seguro de eliminar al paciente?.",
-        buttons: [
-          {
-            label: "Yes",
-            onClick: async () => {
-              await db
-                .collection("pacientes")
-                .doc(id)
-                .delete()
-                .then(function () {
-                  toast.success("Paciente Eliminado con exito");
-                })
-                .catch(function (error) {
-                  toast.warning("Error al eliminar el paciente.");
-                });
-            },
-          },
-          {
-            label: "No",
-            onClick: () => alert("Click No"),
-          },
-        ],
-      });
-    };
-    
-    const handleButtonClickArtist = async (row) => {
-      history.push({
-        pathname: '/pacient',
-        search: '?query=abc',
-        paciente: row
-      })
-    };
-  
-    return (
-      <div>
-        <Button
-          className="ui inverted red button"
-          icon="trash"
-          onClick={() => handleButtonClick(row.id)}
-          id={row.id}
-        ></Button>
-        <Button
-          className="ui inverted blue button"
-          icon="eye"
-          onClick={() => handleButtonClickArtist(row)}
-          id={row.id}
-        ></Button>
-        </div>
-    )
-}
+  const { row, confirmAlert, db, toast } = props;
+  const { render, setRender } = useContext(DataContext);
 
+  const history = useHistory();
+  const handleButtonClick = async (id) => {
+    confirmAlert({
+      title: "Confirme para eliminar",
+      message: "¿Esta seguro de eliminar al paciente?.",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: async () => {
+            await db
+              .collection("pacientes")
+              .doc(id)
+              .delete()
+              .then(function () {
+                toast.success("Paciente Eliminad o con exito");
+                setRender(false);
+              })
+              .catch(function (error) {
+                toast.warning("Error al eliminar el paciente.");
+              });
+          },
+        },
+        {
+          label: "No",
+          onClick: () => alert("Click No"),
+        },
+      ],
+    });
+  };
+
+  const handleButtonClickArtist = async (row) => {
+    history.push({
+      pathname: "/pacient",
+      search: "?query=abc",
+      paciente: row,
+    });
+  };
+
+  return (
+    <div>
+      <Button
+        className="ui inverted red button"
+        icon="trash"
+        onClick={() => handleButtonClick(row.id)}
+        id={row.id}
+      ></Button>
+      <Button
+        className="ui inverted blue button"
+        icon="eye"
+        onClick={() => handleButtonClickArtist(row)}
+        id={row.id}
+      ></Button>
+    </div>
+  );
+};
 
 const FilterComponent = ({ filterText, onFilter, onClear }) => (
-    <>
-      <TextField
-        id="search"
-        type="text"
-        placeholder="Filter By Name"
-        aria-label="Search Input"
-        value={filterText}
-        onChange={onFilter}
-      />
-      <ClearButton type="button" onClick={onClear}>
-        X
-      </ClearButton>
-    </>
-  );
-  
+  <>
+    <TextField
+      id="search"
+      type="text"
+      placeholder="Filter By Name"
+      aria-label="Search Input"
+      value={filterText}
+      onChange={onFilter}
+    />
+    <ClearButton type="button" onClick={onClear}>
+      X
+    </ClearButton>
+  </>
+);
 
-  const TextField = styled.input`
+const TextField = styled.input`
   height: 32px;
   width: 200px;
   border-radius: 3px;
@@ -108,10 +109,4 @@ const ClearButton = styled(Button)`
   justify-content: center;
 `;
 
-
-
-
-export {
-    Buttons,
-    FilterComponent,
-  }
+export { Buttons, FilterComponent };

@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { DataContext } from "../../../context/DataContext";
+
 import {
   Button,
   Icon,
@@ -88,7 +90,7 @@ const AddPatient = (
   }
 ) => {
   //Vars
-  const { setShowModal, user,setRender } = props;
+  const { setShowModal, user } = props;
   const affectionsArr = [];
   //Estados
   const [isLoading, setIsLoading] = useState(false);
@@ -96,6 +98,7 @@ const AddPatient = (
   const [openCheck, setOpenCheck] = useState(false);
   const [openCheckA, setOpenCheckA] = useState(false);
   const [openCheckTooth, setOpenCheckTooth] = useState(false);
+  const { render, setRender } = useContext(DataContext);
 
   //Handlers
   const handleChangeDropdown = (e, { value }) => {
@@ -119,7 +122,6 @@ const AddPatient = (
         medical_treatment,
         allergies,
         tooth_info,
-        
       }}
       validationSchema={Yup.object({
         name: Yup.string()
@@ -142,8 +144,10 @@ const AddPatient = (
             phoneRegExp,
             "Numero de teléfono no valido,introduzca solo numeros"
           ),
-        medical_insurance: Yup.string()
-          .max(15, "Debe tener 15 caracteres o menos"),
+        medical_insurance: Yup.string().max(
+          15,
+          "Debe tener 15 caracteres o menos"
+        ),
         gp: Yup.string()
           .min(4, "Debe tener al menos 4 caracteres")
           .max(20, "Debe tener 20 caracteres o menos")
@@ -172,7 +176,7 @@ const AddPatient = (
           gp,
           gp_phone,
           medical_treatment,
-          allergies
+          allergies,
         } = values;
         const age = getEdad(birthdate);
 
@@ -193,12 +197,11 @@ const AddPatient = (
           age: age,
           phone_number: phone_number,
           medical_insurance: medical_insurance,
-          gp:gp,
-          gp_phone:gp_phone,
-          medical_treatment:medical_treatment,
-          allergies:allergies,
-          affections:affectionsArr[affectionsArr.length - 1]
-
+          gp: gp,
+          gp_phone: gp_phone,
+          medical_treatment: medical_treatment,
+          allergies: allergies,
+          affections: affectionsArr[affectionsArr.length - 1],
         };
         await db
           .collection("pacientes")
@@ -312,11 +315,11 @@ const AddPatient = (
                             icon="clipboard"
                           />
                           {errors.medical_insurance &&
-                            touched.medical_insurance ? (
-                              <div className="error-text">
-                                {errors.medical_insurance}
-                              </div>
-                            ) : null}
+                          touched.medical_insurance ? (
+                            <div className="error-text">
+                              {errors.medical_insurance}
+                            </div>
+                          ) : null}
                         </Form.Field>
                       )}
                     </Field>
@@ -407,11 +410,11 @@ const AddPatient = (
                               icon="clipboard"
                             />
                             {errors.medical_treatment &&
-                              touched.medical_treatment ? (
-                                <div className="error-text">
-                                  {errors.medical_treatment}
-                                </div>
-                              ) : null}
+                            touched.medical_treatment ? (
+                              <div className="error-text">
+                                {errors.medical_treatment}
+                              </div>
+                            ) : null}
                           </Form.Field>
                         )}
                       </Field>

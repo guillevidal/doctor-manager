@@ -5,23 +5,23 @@ import { isUserAdmin } from "../../utils/Api";
 import BasicModal from "../Modal/BasicModal";
 import RegisterForm from "../Auth/RegisterForm";
 import AddPatient from "../Patient/AddPatient";
-import {AddElement} from "../Catalogue/AddElement";
+import { AddElement } from "../Catalogue/AddElement";
 
 import "./MenuLeft.scss";
 
 function MenuLeft(props) {
-  const { user, location,render,setRender } = props;
+  const { user, location, render, setRender } = props;
   const [activeMenu, setActiveMenu] = useState(location.pathname);
   const [userAdmin, setuserAdmin] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [titleModal, setTitleModal] = useState("");
   const [contentModal, setContentModal] = useState(null);
-  
-  const [size, setSize] = useState("tiny")
 
- useEffect(() => {
-   setActiveMenu(location.pathname);
- }, [location]);
+  const [size, setSize] = useState("tiny");
+
+  useEffect(() => {
+    setActiveMenu(location.pathname);
+  }, [location]);
 
   useEffect(() => {
     isUserAdmin(user.uid).then((response) => setuserAdmin(response));
@@ -34,18 +34,28 @@ function MenuLeft(props) {
   const handlerModal = (type) => {
     switch (type) {
       case "paciente":
-        setContentModal(<AddPatient render={render} setRender={setRender} user={user} setShowModal={setShowModal} />);
+        setContentModal(<AddPatient user={user} setShowModal={setShowModal} />);
         setSize("large");
         setShowModal(true);
         break;
       case "usuario":
-        setContentModal(<RegisterForm setShowModal={setShowModal} setContentModal={setContentModal} />);
+        setContentModal(
+          <RegisterForm
+            setShowModal={setShowModal}
+            setContentModal={setContentModal}
+          />
+        );
         setSize("tiny");
         setShowModal(true);
         break;
       case "catalogo":
-        setContentModal(<AddElement setShowModal={setShowModal} setContentModal={setContentModal} />);
-        setSize("tiny");
+        setContentModal(
+          <AddElement
+            setShowModal={setShowModal}
+            setContentModal={setContentModal}
+          />
+        );
+        setSize("fullscreen");
         setShowModal(true);
         break;
       default:
@@ -76,25 +86,29 @@ function MenuLeft(props) {
           >
             <Icon name="archive" /> Archivo
           </Menu.Item>
-
-
         </div>
 
         {userAdmin && (
           <div className="footer">
-            <Menu.Item name="usuario" onClick={()=>handlerModal("usuario")}>
+            <Menu.Item name="usuario" onClick={() => handlerModal("usuario")}>
               <Icon name="plus square outline" /> Nuevo Usuario
             </Menu.Item>
-            <Menu.Item name="paciente" onClick={()=>handlerModal("paciente")}>
+            <Menu.Item name="paciente" onClick={() => handlerModal("paciente")}>
               <Icon name="plus square outline" /> Nuevo Paciente
             </Menu.Item>
-            <Menu.Item name="catalogo" onClick={()=>handlerModal("catalogo")}>
+            <Menu.Item name="catalogo" onClick={() => handlerModal("catalogo")}>
               <Icon name="plus square outline" /> Agregar al Catalogo
             </Menu.Item>
           </div>
         )}
       </Menu>
-      <BasicModal show={showModal} setShow={setShowModal} title={titleModal} size={size} setSize={setSize}>
+      <BasicModal
+        show={showModal}
+        setShow={setShowModal}
+        title={titleModal}
+        size={size}
+        setSize={setSize}
+      >
         {contentModal}
       </BasicModal>
     </>

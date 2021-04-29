@@ -1,4 +1,6 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useContext } from "react";
+import { DataContext } from "../../context/DataContext";
+
 import { map } from "lodash";
 import DataTable, { createTheme } from "react-data-table-component";
 import { toast } from "react-toastify";
@@ -57,7 +59,7 @@ const db = firebase.firestore(firebase);
 
 //
 const Home = (props) => {
-  const { render, setRender } = props;
+  const { render, setRender } = useContext(DataContext);
   const [pacientes, setPacientes] = useState([]);
   const [filterText, setFilterText] = useState("");
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
@@ -85,19 +87,19 @@ const Home = (props) => {
   }, [filterText, resetPaginationToggle]);
 
   useEffect(() => {
-      setRender(true);
-      db.collection("pacientes")
-        .get()
-        .then((response) => {
-          const arrayPacientes = [];
-          map(response?.docs, (paciente) => {
-            const data = paciente.data();
-            data.id = paciente.id;
-            arrayPacientes.push(data);
-          });
-          setPacientes(arrayPacientes);
+    setRender(true);
+    db.collection("pacientes")
+      .get()
+      .then((response) => {
+        const arrayPacientes = [];
+        map(response?.docs, (paciente) => {
+          const data = paciente.data();
+          data.id = paciente.id;
+          arrayPacientes.push(data);
         });
-      console.log("hola");
+        setPacientes(arrayPacientes);
+      });
+    console.log("hola");
   }, [render]);
 
   return (
