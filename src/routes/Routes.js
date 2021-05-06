@@ -5,18 +5,17 @@ import { Switch, Route } from "react-router-dom";
 import Home from "../pages/Home";
 import Settings from "../pages/Settings";
 import Pacient from "../pages/Pacient";
-
+import File from "../pages/File";
 export default function Routes(props) {
-  const { user, setReloadApp,render,setRender } = props;
-
+  const { user, setReloadApp, render, setRender } = props;
 
   return (
     <Switch>
-      <Route path="/"  exact>
-        <Home render={render} setRender={setRender}/>
+      <Route path="/" exact>
+        <Home render={render} setRender={setRender} />
       </Route>
       <Route path="/archivo" exact>
-        <h1>Archivo</h1>
+        <File />
       </Route>
       <Route path="/settings" exact>
         <Settings user={user} setReloadApp={setReloadApp}>
