@@ -15,7 +15,7 @@ export default function Routes(props) {
         <Home render={render} setRender={setRender} />
       </Route>
       <Route path="/archivo" exact>
-        <File />
+        <File user={user}/>
       </Route>
       <Route path="/settings" exact>
         <Settings user={user} setReloadApp={setReloadApp}>
