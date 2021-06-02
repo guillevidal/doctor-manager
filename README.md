@@ -6,7 +6,15 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
+## Instalaciones necesarias 
+
+Chrome
+Node v14.15.4 [Node V14](https://nodejs.org/en/blog/release/v14.15.1/)
+
+
 ### Scripts necesarios
+
+yarn install
 
 yarn global add electron@latest
 

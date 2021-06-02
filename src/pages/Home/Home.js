@@ -99,7 +99,6 @@ const Home = (props) => {
         });
         setPacientes(arrayPacientes);
       });
-    console.log("hola");
   }, [render]);
 
   return (
