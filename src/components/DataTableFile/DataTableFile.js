@@ -1,47 +1,37 @@
 import React, { useState, useEffect } from "react";
-import { Icon, Menu, Table, Form, Button, Input, Tab } from "semantic-ui-react";
-//
+import { Icon, Menu, Table, Form, Button, Input } from "semantic-ui-react";
+import { confirmAlert } from "react-confirm-alert";
 import { Formik, Field } from "formik";
 import * as Yup from "yup";
-//
+import { map } from "lodash";
 import { toast } from "react-toastify";
-//
 import { isUserAdmin } from "../../utils/Api";
-//
 import firebase from "../../utils/Firebase";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
-//
 import "./DataTableFile.scss";
-import { map } from "lodash";
+
 const db = firebase.firestore(firebase);
-//
+
 const DataTableFile = (
   props,
   {
-    cod = "",
-    desc = "",
-    costV = "",
-    costTa = "",
-    costT = "",
-    honP = "",
-    tA = "",
+    codigoFormik = "",
+    descripcionFormik = "",
+    costoVariableFormik = "",
+    costoFijoFormik = "",
+    costoTallerFormik = "",
+    costoTotalFormik = "",
+    honorarioProfFormik = "",
+    totalArancelFormik = "",
   }
 ) => {
   const { user } = props;
-  const [codigo, setCodigo] = useState("");
-  const [descripcion, setDescripcion] = useState("");
-  const [render, setRender] = useState(false);
-  const [costoV, setCostoV] = useState("");
-  const [costoF, setCostoF] = useState("");
-  const [costoTa, setCostoTa] = useState("");
-  const [costoT, setCostoT] = useState("");
-  const [honorP, setHonorP] = useState("");
-  const [totalA, setTotalA] = useState("");
-  const [userAdmin, setuserAdmin] = useState(false);
+  const [userAdmin, setUserAdmin] = useState(false);
   const [isEdit, setEdit] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [render, setRender] = useState(false);
   const [registros, setRegistros] = useState([]);
 
   useEffect(() => {
@@ -61,145 +51,199 @@ const DataTableFile = (
         });
     };
     getData();
-    console.log("lo pido");
-    isUserAdmin(user.uid).then((response) => setuserAdmin(response));
+    isUserAdmin(user.uid).then((response) => setUserAdmin(response));
   }, [user, render]);
 
-  const handleChange = (e) => {
-    if (e.target.name == "codigo") {
-      setCodigo(e.target.value);
-    }
-    if (e.target.name == "descripcion") {
-      setDescripcion(e.target.value);
-    }
-    if (e.target.name == "costoV") {
-      setCostoV(e.target.value);
-    }
-    if (e.target.name == "costoTa") {
-      setCostoTa(e.target.value);
-    }
-    if (e.target.name == "costoT") {
-      setCostoT(e.target.value);
-    }
-    if (e.target.name == "honorP") {
-      setHonorP(e.target.value);
-    }
-    if (e.target.name == "totalA") {
-      setTotalA(e.target.value);
-    }
+  /**
+   * Este metodo se encarga de llamar a la base de datos un registro para editarlo con los datos que se le pasen por parametero
+   * @param {object} registro
+   * @param {function} setFieldValue
+   */
+  const handleEditRegisterChange = (registro, setFieldValue) => {
+    const {
+      cod_id,
+      descripcion,
+      costo_variable,
+      costo_fijo,
+      costo_taller,
+      costo_total,
+      honorarioP,
+      total_arancel,
+    } = registro;
+    setFieldValue("codigoFormik", cod_id);
+    setFieldValue("descripcionFormik", descripcion);
+    setFieldValue("costoVariableFormik", costo_variable);
+    setFieldValue("costoFijoFormik", costo_fijo);
+    setFieldValue("costoTallerFormik", costo_taller);
+    setFieldValue("costoTotalFormik", costo_total);
+    setFieldValue("honorarioProfFormik", honorarioP);
+    setFieldValue("totalArancelFormik", total_arancel);
+    setEdit(true);
   };
-  const handleButtonSend = () => {
-    console.log(codigo);
-    console.log(descripcion);
-    console.log(costoV);
-    console.log(costoTa);
-    console.log(costoT);
-    console.log(honorP);
-    console.log(totalA);
+
+  /**
+   * Primera-mente habre una ventana de confirmación
+   * este metodo se encarga de llamar a la base de datos para borar un registro a partir de la id de un documento existente que se le
+   * pase por parametro
+   * @param {object} registro
+   */
+  const handleButtonClickDelete = async (registro) => {
+    setIsLoading(true);
+    confirmAlert({
+      title: "Confirme para eliminar",
+      message: "¿Esta seguro de eliminar el registro?.",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: async () => {
+            await db
+              .collection("registros")
+              .doc(registro.cod_id)
+              .delete()
+              .then(function () {
+                toast.success("Registro Eliminado con exito");
+                setIsLoading(false);
+                setRender(!render);
+              })
+              .catch(function () {
+                toast.warning("Error al eliminar el registro.");
+              });
+          },
+        },
+        {
+          label: "No",
+          onClick: () => setIsLoading(false),
+        },
+      ],
+    });
   };
+
   return (
     <Formik
       initialValues={{
-        cod,
-        desc,
-        costV,
-        costTa,
-        costT,
-        honP,
-        tA,
+        codigoFormik,
+        descripcionFormik,
+        costoVariableFormik,
+        costoFijoFormik,
+        costoTallerFormik,
+        costoTotalFormik,
+        honorarioProfFormik,
+        totalArancelFormik,
       }}
       validationSchema={Yup.object({
-        cod: Yup.string()
-          .min(4, "Debe tener al menos 4 caracteres")
-          .max(8, "Solo puede tener hasta 8 caracteres")
+        codigoFormik: Yup.number()
+          .typeError("Por favor ingrese un numero valido Ej: 10.20")
+          .test("maxDigitsAfterDecimal", (number) =>
+            /^\d+(\.\d{1,2})?$/.test(number)
+          )
           .required("Debe completar este campo"),
-        desc: Yup.string()
+        descripcionFormik: Yup.string()
           .max(30, "Maximo 30 caracteres")
           .required("Debe completar este campo"),
-        costV: Yup.number()
-          .typeError("Por favor ingrese un numero valido EJ: 10.20")
-          .test(
-            "maxDigitsAfterDecimal",
-            "number field must have 2 digits after decimal or less",
-            (number) => /^\d+(\.\d{1,2})?$/.test(number)
+        costoVariableFormik: Yup.number()
+          .typeError("Por favor ingrese un numero valido Ej: 10.20")
+          .test("maxDigitsAfterDecimal", (number) =>
+            /^\d+(\.\d{1,2})?$/.test(number)
           )
           .required("Debe completar este campo"),
-        costF: Yup.number()
-          .typeError("Por favor ingrese un numero valido EJ: 10.20")
-          .test(
-            "maxDigitsAfterDecimal",
-            "number field must have 2 digits after decimal or less",
-            (number) => /^\d+(\.\d{1,2})?$/.test(number)
+        costoFijoFormik: Yup.number()
+          .typeError("Por favor ingrese un numero valido Ej: 10.20")
+          .test("maxDigitsAfterDecimal", (number) =>
+            /^\d+(\.\d{1,2})?$/.test(number)
           )
           .required("Debe completar este campo"),
-        costTa: Yup.number()
-          .typeError("Por favor ingrese un numero valido EJ: 10.20")
-          .test(
-            "maxDigitsAfterDecimal",
-            "number field must have 2 digits after decimal or less",
-            (number) => /^\d+(\.\d{1,2})?$/.test(number)
+        costoTallerFormik: Yup.number()
+          .typeError("Por favor ingrese un numero valido Ej: 10.20")
+          .test("maxDigitsAfterDecimal", (number) =>
+            /^\d+(\.\d{1,2})?$/.test(number)
           )
           .required("Debe completar este campo"),
-        costT: Yup.number()
-          .typeError("Por favor ingrese un numero valido EJ: 10.20")
-          .test(
-            "maxDigitsAfterDecimal",
-            "number field must have 2 digits after decimal or less",
-            (number) => /^\d+(\.\d{1,2})?$/.test(number)
+        costoTotalFormik: Yup.number()
+          .typeError("Por favor ingrese un numero valido Ej: 10.20")
+          .test("maxDigitsAfterDecimal", (number) =>
+            /^\d+(\.\d{1,2})?$/.test(number)
           )
           .required("Debe completar este campo"),
-        honP: Yup.number()
-          .typeError("Por favor ingrese un numero valido EJ: 10.20")
-          .test(
-            "maxDigitsAfterDecimal",
-            "number field must have 2 digits after decimal or less",
-            (number) => /^\d+(\.\d{1,2})?$/.test(number)
+        honorarioProfFormik: Yup.number()
+          .typeError("Por favor ingrese un numero valido Ej: 10.20")
+          .test("maxDigitsAfterDecimal", (number) =>
+            /^\d+(\.\d{1,2})?$/.test(number)
           )
           .required("Debe completar este campo"),
-        tA: Yup.number()
-          .typeError("Por favor ingrese un numero valido EJ: 10.20")
-          .test(
-            "maxDigitsAfterDecimal",
-            "number field must have 2 digits after decimal or less",
-            (number) => /^\d+(\.\d{1,2})?$/.test(number)
+        totalArancelFormik: Yup.number()
+          .typeError("Por favor ingrese un numero valido Ej: 10.20")
+          .test("maxDigitsAfterDecimal", (number) =>
+            /^\d+(\.\d{1,2})?$/.test(number)
           )
           .required("Debe completar este campo"),
       })}
       onSubmit={async (values, { resetForm }) => {
-        const { cod, desc, costV, costTa, costT, honP, tA } = values;
-        console.log(cod, desc, costV, costoTa, costT, honP, tA);
-
         setIsLoading(true);
 
+        const {
+          codigoFormik,
+          descripcionFormik,
+          costoVariableFormik,
+          costoFijoFormik,
+          costoTallerFormik,
+          costoTotalFormik,
+          honorarioProfFormik,
+          totalArancelFormik,
+        } = values;
+
         const data = {
-          cod_id: cod,
-          descripcion: desc,
-          costo_variable: costV,
-          costo_taller: costTa,
-          costo_total: costT,
-          honorarioP: honP,
-          total_arancel: tA,
+          cod_id: codigoFormik,
+          descripcion: descripcionFormik,
+          costo_variable: costoVariableFormik,
+          costo_fijo: costoFijoFormik,
+          costo_taller: costoTallerFormik,
+          costo_total: costoTotalFormik,
+          honorarioP: honorarioProfFormik,
+          total_arancel: totalArancelFormik,
         };
 
-        await db
-          .collection("registros")
-          .doc(cod)
-          .set(data)
-          .then(() => {
-            toast.success("Registro guardado con exito");
-            resetForm();
-            setIsLoading(false);
-          })
-          .catch((error) => {
-            toast.warning("Error al crear el registro");
-            setIsLoading(false);
-            console.log(error);
-          });
-
-        console.log(values);
+        if (isEdit === true) {
+          await db
+            .collection("registros")
+            .doc(codigoFormik)
+            .update(data)
+            .then(() => {
+              toast.success("Registro editado con exito");
+              resetForm();
+              setIsLoading(false);
+              setRender(!render);
+              setEdit(false);
+            })
+            .catch((error) => {
+              toast.warning("Error al crear el registro");
+              setIsLoading(false);
+            });
+        } else {
+          await db
+            .collection("registros")
+            .doc(codigoFormik)
+            .set(data)
+            .then(() => {
+              toast.success("Registro guardado con exito");
+              resetForm();
+              setIsLoading(false);
+              setRender(!render);
+            })
+            .catch((error) => {
+              toast.warning("Error al crear el registro");
+              setIsLoading(false);
+            });
+        }
       }}
     >
-      {({ errors, touched, handleSubmit, handleChange, setFieldValue }) => {
+      {({
+        errors,
+        touched,
+        handleSubmit,
+        handleChange,
+        setFieldValue,
+        resetForm,
+      }) => {
         return (
           <div className="file-form">
             <Form onSubmit={handleSubmit} onChange={handleChange}>
@@ -216,143 +260,202 @@ const DataTableFile = (
                     <Table.HeaderCell width={2}>Costo Total</Table.HeaderCell>
                     <Table.HeaderCell width={2}>Honor. Prof</Table.HeaderCell>
                     <Table.HeaderCell width={2}>Total Arancel</Table.HeaderCell>
-                    <Table.HeaderCell width={2}>Actions</Table.HeaderCell>
+                    <Table.HeaderCell width={6}>Actions</Table.HeaderCell>
                   </Table.Row>
                 </Table.Header>
 
                 <Table.Body>
                   <Table.Row>
                     <Table.Cell>
-                      <Field name="cod">
+                      <Field name="codigoFormik">
                         {({ field }) => (
                           <Form.Field>
                             <Input
                               size="mini"
                               type="text"
                               {...field}
-                              name="cod"
+                              name="codigoFormik"
+                              value={field.value}
+                              disabled={isEdit === true ? true : false}
+                              onChange={() =>
+                                setFieldValue("codigoFormik", field.value)
+                              }
                             />
-                            {errors.cod && touched.cod ? (
-                              <div className="error-text">{errors.cod}</div>
+                            {errors.codigoFormik && touched.codigoFormik ? (
+                              <div className="error-text">
+                                {errors.codigoFormik}
+                              </div>
                             ) : null}
                           </Form.Field>
                         )}
                       </Field>
                     </Table.Cell>
                     <Table.Cell>
-                      <Field name="desc">
+                      <Field name="descripcionFormik">
                         {({ field }) => (
                           <Form.Field>
                             <Input
                               size="mini"
                               type="text"
                               {...field}
-                              name="desc"
+                              name="descripcionFormik"
+                              value={field.value}
+                              onChange={() =>
+                                setFieldValue("descripcion", field.value)
+                              }
                             />
-                            {errors.desc && touched.desc ? (
-                              <div className="error-text">{errors.desc}</div>
+                            {errors.descripcionFormik &&
+                            touched.descripcionFormik ? (
+                              <div className="error-text">
+                                {errors.descripcionFormik}
+                              </div>
                             ) : null}
                           </Form.Field>
                         )}
                       </Field>
                     </Table.Cell>
                     <Table.Cell>
-                      <Field name="costV">
+                      <Field name="costoVariableFormik">
                         {({ field }) => (
                           <Form.Field>
                             <Input
                               size="mini"
                               type="text"
                               {...field}
-                              name="costV"
+                              name="costoVariableFormik"
+                              value={field.value}
+                              onChange={() =>
+                                setFieldValue("costoVariable", field.value)
+                              }
                             />
-                            {errors.costV && touched.costV ? (
-                              <div className="error-text">{errors.costV}</div>
+                            {errors.costoVariableFormik &&
+                            touched.costoVariableFormik ? (
+                              <div className="error-text">
+                                {errors.costoVariableFormik}
+                              </div>
                             ) : null}
                           </Form.Field>
                         )}
                       </Field>
                     </Table.Cell>
                     <Table.Cell>
-                      <Field name="costF">
+                      <Field name="costoFijoFormik">
                         {({ field }) => (
                           <Form.Field>
                             <Input
                               size="mini"
                               type="text"
                               {...field}
-                              name="costF"
+                              name="costoFijoFormik"
+                              value={field.value}
+                              onChange={() =>
+                                setFieldValue("costoFijoFormik", field.value)
+                              }
                             />
-                            {errors.costF && touched.costF ? (
-                              <div className="error-text">{errors.costF}</div>
+                            {errors.costoFijoFormik &&
+                            touched.costoFijoFormik ? (
+                              <div className="error-text">
+                                {errors.costoFijoFormik}
+                              </div>
                             ) : null}
                           </Form.Field>
                         )}
                       </Field>
                     </Table.Cell>
                     <Table.Cell>
-                      <Field name="costTa">
+                      <Field name="costoTallerFormik">
                         {({ field }) => (
                           <Form.Field>
                             <Input
                               size="mini"
                               type="text"
                               {...field}
-                              name="costTa"
+                              name="costoTallerFormik"
+                              value={field.value}
+                              onChange={() =>
+                                setFieldValue("costoTallerFormik", field.value)
+                              }
                             />
-                            {errors.costTa && touched.costTa ? (
-                              <div className="error-text">{errors.costTa}</div>
+                            {errors.costoTallerFormik &&
+                            touched.costoTallerFormik ? (
+                              <div className="error-text">
+                                {errors.costoTallerFormik}
+                              </div>
                             ) : null}
                           </Form.Field>
                         )}
                       </Field>
                     </Table.Cell>
                     <Table.Cell>
-                      <Field name="costT">
+                      <Field name="costoTotalFormik">
                         {({ field }) => (
                           <Form.Field>
                             <Input
                               size="mini"
                               type="text"
                               {...field}
-                              name="costT"
+                              name="costoTotalFormik"
+                              value={field.value}
+                              onChange={() =>
+                                setFieldValue("costoTotalFormik", field.value)
+                              }
                             />
-                            {errors.costT && touched.costT ? (
-                              <div className="error-text">{errors.costT}</div>
+                            {errors.costoTotalFormik &&
+                            touched.costoTotalFormik ? (
+                              <div className="error-text">
+                                {errors.costoTotalFormik}
+                              </div>
                             ) : null}
                           </Form.Field>
                         )}
                       </Field>
                     </Table.Cell>
                     <Table.Cell>
-                      <Field name="honP">
+                      <Field name="honorarioProfFormik">
                         {({ field }) => (
                           <Form.Field>
                             <Input
                               size="mini"
                               type="text"
                               {...field}
-                              name="honP"
+                              name="honorarioProfFormik"
+                              value={field.value}
+                              onChange={() =>
+                                setFieldValue(
+                                  "honorarioProfFormik",
+                                  field.value
+                                )
+                              }
                             />
-                            {errors.honP && touched.honP ? (
-                              <div className="error-text">{errors.honP}</div>
+                            {errors.honorarioProfFormik &&
+                            touched.honorarioProfFormik ? (
+                              <div className="error-text">
+                                {errors.honorarioProfFormik}
+                              </div>
                             ) : null}
                           </Form.Field>
                         )}
                       </Field>
                     </Table.Cell>
                     <Table.Cell>
-                      <Field name="tA">
+                      <Field name="totalArancelFormik">
                         {({ field }) => (
                           <Form.Field>
                             <Input
                               size="mini"
                               type="text"
                               {...field}
-                              name="tA"
+                              name="totalArancelFormik"
+                              value={field.value}
+                              onChange={() =>
+                                setFieldValue("totalArancelFormik", field.value)
+                              }
                             />
-                            {errors.tA && touched.tA ? (
-                              <div className="error-text">{errors.tA}</div>
+                            {errors.totalArancelFormik &&
+                            touched.totalArancelFormik ? (
+                              <div className="error-text">
+                                {errors.totalArancelFormik}
+                              </div>
                             ) : null}
                           </Form.Field>
                         )}
@@ -360,17 +463,31 @@ const DataTableFile = (
                     </Table.Cell>
                     <Table.Cell>
                       {isEdit ? (
-                        <Button
-                          className="ui inverted blue button"
-                          icon="pencil"
-                          loading={isLoading}
-                          type="submit"
-                          circular
-                        ></Button>
+                        <>
+                          <Button
+                            className="ui blue button"
+                            icon="check"
+                            loading={isLoading}
+                            type="submit"
+                            circular
+                          ></Button>
+                          <Button
+                            className="ui red button"
+                            icon="ban"
+                            loading={isLoading}
+                            onClick={() => {
+                              setEdit(false);
+                              resetForm();
+                            }}
+                            type="button"
+                            circular
+                          ></Button>
+                        </>
                       ) : (
                         <Button
                           className="ui inverted blue button"
                           icon="plus"
+                          type="submit"
                           circular
                         ></Button>
                       )}
@@ -379,14 +496,36 @@ const DataTableFile = (
 
                   {registros.map((registro, index) => {
                     return (
-                      <Table.Row>
+                      <Table.Row key={registro.cod_id}>
                         <Table.Cell>{registro.cod_id}</Table.Cell>
                         <Table.Cell>{registro.descripcion}</Table.Cell>
-                        <Table.Cell>${registro.costo_variable}</Table.Cell>
-                        <Table.Cell>${registro.costo_taller}</Table.Cell>
-                        <Table.Cell>${registro.costo_total}</Table.Cell>
-                        <Table.Cell>${registro.honorarioP}</Table.Cell>
-                        <Table.Cell>${registro.total_arancel}</Table.Cell>
+                        <Table.Cell>{registro.costo_variable}</Table.Cell>
+                        <Table.Cell>{registro.costo_fijo}</Table.Cell>
+                        <Table.Cell>{registro.costo_taller}</Table.Cell>
+                        <Table.Cell>{registro.costo_total}</Table.Cell>
+                        <Table.Cell>{registro.honorarioP}</Table.Cell>
+                        <Table.Cell>{registro.total_arancel}</Table.Cell>
+                        <Table.Cell>
+                          <Button
+                            className="ui inverted blue button"
+                            icon="pencil"
+                            loading={isLoading}
+                            onClick={() =>
+                              handleEditRegisterChange(registro, setFieldValue)
+                            }
+                            type="button"
+                            circular
+                          ></Button>
+
+                          <Button
+                            className="ui inverted red button"
+                            icon="trash"
+                            loading={isLoading}
+                            onClick={() => handleButtonClickDelete(registro)}
+                            type="button"
+                            circular
+                          ></Button>
+                        </Table.Cell>
                       </Table.Row>
                     );
                   })}
