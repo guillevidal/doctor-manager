@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { DataContext } from "../../context/DataContext";
 import { useHistory } from "react-router-dom";
-import { Button } from "semantic-ui-react";
+import { Button, Search } from "semantic-ui-react";
 import styled from "styled-components";
 
 const Buttons = (props) => {
@@ -66,17 +66,11 @@ const Buttons = (props) => {
 
 const FilterComponent = ({ filterText, onFilter, onClear }) => (
   <>
-    <TextField
-      id="search"
-      type="text"
-      placeholder="Filter By Name"
-      aria-label="Search Input"
+    <Search
+      onSearchChange={onFilter}
       value={filterText}
-      onChange={onFilter}
+      showNoResults={false}
     />
-    <ClearButton type="button" onClick={onClear}>
-      X
-    </ClearButton>
   </>
 );
 
@@ -94,19 +88,6 @@ const TextField = styled.input`
   &:hover {
     cursor: pointer;
   }
-`;
-
-const ClearButton = styled(Button)`
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
-  height: 34px;
-  width: 32px;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;
 
 export { Buttons, FilterComponent };

@@ -18,32 +18,32 @@ import "react-confirm-alert/src/react-confirm-alert.css";
 const columns = [
   {
     name: "Apellido",
-    selector: "surname",
+    selector: (row) => `${row.surname}`,
     sortable: true,
   },
   {
     name: "Nombre",
-    selector: "name",
+    selector: (row) => `${row.name}`,
     sortable: true,
   },
   {
     name: "DNI",
-    selector: "dni",
+    selector: (row) => `${row.dni}`,
     sortable: true,
   },
   {
     name: "Obra Social  ",
-    selector: "medical_insurance",
+    selector: (row) => `${row.medical_insurance}`,
     sortable: true,
   },
   {
     name: "Edad",
-    selector: "age",
+    selector: (row) => `${row.age}`,
     sortable: true,
   },
   {
     name: "Numero de telefono",
-    selector: "phone_number",
+    selector: (row) => `${row.phone_number}`,
     sortable: true,
   },
   {
@@ -66,8 +66,7 @@ const Home = (props) => {
   const [pageLoading, setPageLoading] = useState(false);
 
   const filteredItems = pacientes.filter(
-    (item) =>
-      item.name && item.name.toLowerCase().includes(filterText.toLowerCase())
+    (item) => item.dni && item.dni.includes(filterText)
   );
   const subHeaderComponentMemo = useMemo(() => {
     const handleClear = () => {
@@ -107,6 +106,8 @@ const Home = (props) => {
       columns={columns}
       data={filteredItems}
       pagination
+      paginationPerPage={5}
+      paginationRowsPerPageOptions={[5, 8, 10]}
       paginationResetDefaultPage={resetPaginationToggle} // optionally, a hook to reset pagination to page 1
       subHeader
       subHeaderComponent={subHeaderComponentMemo}

@@ -36,7 +36,8 @@ registerLocale("es", es);
 
 //Const global scope
 const db = firebase.firestore(firebase);
-const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+const phoneRegExp =
+  /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 const options = [
   { key: "pc", text: "Problemas cardiacos", value: "Problemas cardiacos" },
   { key: "hep", text: "Hepatitis", value: "Hepatitis" },
@@ -103,9 +104,8 @@ const AddPatient = (
   //Handlers
   const handleChangeDropdown = (e, { value }) => {
     affectionsArr.push(value);
-    console.log(affectionsArr);
   };
-  //
+
   return (
     <Formik
       initialValues={{
@@ -202,6 +202,7 @@ const AddPatient = (
           medical_treatment: medical_treatment,
           allergies: allergies,
           affections: affectionsArr[affectionsArr.length - 1],
+          tooth_info: tooth_info,
         };
         await db
           .collection("pacientes")
