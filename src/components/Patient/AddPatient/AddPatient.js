@@ -92,7 +92,7 @@ const AddPatient = (
 ) => {
   //Vars
   const { setShowModal, user } = props;
-  const affectionsArr = [];
+  let affectionsArr = [];
   //Estados
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
@@ -103,7 +103,9 @@ const AddPatient = (
 
   //Handlers
   const handleChangeDropdown = (e, { value }) => {
-    affectionsArr.push(value);
+    affectionsArr = [];
+    affectionsArr = value;
+    console.log(affectionsArr);
   };
 
   return (
@@ -135,8 +137,8 @@ const AddPatient = (
         birthdate: Yup.date().required("Debes compltear este campo"),
         dni: Yup.string()
           .required("Debes completar este campo")
-          .min(8, "Un dni tiene 8 caracteres")
-          .max(8, "Un dni tiene 8 caracteres")
+          .min(7, "Un dni tiene al menos 7 caracteres")
+          .max(8, "Un dni tiene hasta 8 caracteres")
           .matches(phoneRegExp, "DNI no valido,introduzca solo numeros"),
         phone_number: Yup.string()
           .max(10, "máximo 10 caracteres")
@@ -201,7 +203,7 @@ const AddPatient = (
           gp_phone: gp_phone,
           medical_treatment: medical_treatment,
           allergies: allergies,
-          affections: affectionsArr[affectionsArr.length - 1],
+          affections: affectionsArr,
           tooth_info: tooth_info,
         };
         await db
