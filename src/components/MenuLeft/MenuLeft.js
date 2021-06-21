@@ -48,16 +48,6 @@ function MenuLeft(props) {
         setSize("tiny");
         setShowModal(true);
         break;
-      case "catalogo":
-        setContentModal(
-          <AddElement
-            setShowModal={setShowModal}
-            setContentModal={setContentModal}
-          />
-        );
-        setSize("fullscreen");
-        setShowModal(true);
-        break;
       default:
         setTitleModal(null);
         setContentModal(null);
@@ -95,9 +85,6 @@ function MenuLeft(props) {
             </Menu.Item>
             <Menu.Item name="paciente" onClick={() => handlerModal("paciente")}>
               <Icon name="plus square outline" /> Nuevo Paciente
-            </Menu.Item>
-            <Menu.Item name="catalogo" onClick={() => handlerModal("catalogo")}>
-              <Icon name="plus square outline" /> Agregar al Catalogo
             </Menu.Item>
           </div>
         )}

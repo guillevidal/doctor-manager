@@ -1,11 +1,19 @@
-import React, { useState, useEffect } from "react";
-import { Icon, Menu, Table, Form, Button, Input } from "semantic-ui-react";
+import React, { useState, useEffect, useMemo } from "react";
+import {
+  Icon,
+  Menu,
+  Table,
+  Form,
+  Button,
+  Input,
+  Dropdown,
+} from "semantic-ui-react";
 import { confirmAlert } from "react-confirm-alert";
 import { Formik, Field } from "formik";
 import * as Yup from "yup";
 import { map } from "lodash";
 import { toast } from "react-toastify";
-import { isUserAdmin } from "../../utils/Api";
+
 import firebase from "../../utils/Firebase";
 import "firebase/auth";
 import "firebase/firestore";
@@ -13,6 +21,12 @@ import "firebase/storage";
 import "./DataTableFile.scss";
 
 const db = firebase.firestore(firebase);
+const options = [
+  { key: "consultas", text: "CONSULTAS", value: "CONSULTAS" },
+  { key: "operatoria", text: "OPERATORIA", value: "OPERATORIA" },
+  { key: "endodoncia", text: "ENDODONCIA", value: "ENDODONCIA" },
+  { key: "protesis", text: "PROTESIS", value: "PROTESIS" },
+];
 
 const DataTableFile = (
   props,
@@ -28,16 +42,61 @@ const DataTableFile = (
   }
 ) => {
   const { user } = props;
-  const [userAdmin, setUserAdmin] = useState(false);
   const [isEdit, setEdit] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [render, setRender] = useState(false);
   const [registros, setRegistros] = useState([]);
+  const [page, setPage] = useState(1);
+  const [type, setType] = useState("");
 
   useEffect(() => {
     const getData = async () => {
       await db
         .collection("registros")
+        .orderBy("cod_id", "desc")
+        .limit(4)
+        .get()
+        .then((response) => {
+          const arrayRegistros = [];
+          map(response?.docs, (registro) => {
+            const data = registro.data();
+            data.id = registro.id;
+            arrayRegistros.push(data);
+          });
+          setPage(1);
+          setRegistros(arrayRegistros);
+        });
+    };
+    getData();
+  }, [user, render]);
+  const handleNext = async () => {
+    const ultimo = registros.length - 1;
+    await db
+      .collection("registros")
+      .orderBy("cod_id", "desc")
+      .startAfter(registros[ultimo].cod_id)
+      .limit(4)
+      .get()
+      .then(async (response) => {
+        const arrayRegistros = [];
+        map(response?.docs, (registro) => {
+          const data = registro.data();
+          data.id = registro.id;
+          arrayRegistros.push(data);
+        });
+        await setRegistros(arrayRegistros);
+        setPage(page + 1);
+      });
+  };
+
+  const handleBack = async () => {
+    const primero = 0;
+    if (page !== 1) {
+      await db
+        .collection("registros")
+        .orderBy("cod_id", "asc")
+        .startAfter(registros[primero].cod_id)
+        .limit(4)
         .get()
         .then(async (response) => {
           const arrayRegistros = [];
@@ -46,14 +105,15 @@ const DataTableFile = (
             data.id = registro.id;
             arrayRegistros.push(data);
           });
-
-          setRegistros(arrayRegistros);
+          arrayRegistros.reverse();
+          setPage(page - 1);
+          await setRegistros(arrayRegistros);
         });
-    };
-    getData();
-    isUserAdmin(user.uid).then((response) => setUserAdmin(response));
-  }, [user, render]);
-
+    }
+  };
+  const handleChangeDropdown = (e, { value }) => {
+    setType(value);
+  };
   /**
    * Este metodo se encarga de llamar a la base de datos un registro para editarlo con los datos que se le pasen por parametero
    * @param {object} registro
@@ -138,8 +198,9 @@ const DataTableFile = (
           )
           .required("Debe completar este campo"),
         descripcionFormik: Yup.string()
-          .max(30, "Maximo 30 caracteres")
+          .max(120, "Maximo 120 caracteres")
           .required("Debe completar este campo"),
+
         costoVariableFormik: Yup.number()
           .typeError("Por favor ingrese un numero valido Ej: 10.20")
           .test("maxDigitsAfterDecimal", (number) =>
@@ -192,6 +253,7 @@ const DataTableFile = (
         } = values;
 
         const data = {
+          type: type,
           cod_id: codigoFormik,
           descripcion: descripcionFormik,
           costo_variable: costoVariableFormik,
@@ -247,9 +309,10 @@ const DataTableFile = (
         return (
           <div className="file-form">
             <Form onSubmit={handleSubmit} onChange={handleChange}>
-              <Table celled>
+              <Table celled size="small">
                 <Table.Header>
                   <Table.Row>
+                    <Table.HeaderCell width={2}>Sección</Table.HeaderCell>
                     <Table.HeaderCell width={2}>Codigo</Table.HeaderCell>
                     <Table.HeaderCell width={2}>Descripción</Table.HeaderCell>
                     <Table.HeaderCell width={2}>
@@ -266,6 +329,18 @@ const DataTableFile = (
 
                 <Table.Body>
                   <Table.Row>
+                    <Table.Cell>
+                      <Dropdown
+                        placeholder="Sección"
+                        search
+                        selection
+                        options={options}
+                        onChange={handleChangeDropdown.bind(this)}
+                      />
+                      {errors.typeFormik && touched.typeFormik ? (
+                        <div className="error-text">{errors.typeFormik}</div>
+                      ) : null}
+                    </Table.Cell>
                     <Table.Cell>
                       <Field name="codigoFormik">
                         {({ field }) => (
@@ -497,6 +572,7 @@ const DataTableFile = (
                   {registros.map((registro, index) => {
                     return (
                       <Table.Row key={registro.cod_id}>
+                        <Table.Cell>{registro.type}</Table.Cell>
                         <Table.Cell>{registro.cod_id}</Table.Cell>
                         <Table.Cell>{registro.descripcion}</Table.Cell>
                         <Table.Cell>{registro.costo_variable}</Table.Cell>
@@ -533,17 +609,26 @@ const DataTableFile = (
 
                 <Table.Footer>
                   <Table.Row>
-                    <Table.HeaderCell colSpan="8">
+                    <Table.HeaderCell colSpan="10">
                       <Menu floated="right" pagination>
                         <Menu.Item as="a" icon>
-                          <Icon name="chevron left" />
+                          <Button
+                            className="ui black button"
+                            icon="chevron left"
+                            type="button"
+                            disabled={page === 1 ? true : false}
+                            onClick={() => handleBack()}
+                          ></Button>
                         </Menu.Item>
-                        <Menu.Item as="a">1</Menu.Item>
-                        <Menu.Item as="a">2</Menu.Item>
-                        <Menu.Item as="a">3</Menu.Item>
-                        <Menu.Item as="a">4</Menu.Item>
+
                         <Menu.Item as="a" icon>
-                          <Icon name="chevron right" />
+                          <Button
+                            className="ui black button"
+                            icon="chevron right"
+                            type="button"
+                            disabled={registros.length < 4 ? true : false}
+                            onClick={() => handleNext()}
+                          ></Button>
                         </Menu.Item>
                       </Menu>
                     </Table.HeaderCell>
