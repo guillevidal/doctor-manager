@@ -5,6 +5,9 @@ import "firebase/auth";
 import Auth from "./pages/Auth";
 import LoggedLayout from "./layouts/LoggedLayout";
 import { DataProvider } from "./context/DataContext";
+import store from "./redux/store";
+import { Provider } from "react-redux";
+
 function App() {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -25,28 +28,30 @@ function App() {
   }
 
   return (
-    <DataProvider>
-      {!user ? (
-        <Auth />
-      ) : (
-        <LoggedLayout
-          user={user}
-          reloadApp={reloadApp}
-          setReloadApp={setReloadApp}
+    <Provider store={store}>
+      <DataProvider>
+        {!user ? (
+          <Auth />
+        ) : (
+          <LoggedLayout
+            user={user}
+            reloadApp={reloadApp}
+            setReloadApp={setReloadApp}
+          />
+        )}
+        <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          puaseOnVisibilityChange
+          draggable
+          pauseOnHover={false}
         />
-      )}
-      <ToastContainer
-        position="top-center"
-        autoClose={5000}
-        hideProgressBar
-        newestOnTop
-        closeOnClick
-        rtl={false}
-        puaseOnVisibilityChange
-        draggable
-        pauseOnHover={false}
-      />
-    </DataProvider>
+      </DataProvider>
+    </Provider>
   );
 }
 
