@@ -1,0 +1,18 @@
+    codigoFormik = "",
+    descripcionFormik = "",
+    costoVariableFormik = "",
+    costoFijoFormik = "",
+    costoTallerFormik = "",
+    costoTotalFormik = "",
+    honorarioProfFormik = "",
+    totalArancelFormik = "",
+
+
+        setCodigo(cod_id);
+    setDescripcion(descripcion);
+    setCostoVariable(costo_variable);
+    setCostoFijo(costo_fijo);
+    setCostoTaller(costo_taller);
+    setCostoTotal(costo_total);
+    setHonorProf(honorarioP);
+    setTotalArancel(total_arancel);

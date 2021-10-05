@@ -100,45 +100,7 @@ const Home = (props) => {
       });
   }, [render]);
 
-  return (
-    <DataTable
-      title="Pacientes"
-      columns={columns}
-      data={filteredItems}
-      pagination
-      paginationPerPage={5}
-      paginationRowsPerPageOptions={[5, 8, 10]}
-      paginationResetDefaultPage={resetPaginationToggle} // optionally, a hook to reset pagination to page 1
-      subHeader
-      subHeaderComponent={subHeaderComponentMemo}
-      selectableRows
-      persistTableHead
-      theme="solarized"
-    />
-  );
+  return <h1>Hola</h1>;
 };
-
-//Estilos
-createTheme("solarized", {
-  text: {
-    primary: "#268bd2",
-    secondary: "#2aa198",
-  },
-  background: {
-    default: "#002b36",
-  },
-  context: {
-    background: "#cb4b16",
-    text: "#FFFFFF",
-  },
-  divider: {
-    default: "#073642",
-  },
-  action: {
-    button: "rgba(0,0,0,.54)",
-    hover: "rgba(0,0,0,.08)",
-    disabled: "rgba(0,0,0,.12)",
-  },
-});
 
 export default Home;

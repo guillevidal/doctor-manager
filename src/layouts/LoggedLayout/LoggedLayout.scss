@@ -1,26 +1,29 @@
 @import "../../scss/index.scss";
 
-.ui.grid.logged-layout{
-    background-color: $background-grey-dark-light;
-    min-height: 100vh;
-    margin: 0;
+.ui.grid.logged-layout {
+  background-color: $background-white-ghost;
+  min-height: 80vh;
+  margin: 0px;
+  padding: 0px;
+  > .row {
+    padding: 0;
 
-    > .row{
-        padding: 0;
-
-        &:first-of-type{
-            height: 90vh;
-        }
-        &:last-of-type{
-            height: 10vh;
-        }
-
-        > .column{
-            padding: 0;
-        }
+    &:first-of-type {
+      height: 75vh;
+    }
+    &:last-of-type {
+      height: 20vh;
+      background-color: $background-blue-aqua;
     }
 
-    .contemt{
-        
+    > .column {
+      padding: 0;
     }
+  }
+}
+.footer-1234 {
+  height: 200px;
+  background-image: url("../../assets/png/banner.png");
+  background-repeat: no-repeat;
+  bottom: 0;
 }
