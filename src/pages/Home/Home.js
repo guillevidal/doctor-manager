@@ -2,11 +2,11 @@ import React, { useEffect, useState, useMemo, useContext } from "react";
 import { DataContext } from "../../context/DataContext";
 
 import { map } from "lodash";
-import DataTable, { createTheme } from "react-data-table-component";
 import { toast } from "react-toastify";
 import { confirmAlert } from "react-confirm-alert";
 //Components
 import { Buttons, FilterComponent } from "../../components/DataTable/Buttons";
+import SearchExampleStandard from "../../components/SearchBar/SearchBar";
 //Firebase
 import firebase from "../../utils/Firebase";
 import "firebase/auth";
@@ -100,7 +100,7 @@ const Home = (props) => {
       });
   }, [render]);
 
-  return <h1>Hola</h1>;
+  return <SearchExampleStandard />;
 };
 
 export default Home;
