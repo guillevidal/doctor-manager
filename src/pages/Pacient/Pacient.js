@@ -1,12 +1,12 @@
-import React from "react";
-import AddElement from "../../components/Catalogue/AddElement";
+import React from "react"
 
-import { withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom"
 
 function Pacient(props) {
-  const { location } = props;
+  const { location } = props
+
   if (location.paciente) {
-    var pacient = location.paciente;
+    var pacient = location.paciente
   }
 
   return (
@@ -28,6 +28,6 @@ function Pacient(props) {
         </div>
       )}
     </div>
-  );
+  )
 }
-export default withRouter(Pacient);
+export default withRouter(Pacient)

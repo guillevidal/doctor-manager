@@ -1,21 +1,21 @@
-import React, { useState } from "react";
-import { Button, Form, Input, Icon } from "semantic-ui-react";
-import { toast } from "react-toastify";
-import { reauthenticate } from "../../utils/Api";
-import alertErrors from "../../utils/AlertErrors";
-import firebase from "../../utils/Firebase";
-import "firebase/auth";
+import React, { useState } from "react"
+import { Button, Form, Input, Icon } from "semantic-ui-react"
+import { toast } from "react-toastify"
+import { reauthenticate } from "../../utils/Api"
+import alertErrors from "../../utils/AlertErrors"
+import firebase from "../../utils/Firebase"
+import "firebase/auth"
 
 export default function UserEmail(props) {
-  const { user, setShowModal, setTitleModal, setContentModal } = props;
+  const { user, setShowModal, setTitleModal, setContentModal } = props
 
   const onEdit = () => {
-    setTitleModal("Actualizar email");
+    setTitleModal("Actualizar email")
     setContentModal(
       <ChangeEmailForm email={user.email} setShowModal={setShowModal} />
-    );
-    setShowModal(true);
-  };
+    )
+    setShowModal(true)
+  }
 
   return (
     <div className="user-email">
@@ -24,45 +24,46 @@ export default function UserEmail(props) {
         Actualizar
       </Button>
     </div>
-  );
+  )
 }
 
 function ChangeEmailForm(props) {
-  const { email, setShowModal } = props;
-  const [formData, setFormData] = useState({ email: "", password: "" });
-  const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const { email, setShowModal } = props
+  const [formData, setFormData] = useState({ email: "", password: "" })
+  const [showPassword, setShowPassword] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const onSubmit = () => {
     if (!formData.email) {
-      toast.warning("El email es el mismo");
+      toast.warning("El email es el mismo")
     } else {
-      setIsLoading(true);
+      setIsLoading(true)
       reauthenticate(formData.password)
         .then(() => {
-          const currentUser = firebase.auth().currentUser;
+          const currentUser = firebase.auth().currentUser
           currentUser
             .updateEmail(formData.email)
             .then(() => {
               toast.success("Email actualizado.")
               setIsLoading(false)
               setShowModal(false)
-              currentUser.sendEmailVerification().then(()=>{
-                firebase.auth().signOut();
+              currentUser.sendEmailVerification().then(() => {
+                firebase.auth().signOut()
               })
             })
             .catch((err) => {
-              console.log(err);
+              // eslint-disable-next-line no-console
+              console.log(err)
               // alertErrors(err?.code);
-              setIsLoading(false);
-            });
+              setIsLoading(false)
+            })
         })
         .catch((err) => {
-          alertErrors(err?.code);
-          setIsLoading(false);
-        });
+          alertErrors(err.code)
+          setIsLoading(false)
+        })
     }
-  };
+  }
 
   return (
     <Form onSubmit={onSubmit}>
@@ -94,5 +95,5 @@ function ChangeEmailForm(props) {
         Actualizar Email
       </Button>
     </Form>
-  );
+  )
 }

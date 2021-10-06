@@ -1,3 +1,1 @@
-export {default}from "./DataTableFile.js";
- 
-
+export { default } from "./DataTableFile.js"

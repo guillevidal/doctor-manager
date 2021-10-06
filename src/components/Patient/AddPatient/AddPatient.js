@@ -1,5 +1,6 @@
-import React, { useState, useContext } from "react";
-import { DataContext } from "../../../context/DataContext";
+/* eslint-disable no-console */
+import React, { useState, useContext } from "react"
+import { DataContext } from "../../../context/DataContext"
 
 import {
   Button,
@@ -9,35 +10,35 @@ import {
   Grid,
   Checkbox,
   Dropdown,
-} from "semantic-ui-react";
+} from "semantic-ui-react"
 //
-import { Formik, Field } from "formik";
-import * as Yup from "yup";
+import { Formik, Field } from "formik"
+import * as Yup from "yup"
 //
-import { toast } from "react-toastify";
+import { toast } from "react-toastify"
 //
-import { withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom"
 //
-import { getEdad } from "../../../utils/utils";
+import { getEdad } from "../../../utils/utils"
 //
-import DatePicker, { registerLocale } from "react-datepicker";
-import es from "date-fns/locale/es";
+import DatePicker, { registerLocale } from "react-datepicker"
+import es from "date-fns/locale/es"
 //
-import firebase from "../../../utils/Firebase";
-import "firebase/auth";
-import "firebase/firestore";
-import "firebase/storage";
+import firebase from "../../../utils/Firebase"
+import "firebase/auth"
+import "firebase/firestore"
+import "firebase/storage"
 //
-import "react-datepicker/dist/react-datepicker.css";
+import "react-datepicker/dist/react-datepicker.css"
 //
-import "./AddPatient.scss";
+import "./AddPatient.scss"
 //
-registerLocale("es", es);
+registerLocale("es", es)
 
-//Const global scope
-const db = firebase.firestore(firebase);
+// Const global scope
+const db = firebase.firestore(firebase)
 const phoneRegExp =
-  /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+  /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
 const options = [
   { key: "pc", text: "Problemas cardiacos", value: "Problemas cardiacos" },
   { key: "hep", text: "Hepatitis", value: "Hepatitis" },
@@ -66,7 +67,7 @@ const options = [
   { key: "fbr", text: "Fiebre reumática", value: "Fiebre reumática" },
   { key: "epil", text: "Epilepsia", value: "Epilepsia" },
   { key: "sn", text: "Sinusitis", value: "Sinusitis" },
-];
+]
 
 const AddPatient = (
   props,
@@ -79,34 +80,35 @@ const AddPatient = (
     location,
     job = "",
     medical_insurance = "",
-    gp = "", //Medico de cabecera
+    gp = "", // Medico de cabecera
     gp_phone = "",
-    medical_treatment = "", //Recibe algun tratamiento medico? Cual?
-    allergies = "", //Alergia a algun medicamento?
-    tooth_info = "", //Cuando se lastima o extrae algun diente sangra y necesita atencion?
-    medicines = "", //Toma algun medicamento ¿cual?
-    cigarettes = "", //Cuantos cigarrillos fuma?
+    medical_treatment = "", // Recibe algun tratamiento medico? Cual?
+    allergies = "", // Alergia a algun medicamento?
+    tooth_info = "", // Cuando se lastima o extrae algun diente sangra y necesita atencion?
+    medicines = "", // Toma algun medicamento ¿cual?
+    cigarettes = "", // Cuantos cigarrillos fuma?
     sex = "",
     pregnat = "",
   }
 ) => {
-  //Vars
-  const { setShowModal, user } = props;
-  let affectionsArr = [];
-  //Estados
-  const [isLoading, setIsLoading] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [openCheck, setOpenCheck] = useState(false);
-  const [openCheckA, setOpenCheckA] = useState(false);
-  const [openCheckTooth, setOpenCheckTooth] = useState(false);
-  const { render, setRender } = useContext(DataContext);
+  // Vars
+  const { setShowModal, user } = props
+  let affectionsArr = []
+  // Estados
+  const [isLoading, setIsLoading] = useState(false)
+  const [open, setOpen] = useState(false)
+  const [openCheck, setOpenCheck] = useState(false)
+  const [openCheckA, setOpenCheckA] = useState(false)
+  const [openCheckTooth, setOpenCheckTooth] = useState(false)
+  // eslint-disable-next-line no-unused-vars
+  const { render, setRender } = useContext(DataContext)
 
-  //Handlers
+  // Handlers
   const handleChangeDropdown = (e, { value }) => {
-    affectionsArr = [];
-    affectionsArr = value;
-    console.log(affectionsArr);
-  };
+    affectionsArr = []
+    affectionsArr = value
+    console.log(affectionsArr)
+  }
 
   return (
     <Formik
@@ -179,16 +181,16 @@ const AddPatient = (
           gp_phone,
           medical_treatment,
           allergies,
-        } = values;
-        const age = getEdad(birthdate);
+        } = values
+        const age = getEdad(birthdate)
 
         if (openCheckTooth) {
-          values.tooth_info = "Si";
+          values.tooth_info = "Si"
         } else {
-          values.tooth_info = "No";
+          values.tooth_info = "No"
         }
 
-        setIsLoading(true);
+        setIsLoading(true)
 
         const data = {
           user_id: user.uid,
@@ -205,25 +207,25 @@ const AddPatient = (
           allergies: allergies,
           affections: affectionsArr,
           tooth_info: tooth_info,
-        };
+        }
         await db
           .collection("pacientes")
           .doc(dni)
           .set(data)
           .then(() => {
-            toast.success("Paciente guardado con exito");
-            resetForm();
-            setIsLoading(false);
-            setShowModal(false);
+            toast.success("Paciente guardado con exito")
+            resetForm()
+            setIsLoading(false)
+            setShowModal(false)
           })
           .catch(() => {
-            toast.warning("Error al crear el paciente.");
-            setIsLoading(false);
-          });
-        console.log(values);
-        console.log(affectionsArr);
-        setRender(false);
-        setShowModal(false);
+            toast.warning("Error al crear el paciente.")
+            setIsLoading(false)
+          })
+        console.log(values)
+        console.log(affectionsArr)
+        setRender(false)
+        setShowModal(false)
       }}
     >
       {({ errors, touched, handleSubmit, handleChange, setFieldValue }) => {
@@ -351,7 +353,7 @@ const AddPatient = (
                             showMonthDropdown
                             dropdownMode="select"
                             onChange={(val) => {
-                              setFieldValue(field.name, val);
+                              setFieldValue(field.name, val)
                             }}
                           />
 
@@ -475,10 +477,10 @@ const AddPatient = (
               </Grid>
             </Form>
           </div>
-        );
+        )
       }}
     </Formik>
-  );
-};
+  )
+}
 
-export default withRouter(AddPatient);
+export default withRouter(AddPatient)

@@ -1,61 +1,62 @@
-import React, { useState, useEffect } from "react";
-import { Menu, Icon } from "semantic-ui-react";
-import { Link, withRouter } from "react-router-dom";
-import { isUserAdmin } from "../../utils/Api";
-import BasicModal from "../Modal/BasicModal";
-import RegisterForm from "../Auth/RegisterForm";
-import AddPatient from "../Patient/AddPatient";
-import { AddElement } from "../Catalogue/AddElement";
+/* eslint-disable no-unused-vars */
+import React, { useState, useEffect } from "react"
+import { Menu, Icon } from "semantic-ui-react"
+import { Link, withRouter } from "react-router-dom"
+import { isUserAdmin } from "../../utils/Api"
+import BasicModal from "../Modal/BasicModal"
+import RegisterForm from "../Auth/RegisterForm"
+import AddPatient from "../Patient/AddPatient"
+import { AddElement } from "../Catalogue/AddElement"
 
-import "./MenuLeft.scss";
+import "./MenuLeft.scss"
 
 function MenuLeft(props) {
-  const { user, location, render, setRender } = props;
-  const [activeMenu, setActiveMenu] = useState(location.pathname);
-  const [userAdmin, setuserAdmin] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const [titleModal, setTitleModal] = useState("");
-  const [contentModal, setContentModal] = useState(null);
+  const { user, location, render, setRender } = props
+  const [activeMenu, setActiveMenu] = useState(location.pathname)
+  const [userAdmin, setuserAdmin] = useState(false)
+  const [showModal, setShowModal] = useState(false)
+  const [titleModal, setTitleModal] = useState("")
+  const [contentModal, setContentModal] = useState(null)
 
-  const [size, setSize] = useState("tiny");
-
-  useEffect(() => {
-    setActiveMenu(location.pathname);
-  }, [location]);
+  const [size, setSize] = useState("tiny")
 
   useEffect(() => {
-    isUserAdmin(user.uid).then((response) => setuserAdmin(response));
-  }, [user]);
+    setActiveMenu(location.pathname)
+  }, [location])
+
+  useEffect(() => {
+    isUserAdmin(user.uid).then((response) => setuserAdmin(response))
+  }, [user])
 
   const handlerMenu = (e, menu) => {
-    setActiveMenu(menu.to);
+    setActiveMenu(menu.to)
     //
-  };
+  }
   const handlerModal = (type) => {
     switch (type) {
       case "paciente":
-        setContentModal(<AddPatient user={user} setShowModal={setShowModal} />);
-        setSize("large");
-        setShowModal(true);
-        break;
+        setContentModal(<AddPatient user={user} setShowModal={setShowModal} />)
+        setSize("large")
+        setShowModal(true)
+        break
       case "usuario":
         setContentModal(
           <RegisterForm
             setShowModal={setShowModal}
             setContentModal={setContentModal}
           />
-        );
-        setSize("tiny");
-        setShowModal(true);
-        break;
+        )
+        setSize("tiny")
+        setShowModal(true)
+        break
       default:
-        setTitleModal(null);
-        setContentModal(null);
-        setShowModal(false);
-        setSize("tiny");
-        break;
+        setTitleModal(null)
+        setContentModal(null)
+        setShowModal(false)
+        setSize("tiny")
+        break
     }
-  };
+  }
   return (
     <>
       <Menu className="menu-left" vertical>
@@ -99,7 +100,7 @@ function MenuLeft(props) {
         {contentModal}
       </BasicModal>
     </>
-  );
+  )
 }
 
-export default withRouter(MenuLeft);
+export default withRouter(MenuLeft)

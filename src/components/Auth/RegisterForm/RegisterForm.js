@@ -1,29 +1,29 @@
-import React, { useState } from "react";
-import { Button, Icon, Input, Form } from "semantic-ui-react";
-import { Formik, Field } from "formik";
-import { toast } from "react-toastify";
+import React, { useState } from "react"
+import { Button, Icon, Input, Form } from "semantic-ui-react"
+import { Formik, Field } from "formik"
+import { toast } from "react-toastify"
 
-import * as Yup from "yup";
+import * as Yup from "yup"
 
-import firebase from "../../../utils/Firebase";
-import "firebase/auth";
-import "firebase/firestore";
-import "firebase/storage";
+import firebase from "../../../utils/Firebase"
+import "firebase/auth"
+import "firebase/firestore"
+import "firebase/storage"
 
-import "./RegisterForm.scss";
+import "./RegisterForm.scss"
 
-const db = firebase.firestore(firebase);
+const db = firebase.firestore(firebase)
 
 const FormUser = (
   props,
   { uid, email = "", username = "", password = "", passwordConfirmation = "" }
 ) => {
-  const {setShowModal} = props; 
-  const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const { setShowModal } = props
+  const [showPassword, setShowPassword] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const handlerShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
+    setShowPassword(!showPassword)
+  }
 
   const changeUserName = (values) => {
     firebase
@@ -32,21 +32,21 @@ const FormUser = (
         displayName: values.username,
       })
       .catch(() => {
-        toast.error("Error al asignar el nombre de usuario.");
-      });
-  };
+        toast.error("Error al asignar el nombre de usuario.")
+      })
+  }
 
   const sendVerificationEmail = () => {
     firebase
       .auth()
       .currentUser.sendEmailVerification()
       .then(() => {
-        toast.success("Se ha enviado un email de verificacion.");
+        toast.success("Se ha enviado un email de verificacion.")
       })
       .catch(() => {
-        toast.error("Error al enviar el email de verificacion.");
-      });
-  };
+        toast.error("Error al enviar el email de verificacion.")
+      })
+  }
 
   return (
     <Formik
@@ -85,41 +85,37 @@ const FormUser = (
           .required("Password confirm is required"),
       })}
       onSubmit={async (values, { setSubmitting, resetForm }) => {
-        setIsLoading(true);
+        setIsLoading(true)
         firebase
           .auth()
           .createUserWithEmailAndPassword(values.email, values.password)
           .then((response) => {
-            changeUserName(values);
-            sendVerificationEmail();
-            setShowModal(false);
+            changeUserName(values)
+            sendVerificationEmail()
+            setShowModal(false)
             const data = {
               uid: response.user.uid,
-              username:values.username,
+              username: values.username,
               email: values.email,
-              pacientes:[]
-            };
+              pacientes: [],
+            }
             setTimeout(() => {
               db.collection("users")
                 .doc(response.user.uid)
                 .set(data)
-                .then(() => console.log("ok"));
-            }, 3000);
+                // eslint-disable-next-line no-console
+                .then(() => console.log("ok"))
+            }, 3000)
           })
           .catch(() => {
-            toast.error("Error al crear la cuenta.");
+            toast.error("Error al crear la cuenta.")
           })
           .finally(() => {
-            setIsLoading(false);
-          });
+            setIsLoading(false)
+          })
       }}
     >
-      {({
-        errors,
-        touched,
-        handleSubmit,
-        handleChange,
-      }) => {
+      {({ errors, touched, handleSubmit, handleChange }) => {
         return (
           <div className="register-form">
             <h1>Registrar usuario</h1>
@@ -141,7 +137,7 @@ const FormUser = (
               </Field>
 
               <Field name="password">
-                {({ field}) => (
+                {({ field }) => (
                   <Form.Field>
                     <Input
                       type={showPassword ? "text" : "password"}
@@ -187,7 +183,9 @@ const FormUser = (
                     />
                     {errors.passwordConfirmation &&
                     touched.passwordConfirmation ? (
-                      <div className="error-text">{errors.passwordConfirmation}</div>
+                      <div className="error-text">
+                        {errors.passwordConfirmation}
+                      </div>
                     ) : null}
                   </Form.Field>
                 )}
@@ -214,10 +212,10 @@ const FormUser = (
               </Button>
             </Form>
           </div>
-        );
+        )
       }}
     </Formik>
-  );
-};
+  )
+}
 
-export default FormUser;
+export default FormUser

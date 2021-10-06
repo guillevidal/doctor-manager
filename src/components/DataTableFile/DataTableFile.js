@@ -1,32 +1,24 @@
-import React, { useState, useEffect, useMemo } from "react";
-import {
-  Icon,
-  Menu,
-  Table,
-  Form,
-  Button,
-  Input,
-  Dropdown,
-} from "semantic-ui-react";
-import { confirmAlert } from "react-confirm-alert";
-import { Formik, Field } from "formik";
-import * as Yup from "yup";
-import { map } from "lodash";
-import { toast } from "react-toastify";
+import React, { useState, useEffect } from "react"
+import { Menu, Table, Form, Button, Input, Dropdown } from "semantic-ui-react"
+import { confirmAlert } from "react-confirm-alert"
+import { Formik, Field } from "formik"
+import * as Yup from "yup"
+import { map } from "lodash"
+import { toast } from "react-toastify"
 
-import firebase from "../../utils/Firebase";
-import "firebase/auth";
-import "firebase/firestore";
-import "firebase/storage";
-import "./DataTableFile.scss";
+import firebase from "../../utils/Firebase"
+import "firebase/auth"
+import "firebase/firestore"
+import "firebase/storage"
+import "./DataTableFile.scss"
 
-const db = firebase.firestore(firebase);
+const db = firebase.firestore(firebase)
 const options = [
   { key: "consultas", text: "CONSULTAS", value: "CONSULTAS" },
   { key: "operatoria", text: "OPERATORIA", value: "OPERATORIA" },
   { key: "endodoncia", text: "ENDODONCIA", value: "ENDODONCIA" },
   { key: "protesis", text: "PROTESIS", value: "PROTESIS" },
-];
+]
 
 const DataTableFile = (
   props,
@@ -41,13 +33,13 @@ const DataTableFile = (
     totalArancelFormik = "",
   }
 ) => {
-  const { user } = props;
-  const [isEdit, setEdit] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [render, setRender] = useState(false);
-  const [registros, setRegistros] = useState([]);
-  const [page, setPage] = useState(1);
-  const [type, setType] = useState("");
+  const { user } = props
+  const [isEdit, setEdit] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [render, setRender] = useState(false)
+  const [registros, setRegistros] = useState([])
+  const [page, setPage] = useState(1)
+  const [type, setType] = useState("")
 
   useEffect(() => {
     const getData = async () => {
@@ -57,20 +49,23 @@ const DataTableFile = (
         .limit(4)
         .get()
         .then((response) => {
-          const arrayRegistros = [];
-          map(response?.docs, (registro) => {
-            const data = registro.data();
-            data.id = registro.id;
-            arrayRegistros.push(data);
-          });
-          setPage(1);
-          setRegistros(arrayRegistros);
-        });
-    };
-    getData();
-  }, [user, render]);
+          const arrayRegistros = []
+          if (response.length !== 0) {
+            map(response.docs, (registro) => {
+              const data = registro.data()
+              data.id = registro.id
+              arrayRegistros.push(data)
+            })
+          }
+
+          setPage(1)
+          setRegistros(arrayRegistros)
+        })
+    }
+    getData()
+  }, [user, render])
   const handleNext = async () => {
-    const ultimo = registros.length - 1;
+    const ultimo = registros.length - 1
     await db
       .collection("registros")
       .orderBy("cod_id", "desc")
@@ -78,19 +73,22 @@ const DataTableFile = (
       .limit(4)
       .get()
       .then(async (response) => {
-        const arrayRegistros = [];
-        map(response?.docs, (registro) => {
-          const data = registro.data();
-          data.id = registro.id;
-          arrayRegistros.push(data);
-        });
-        await setRegistros(arrayRegistros);
-        setPage(page + 1);
-      });
-  };
+        const arrayRegistros = []
+        if (response.length !== 0) {
+          map(response.docs, (registro) => {
+            const data = registro.data()
+            data.id = registro.id
+            arrayRegistros.push(data)
+          })
+        }
+
+        await setRegistros(arrayRegistros)
+        setPage(page + 1)
+      })
+  }
 
   const handleBack = async () => {
-    const primero = 0;
+    const primero = 0
     if (page !== 1) {
       await db
         .collection("registros")
@@ -99,21 +97,26 @@ const DataTableFile = (
         .limit(4)
         .get()
         .then(async (response) => {
-          const arrayRegistros = [];
-          map(response?.docs, (registro) => {
-            const data = registro.data();
-            data.id = registro.id;
-            arrayRegistros.push(data);
-          });
-          arrayRegistros.reverse();
-          setPage(page - 1);
-          await setRegistros(arrayRegistros);
-        });
+          const arrayRegistros = []
+          if (response.length !== 0) {
+            if (response.length !== 0) {
+              map(response.docs, (registro) => {
+                const data = registro.data()
+                data.id = registro.id
+                arrayRegistros.push(data)
+              })
+            }
+          }
+
+          arrayRegistros.reverse()
+          setPage(page - 1)
+          await setRegistros(arrayRegistros)
+        })
     }
-  };
+  }
   const handleChangeDropdown = (e, { value }) => {
-    setType(value);
-  };
+    setType(value)
+  }
   /**
    * Este metodo se encarga de llamar a la base de datos un registro para editarlo con los datos que se le pasen por parametero
    * @param {object} registro
@@ -129,17 +132,17 @@ const DataTableFile = (
       costo_total,
       honorarioP,
       total_arancel,
-    } = registro;
-    setFieldValue("codigoFormik", cod_id);
-    setFieldValue("descripcionFormik", descripcion);
-    setFieldValue("costoVariableFormik", costo_variable);
-    setFieldValue("costoFijoFormik", costo_fijo);
-    setFieldValue("costoTallerFormik", costo_taller);
-    setFieldValue("costoTotalFormik", costo_total);
-    setFieldValue("honorarioProfFormik", honorarioP);
-    setFieldValue("totalArancelFormik", total_arancel);
-    setEdit(true);
-  };
+    } = registro
+    setFieldValue("codigoFormik", cod_id)
+    setFieldValue("descripcionFormik", descripcion)
+    setFieldValue("costoVariableFormik", costo_variable)
+    setFieldValue("costoFijoFormik", costo_fijo)
+    setFieldValue("costoTallerFormik", costo_taller)
+    setFieldValue("costoTotalFormik", costo_total)
+    setFieldValue("honorarioProfFormik", honorarioP)
+    setFieldValue("totalArancelFormik", total_arancel)
+    setEdit(true)
+  }
 
   /**
    * Primera-mente habre una ventana de confirmación
@@ -148,7 +151,7 @@ const DataTableFile = (
    * @param {object} registro
    */
   const handleButtonClickDelete = async (registro) => {
-    setIsLoading(true);
+    setIsLoading(true)
     confirmAlert({
       title: "Confirme para eliminar",
       message: "¿Esta seguro de eliminar el registro?.",
@@ -161,13 +164,13 @@ const DataTableFile = (
               .doc(registro.cod_id)
               .delete()
               .then(function () {
-                toast.success("Registro Eliminado con exito");
-                setIsLoading(false);
-                setRender(!render);
+                toast.success("Registro Eliminado con exito")
+                setIsLoading(false)
+                setRender(!render)
               })
               .catch(function () {
-                toast.warning("Error al eliminar el registro.");
-              });
+                toast.warning("Error al eliminar el registro.")
+              })
           },
         },
         {
@@ -175,8 +178,8 @@ const DataTableFile = (
           onClick: () => setIsLoading(false),
         },
       ],
-    });
-  };
+    })
+  }
 
   return (
     <Formik
@@ -239,7 +242,7 @@ const DataTableFile = (
           .required("Debe completar este campo"),
       })}
       onSubmit={async (values, { resetForm }) => {
-        setIsLoading(true);
+        setIsLoading(true)
 
         const {
           codigoFormik,
@@ -250,7 +253,7 @@ const DataTableFile = (
           costoTotalFormik,
           honorarioProfFormik,
           totalArancelFormik,
-        } = values;
+        } = values
 
         const data = {
           type: type,
@@ -262,7 +265,7 @@ const DataTableFile = (
           costo_total: costoTotalFormik,
           honorarioP: honorarioProfFormik,
           total_arancel: totalArancelFormik,
-        };
+        }
 
         if (isEdit === true) {
           await db
@@ -270,31 +273,31 @@ const DataTableFile = (
             .doc(codigoFormik)
             .update(data)
             .then(() => {
-              toast.success("Registro editado con exito");
-              resetForm();
-              setIsLoading(false);
-              setRender(!render);
-              setEdit(false);
+              toast.success("Registro editado con exito")
+              resetForm()
+              setIsLoading(false)
+              setRender(!render)
+              setEdit(false)
             })
             .catch((error) => {
-              toast.warning("Error al crear el registro");
-              setIsLoading(false);
-            });
+              toast.warning("Error al crear el registro")
+              setIsLoading(false)
+            })
         } else {
           await db
             .collection("registros")
             .doc(codigoFormik)
             .set(data)
             .then(() => {
-              toast.success("Registro guardado con exito");
-              resetForm();
-              setIsLoading(false);
-              setRender(!render);
+              toast.success("Registro guardado con exito")
+              resetForm()
+              setIsLoading(false)
+              setRender(!render)
             })
             .catch((error) => {
-              toast.warning("Error al crear el registro");
-              setIsLoading(false);
-            });
+              toast.warning("Error al crear el registro")
+              setIsLoading(false)
+            })
         }
       }}
     >
@@ -351,7 +354,7 @@ const DataTableFile = (
                               {...field}
                               name="codigoFormik"
                               value={field.value}
-                              disabled={isEdit === true ? true : false}
+                              disabled={isEdit === true}
                               onChange={() =>
                                 setFieldValue("codigoFormik", field.value)
                               }
@@ -551,8 +554,8 @@ const DataTableFile = (
                             icon="ban"
                             loading={isLoading}
                             onClick={() => {
-                              setEdit(false);
-                              resetForm();
+                              setEdit(false)
+                              resetForm()
                             }}
                             type="button"
                             circular
@@ -603,7 +606,7 @@ const DataTableFile = (
                           ></Button>
                         </Table.Cell>
                       </Table.Row>
-                    );
+                    )
                   })}
                 </Table.Body>
 
@@ -616,7 +619,7 @@ const DataTableFile = (
                             className="ui black button"
                             icon="chevron left"
                             type="button"
-                            disabled={page === 1 ? true : false}
+                            disabled={page === 1}
                             onClick={() => handleBack()}
                           ></Button>
                         </Menu.Item>
@@ -626,7 +629,7 @@ const DataTableFile = (
                             className="ui black button"
                             icon="chevron right"
                             type="button"
-                            disabled={registros.length < 4 ? true : false}
+                            disabled={registros.length < 4}
                             onClick={() => handleNext()}
                           ></Button>
                         </Menu.Item>
@@ -637,10 +640,10 @@ const DataTableFile = (
               </Table>
             </Form>
           </div>
-        );
+        )
       }}
     </Formik>
-  );
-};
+  )
+}
 
-export default DataTableFile;
+export default DataTableFile

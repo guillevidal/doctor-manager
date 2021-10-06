@@ -1,14 +1,13 @@
-import React from "react";
-import { isUserAdmin } from "../../utils/Api";
+import React from "react"
 
-import DataTableFile from "../../components/DataTableFile";
+import DataTableFile from "../../components/DataTableFile"
 
-import "./File.scss";
+import "./File.scss"
 
 export const File = (props) => {
-  const { user } = props;
+  const { user } = props
 
-  return <DataTableFile user={user} />;
-};
+  return <DataTableFile user={user} />
+}
 
-export default File;
+export default File

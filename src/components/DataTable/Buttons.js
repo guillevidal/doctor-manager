@@ -1,14 +1,16 @@
-import React, { useContext, useState } from "react";
-import { DataContext } from "../../context/DataContext";
-import { useHistory } from "react-router-dom";
-import { Button, Search } from "semantic-ui-react";
-import styled from "styled-components";
+// eslint-disable-next-line no-unused-vars
+import React, { useContext, useState } from "react"
+import { DataContext } from "../../context/DataContext"
+import { useHistory } from "react-router-dom"
+import { Button, Search } from "semantic-ui-react"
+import styled from "styled-components"
 
 const Buttons = (props) => {
-  const { row, confirmAlert, db, toast } = props;
-  const { render, setRender } = useContext(DataContext);
+  const { row, confirmAlert, db, toast } = props
+  // eslint-disable-next-line no-unused-vars
+  const { render, setRender } = useContext(DataContext)
 
-  const history = useHistory();
+  const history = useHistory()
   const handleButtonClick = async (id) => {
     confirmAlert({
       title: "Confirme para eliminar",
@@ -22,12 +24,13 @@ const Buttons = (props) => {
               .doc(id)
               .delete()
               .then(function () {
-                toast.success("Paciente Eliminad o con exito");
-                setRender(false);
+                toast.success("Paciente Eliminad o con exito")
+                setRender(false)
               })
+              // eslint-disable-next-line node/handle-callback-err
               .catch(function (error) {
-                toast.warning("Error al eliminar el paciente.");
-              });
+                toast.warning("Error al eliminar el paciente.")
+              })
           },
         },
         {
@@ -35,16 +38,16 @@ const Buttons = (props) => {
           onClick: () => alert("Click No"),
         },
       ],
-    });
-  };
+    })
+  }
 
   const handleButtonClickArtist = async (row) => {
     history.push({
       pathname: "/pacient",
       search: "?query=abc",
       paciente: row,
-    });
-  };
+    })
+  }
 
   return (
     <div>
@@ -61,8 +64,8 @@ const Buttons = (props) => {
         id={row.id}
       ></Button>
     </div>
-  );
-};
+  )
+}
 
 const FilterComponent = ({ filterText, onFilter, onClear }) => (
   <>
@@ -72,8 +75,9 @@ const FilterComponent = ({ filterText, onFilter, onClear }) => (
       showNoResults={false}
     />
   </>
-);
+)
 
+// eslint-disable-next-line no-unused-vars
 const TextField = styled.input`
   height: 32px;
   width: 200px;
@@ -88,6 +92,6 @@ const TextField = styled.input`
   &:hover {
     cursor: pointer;
   }
-`;
+`
 
-export { Buttons, FilterComponent };
+export { Buttons, FilterComponent }
