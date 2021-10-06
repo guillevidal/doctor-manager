@@ -1,1 +1,1 @@
-export {default} from "./AddPatient"
+export { default } from "./AddPatient"

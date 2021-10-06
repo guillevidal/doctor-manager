@@ -1,19 +1,19 @@
-import React, { useState } from "react";
-import { Button, Form, Input, Icon } from "semantic-ui-react";
-import {toast} from "react-toastify";
-import {reauthenticate} from "../../utils/Api"
-import alertErrors from "../../utils/AlertErrors";
-import firebase from "../../utils/Firebase";
-import "firebase/auth";
+import React, { useState } from "react"
+import { Button, Form, Input, Icon } from "semantic-ui-react"
+import { toast } from "react-toastify"
+import { reauthenticate } from "../../utils/Api"
+import alertErrors from "../../utils/AlertErrors"
+import firebase from "../../utils/Firebase"
+import "firebase/auth"
 
 export default function UserPassword(props) {
-  const { setShowModal, setTitleModal, setContentModal } = props;
+  const { setShowModal, setTitleModal, setContentModal } = props
 
   const onEdit = () => {
-    setTitleModal("Actualizar contraseña");
-    setContentModal(<ChangePasswordForm setShowModal={setShowModal} />);
-    setShowModal(true);
-  };
+    setTitleModal("Actualizar contraseña")
+    setContentModal(<ChangePasswordForm setShowModal={setShowModal} />)
+    setShowModal(true)
+  }
 
   return (
     <div className="user-password">
@@ -22,58 +22,65 @@ export default function UserPassword(props) {
         Actualizar
       </Button>
     </div>
-  );
+  )
 }
 
 function ChangePasswordForm(props) {
-  const {setShowModal} = props;
+  const { setShowModal } = props
   const [formData, setFormData] = useState({
-      currentPassword:"",
-      newPassword:"",
-      repeatNewPassword:""
+    currentPassword: "",
+    newPassword: "",
+    repeatNewPassword: "",
   })
-  const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const onSubmit = () => {
-    if (!formData.currentPassword || !formData.newPassword || !formData.repeatNewPassword) {
-        toast.warn("Las contrasñas no pueden estar vacias");
-    }else if(formData.currentPassword === formData.newPassword){
-        toast.warn("La nueva contraseña no puede ser igual a la actual")
-    }else if(formData.newPassword !== formData.repeatNewPassword){
-        toast.warn("Las nuevas contraseñas no son iguales");
-    }else if(formData.newPassword.length < 6){
-        toast.warn("La contraseña tiene que tener minimo 6 caracteres")
-    }else{
-        console.log("Cambiando contraseña..");
+    if (
+      !formData.currentPassword ||
+      !formData.newPassword ||
+      !formData.repeatNewPassword
+    ) {
+      toast.warn("Las contrasñas no pueden estar vacias")
+    } else if (formData.currentPassword === formData.newPassword) {
+      toast.warn("La nueva contraseña no puede ser igual a la actual")
+    } else if (formData.newPassword !== formData.repeatNewPassword) {
+      toast.warn("Las nuevas contraseñas no son iguales")
+    } else if (formData.newPassword.length < 6) {
+      toast.warn("La contraseña tiene que tener minimo 6 caracteres")
+    } else {
+      reauthenticate(formData.currentPassword)
+        .then(() => {
+          const currentUser = firebase.auth().currentUser
 
-        reauthenticate(formData.currentPassword).then(()=>{
-            const currentUser = firebase.auth().currentUser;
-
-            currentUser.updatePassword(formData.newPassword).then(()=>{
-                toast.success("Contraseña actualizada.")
-                setIsLoading(false);
-                setShowModal(false);
-                firebase.auth().signOut();
-
-            }).catch(err=>{
-                alertErrors(err?.code);
-                setIsLoading(false);
-            });
+          currentUser
+            .updatePassword(formData.newPassword)
+            .then(() => {
+              toast.success("Contraseña actualizada.")
+              setIsLoading(false)
+              setShowModal(false)
+              firebase.auth().signOut()
+            })
+            .catch((err) => {
+              alertErrors(err.code)
+              setIsLoading(false)
+            })
         })
-        .catch(err =>{
-            alertErrors(err?.code);
-            setIsLoading(false);
-        });
+        .catch((err) => {
+          alertErrors(err.code)
+          setIsLoading(false)
+        })
     }
-  };
+  }
   return (
     <Form onSubmit={onSubmit}>
       <Form.Field>
         <Input
           placeholder="Contraseña actual"
           type={showPassword ? "text" : "password"}
-          onChange={e => setFormData({...formData, currentPassword:e.target.value})}
+          onChange={(e) =>
+            setFormData({ ...formData, currentPassword: e.target.value })
+          }
           icon={
             <Icon
               name={showPassword ? "eye slash outline" : "eye"}
@@ -88,7 +95,9 @@ function ChangePasswordForm(props) {
         <Input
           placeholder="Nueva contraseña"
           type={showPassword ? "text" : "password"}
-          onChange={e => setFormData({...formData, newPassword:e.target.value})}
+          onChange={(e) =>
+            setFormData({ ...formData, newPassword: e.target.value })
+          }
           icon={
             <Icon
               name={showPassword ? "eye slash outline" : "eye"}
@@ -103,7 +112,9 @@ function ChangePasswordForm(props) {
         <Input
           placeholder="Repetir nueva contraseña"
           type={showPassword ? "text" : "password"}
-          onChange={e => setFormData({...formData, repeatNewPassword:e.target.value})}
+          onChange={(e) =>
+            setFormData({ ...formData, repeatNewPassword: e.target.value })
+          }
           icon={
             <Icon
               name={showPassword ? "eye slash outline" : "eye"}
@@ -113,7 +124,9 @@ function ChangePasswordForm(props) {
           }
         />
       </Form.Field>
-      <Button type="submit" loading={isLoading}>Actualizar contraseña</Button>
+      <Button type="submit" loading={isLoading}>
+        Actualizar contraseña
+      </Button>
     </Form>
-  );
+  )
 }

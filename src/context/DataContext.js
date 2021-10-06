@@ -1,9 +1,9 @@
-import React, { Children, createContext, useState } from "react";
+import React, { createContext, useState } from "react"
 
-export const DataContext = createContext();
+export const DataContext = createContext()
 
 export const DataProvider = ({ children }) => {
-  const [render, setRender] = useState(false);
+  const [render, setRender] = useState(false)
   return (
     <DataContext.Provider
       value={{
@@ -13,5 +13,5 @@ export const DataProvider = ({ children }) => {
     >
       {children}
     </DataContext.Provider>
-  );
-};
+  )
+}

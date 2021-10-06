@@ -1,16 +1,16 @@
-import React, { useState } from "react";
-import UploadAvatar from "../../components/Settings/UploadAvatar";
-import BasicModal from "../../components/Modal/BasicModal";
-import UserName from "../../components/Settings/UserName";
-import UserEmail from "../../components/Settings/UserEmail";
-import UserPassword from "../../components/Settings/UserPassword";
+import React, { useState } from "react"
+import UploadAvatar from "../../components/Settings/UploadAvatar"
+import BasicModal from "../../components/Modal/BasicModal"
+import UserName from "../../components/Settings/UserName"
+import UserEmail from "../../components/Settings/UserEmail"
+import UserPassword from "../../components/Settings/UserPassword"
 
-import "./Settings.scss";
+import "./Settings.scss"
 export default function Settings(props) {
-  const { user, setReloadApp } = props;
-  const [showModal, setShowModal] = useState(false);
-  const [titleModal, setTitleModal] = useState("");
-  const [contentModal, setContentModal] = useState(null);
+  const { user, setReloadApp } = props
+  const [showModal, setShowModal] = useState(false)
+  const [titleModal, setTitleModal] = useState("")
+  const [contentModal, setContentModal] = useState(null)
   return (
     <div className="settings">
       <h1>Configuración</h1>
@@ -40,5 +40,5 @@ export default function Settings(props) {
         {contentModal}
       </BasicModal>
     </div>
-  );
+  )
 }

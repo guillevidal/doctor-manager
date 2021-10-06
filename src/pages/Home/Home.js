@@ -1,20 +1,20 @@
-import React, { useEffect, useState, useMemo, useContext } from "react";
-import { DataContext } from "../../context/DataContext";
+import React, { useEffect, useState, useContext } from "react"
+import { DataContext } from "../../context/DataContext"
 
-import { map } from "lodash";
-import { toast } from "react-toastify";
-import { confirmAlert } from "react-confirm-alert";
-//Components
-import { Buttons, FilterComponent } from "../../components/DataTable/Buttons";
-import SearchExampleStandard from "../../components/SearchBar/SearchBar";
-//Firebase
-import firebase from "../../utils/Firebase";
-import "firebase/auth";
-import "firebase/firestore";
-import "firebase/storage";
-//css
-import "react-confirm-alert/src/react-confirm-alert.css";
-//Vars
+import { map } from "lodash"
+import { toast } from "react-toastify"
+import { confirmAlert } from "react-confirm-alert"
+// Components
+import { Buttons } from "../../components/DataTable/Buttons"
+// Firebase
+import firebase from "../../utils/Firebase"
+import "firebase/auth"
+import "firebase/firestore"
+import "firebase/storage"
+// css
+import "react-confirm-alert/src/react-confirm-alert.css"
+// Vars
+// eslint-disable-next-line no-unused-vars
 const columns = [
   {
     name: "Apellido",
@@ -53,54 +53,34 @@ const columns = [
       <Buttons row={row} confirmAlert={confirmAlert} db={db} toast={toast} />
     ),
   },
-];
-//Conexion a firestore
-const db = firebase.firestore(firebase);
+]
+// Conexion a firestore
+const db = firebase.firestore(firebase)
 
 //
 const Home = (props) => {
-  const { render, setRender } = useContext(DataContext);
-  const [pacientes, setPacientes] = useState([]);
-  const [filterText, setFilterText] = useState("");
-  const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
-  const [pageLoading, setPageLoading] = useState(false);
-
-  const filteredItems = pacientes.filter(
-    (item) => item.dni && item.dni.includes(filterText)
-  );
-  const subHeaderComponentMemo = useMemo(() => {
-    const handleClear = () => {
-      if (filterText) {
-        setResetPaginationToggle(!resetPaginationToggle);
-        setFilterText("");
-      }
-    };
-
-    return (
-      <FilterComponent
-        onFilter={(e) => setFilterText(e.target.value)}
-        onClear={handleClear}
-        filterText={filterText}
-      />
-    );
-  }, [filterText, resetPaginationToggle]);
+  const { render, setRender } = useContext(DataContext)
+  // eslint-disable-next-line no-unused-vars
+  const [pacientes, setPacientes] = useState([])
 
   useEffect(() => {
-    setRender(true);
+    setRender(true)
     db.collection("pacientes")
       .get()
       .then((response) => {
-        const arrayPacientes = [];
-        map(response?.docs, (paciente) => {
-          const data = paciente.data();
-          data.id = paciente.id;
-          arrayPacientes.push(data);
-        });
-        setPacientes(arrayPacientes);
-      });
-  }, [render]);
+        const arrayPacientes = []
+        if (response.length !== 0) {
+          map(response.docs, (paciente) => {
+            const data = paciente.data()
+            data.id = paciente.id
+            arrayPacientes.push(data)
+          })
+        }
+        setPacientes(arrayPacientes)
+      })
+  }, [render])
 
-  return <SearchExampleStandard />;
-};
+  return <h1>Hola</h1>
+}
 
-export default Home;
+export default Home

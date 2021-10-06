@@ -1,13 +1,13 @@
-import { TEST } from "../actions";
-const initialState = [];
+import { TEST } from "../actions"
+const initialState = []
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case TEST:
-      return [...state, action.payload];
+      return [...state, action.payload]
     default:
-      return state;
+      return state
   }
-};
+}
 
-export default reducer;
+export default reducer

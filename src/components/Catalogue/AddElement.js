@@ -1,18 +1,16 @@
-import React, { useState } from "react";
-import { Icon, Label, Menu, Table, Form } from "semantic-ui-react";
+import React from "react"
+import { Icon, Menu, Table, Form } from "semantic-ui-react"
 //
-import { toast } from "react-toastify";
-//
-import firebase from "../../utils/Firebase";
-import "firebase/auth";
-import "firebase/firestore";
-import "firebase/storage";
-//
-import "./AddElement.scss";
 
-//Const global scope
-const db = firebase.firestore(firebase);
-const data = {};
+//
+import "firebase/auth"
+import "firebase/firestore"
+import "firebase/storage"
+//
+import "./AddElement.scss"
+
+// Const global scope
+
 export const AddElement = () => {
   return (
     <div>
@@ -108,5 +106,5 @@ export const AddElement = () => {
         </Table.Footer>
       </Table>
     </div>
-  );
-};
+  )
+}
