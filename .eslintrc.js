@@ -22,6 +22,7 @@ module.exports = {
     sourceType: "module",
   },
   plugins: ["react"],
+  // TO - DO Sacar el OFF de estas reglas y fixear los archivos correspondientes
   rules: {
     "react/prop-types": RULES.OFF,
     "react/react-in-jsx-scope": RULES.OFF,
