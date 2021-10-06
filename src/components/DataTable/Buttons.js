@@ -27,7 +27,6 @@ const Buttons = (props) => {
                 toast.success("Paciente Eliminad o con exito")
                 setRender(false)
               })
-              // eslint-disable-next-line node/handle-callback-err
               .catch(function (error) {
                 toast.warning("Error al eliminar el paciente.")
               })
