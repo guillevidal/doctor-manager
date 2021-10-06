@@ -99,13 +99,11 @@ const DataTableFile = (
         .then(async (response) => {
           const arrayRegistros = []
           if (response.length !== 0) {
-            if (response.length !== 0) {
-              map(response.docs, (registro) => {
-                const data = registro.data()
-                data.id = registro.id
-                arrayRegistros.push(data)
-              })
-            }
+            map(response.docs, (registro) => {
+              const data = registro.data()
+              data.id = registro.id
+              arrayRegistros.push(data)
+            })
           }
 
           arrayRegistros.reverse()
