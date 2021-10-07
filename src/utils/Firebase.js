@@ -1,7 +1,7 @@
 import * as firebase from "firebase/app"
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAmPeMeomZxJACPeBDuqyFq2g1yx1oI21c",
+  apiKey: `${process.env.REACT_APP_APIKEY}`,
   authDomain: "doctor-manager-d6624.firebaseapp.com",
   projectId: "doctor-manager-d6624",
   storageBucket: "doctor-manager-d6624.appspot.com",
