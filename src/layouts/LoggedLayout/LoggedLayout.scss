@@ -2,28 +2,28 @@
 
 .ui.grid.logged-layout {
   background-color: $background-white-ghost;
-  min-height: 80vh;
+  min-height: 85vh;
   margin: 0px;
   padding: 0px;
+
   > .row {
     padding: 0;
 
     &:first-of-type {
-      height: 75vh;
+      height: 80vh;
+      overflow: hidden;
     }
     &:last-of-type {
-      height: 20vh;
-      background-color: $background-blue-aqua;
+      height: 15vh;
+      background-color: $primary-color;
+      position: absolute;
+      bottom: 0;
     }
-
+    .wide{
+      height: 80vh;
+    }
     > .column {
       padding: 0;
     }
   }
-}
-.footer-1234 {
-  height: 200px;
-  background-image: url("../../assets/png/banner.png");
-  background-repeat: no-repeat;
-  bottom: 0;
 }
