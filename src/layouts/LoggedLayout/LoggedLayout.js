@@ -25,9 +25,7 @@ export default function LoggedLayout(props) {
           </Grid.Column>
         </Grid.Row>
         <Grid.Row>
-          <Grid.Column>
-            <footer className="footer-1234"></footer>
-          </Grid.Column>
+          <Grid.Column></Grid.Column>
         </Grid.Row>
       </Grid>
     </Router>
