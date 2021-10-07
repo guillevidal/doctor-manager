@@ -4,9 +4,10 @@ import { withRouter } from "react-router-dom"
 
 function Pacient(props) {
   const { location } = props
+  let pacient
 
   if (location.paciente) {
-    var pacient = location.paciente
+    pacient = location.paciente
   }
 
   return (

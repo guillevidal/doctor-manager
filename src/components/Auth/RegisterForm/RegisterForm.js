@@ -16,7 +16,7 @@ const db = firebase.firestore(firebase)
 
 const FormUser = (
   props,
-  { uid, email = "", username = "", password = "", passwordConfirmation = "" }
+  { email = "", username = "", password = "", passwordConfirmation = "" }
 ) => {
   const { setShowModal } = props
   const [showPassword, setShowPassword] = useState(false)
@@ -64,10 +64,6 @@ const FormUser = (
         email: Yup.string()
           .email("Introduzca un email valido por favor")
           .required("Debes completar este campo"),
-        // address: Yup.string()
-        //   .min(6, "Debe tener al menos 4 caracteres")
-        //   .max(50, "Debe tener 50 caracteres o menos")
-        //   .required("Debes completar este campo"),
         // phoneNumber: Yup.string()
         //   .required("Please Enter your Phone Number")
         //   .matches(
@@ -84,7 +80,7 @@ const FormUser = (
           .oneOf([Yup.ref("password"), null], "La contraseña no coincide")
           .required("Password confirm is required"),
       })}
-      onSubmit={async (values, { setSubmitting, resetForm }) => {
+      onSubmit={async (values) => {
         setIsLoading(true)
         firebase
           .auth()

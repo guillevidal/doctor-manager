@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React, { useState, useContext } from "react"
 import { DataContext } from "../../../context/DataContext"
 
@@ -107,7 +106,6 @@ const AddPatient = (
   const handleChangeDropdown = (e, { value }) => {
     affectionsArr = []
     affectionsArr = value
-    console.log(affectionsArr)
   }
 
   return (
@@ -222,8 +220,7 @@ const AddPatient = (
             toast.warning("Error al crear el paciente.")
             setIsLoading(false)
           })
-        console.log(values)
-        console.log(affectionsArr)
+
         setRender(false)
         setShowModal(false)
       }}
