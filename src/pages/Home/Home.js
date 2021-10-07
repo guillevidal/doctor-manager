@@ -6,6 +6,7 @@ import { toast } from "react-toastify"
 import { confirmAlert } from "react-confirm-alert"
 // Components
 import { Buttons } from "../../components/DataTable/Buttons"
+import SearchExampleStandard from "../../components/SearchBar"
 // Firebase
 import firebase from "../../utils/Firebase"
 import "firebase/auth"
@@ -80,7 +81,7 @@ const Home = (props) => {
       })
   }, [render])
 
-  return <h1>Hola</h1>
+  return <SearchExampleStandard />
 }
 
 export default Home
