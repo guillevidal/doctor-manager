@@ -1,7 +1,13 @@
 import _ from "lodash"
 import faker from "faker"
 import React from "react"
-import { useDispatch } from "react-redux"
+import {
+  cleanQuery,
+  startSearch,
+  finishSearch,
+  updateSelection,
+} from "../../redux/actions"
+import { useDispatch, useSelector } from "react-redux"
 import { Search, Grid, Header, Segment } from "semantic-ui-react"
 
 const source = _.times(5, () => ({
@@ -34,27 +40,28 @@ const source = _.times(5, () => ({
 // }
 
 function SearchExampleStandard() {
-  const [state, dispatch] = React.useReducer(exampleReducer, initialState)
-  const { loading, results, value } = state
+  // const [state, dispatch] = React.useReducer(exampleReducer, initialState)
+  // const { loading, results, value } = state
+  const loading = useSelector((state) => state.loading)
+  const results = useSelector((state) => state.results)
+  const value = useSelector((state) => state.value)
+  const dispatch = useDispatch()
 
   const timeoutRef = React.useRef()
   const handleSearchChange = React.useCallback((e, data) => {
     clearTimeout(timeoutRef.current)
-    dispatch({ type: "START_SEARCH", query: data.value })
+    dispatch(startSearch(data.value))
 
     timeoutRef.current = setTimeout(() => {
       if (data.value.length === 0) {
-        dispatch({ type: "CLEAN_QUERY" })
+        dispatch(cleanQuery())
         return
       }
 
       const re = new RegExp(_.escapeRegExp(data.value), "i")
       const isMatch = (result) => re.test(result.title)
 
-      dispatch({
-        type: "FINISH_SEARCH",
-        results: _.filter(source, isMatch),
-      })
+      dispatch(finishSearch(_.filter(source, isMatch)))
     }, 300)
   }, [])
   React.useEffect(() => {
@@ -69,7 +76,7 @@ function SearchExampleStandard() {
         <Search
           loading={loading}
           onResultSelect={(e, data) =>
-            dispatch({ type: "UPDATE_SELECTION", selection: data.result.title })
+            dispatch(updateSelection(data.result.title))
           }
           onSearchChange={handleSearchChange}
           results={results}
