@@ -280,6 +280,7 @@ const DataTableFile = (
             .catch((error) => {
               toast.warning("Error al crear el registro")
               setIsLoading(false)
+              throw error
             })
         } else {
           await db
@@ -295,6 +296,7 @@ const DataTableFile = (
             .catch((error) => {
               toast.warning("Error al crear el registro")
               setIsLoading(false)
+              throw error
             })
         }
       }}

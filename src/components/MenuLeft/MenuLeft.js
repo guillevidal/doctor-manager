@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react"
 import { Menu, Icon } from "semantic-ui-react"
 import { Link, withRouter } from "react-router-dom"
@@ -6,12 +5,11 @@ import { isUserAdmin } from "../../utils/Api"
 import BasicModal from "../Modal/BasicModal"
 import RegisterForm from "../Auth/RegisterForm"
 import AddPatient from "../Patient/AddPatient"
-import { AddElement } from "../Catalogue/AddElement"
 
 import "./MenuLeft.scss"
 
 function MenuLeft(props) {
-  const { user, location, render, setRender } = props
+  const { user, location } = props
   const [activeMenu, setActiveMenu] = useState(location.pathname)
   const [userAdmin, setuserAdmin] = useState(false)
   const [showModal, setShowModal] = useState(false)

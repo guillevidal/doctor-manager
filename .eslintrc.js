@@ -27,11 +27,6 @@ module.exports = {
     "react/prop-types": RULES.OFF,
     "react/react-in-jsx-scope": RULES.OFF,
     camelcase: RULES.OFF,
-    "node/handle-callback-err": RULES.OFF,
     "no-console": "error",
-    "no-undef": RULES.OFF,
-    "no-unused-vars": RULES.OFF,
-    "no-useless-escape": RULES.OFF,
-    "no-var": RULES.OFF,
   },
 }

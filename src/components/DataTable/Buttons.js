@@ -1,9 +1,7 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useContext, useState } from "react"
+import React, { useContext } from "react"
 import { DataContext } from "../../context/DataContext"
 import { useHistory } from "react-router-dom"
 import { Button, Search } from "semantic-ui-react"
-import styled from "styled-components"
 
 const Buttons = (props) => {
   const { row, confirmAlert, db, toast } = props
@@ -29,6 +27,7 @@ const Buttons = (props) => {
               })
               .catch(function (error) {
                 toast.warning("Error al eliminar el paciente.")
+                throw error
               })
           },
         },
@@ -75,22 +74,5 @@ const FilterComponent = ({ filterText, onFilter, onClear }) => (
     />
   </>
 )
-
-// eslint-disable-next-line no-unused-vars
-const TextField = styled.input`
-  height: 32px;
-  width: 200px;
-  border-radius: 3px;
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-  border: 1px solid #e5e5e5;
-  padding: 0 32px 0 16px;
-
-  &:hover {
-    cursor: pointer;
-  }
-`
 
 export { Buttons, FilterComponent }
