@@ -14,13 +14,13 @@ export function startSearch(data) {
 export function finishSearch(data) {
   return {
     type: "FINISH_SEARCH",
-    query: data.value,
+    query: data,
   }
 }
 
 export function updateSelection(data) {
   return {
     type: "UPDATE_SELECTION",
-    query: data.value,
+    query: data,
   }
 }

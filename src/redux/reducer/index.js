@@ -7,12 +7,12 @@ const reducer = (state = initialState, action) => {
     case "START_SEARCH":
       return { ...state, loading: true, value: action.query }
     case "FINISH_SEARCH":
-      return { ...state, loading: false, results: action.results }
+      return { ...state, loading: false, results: action.query }
     case "UPDATE_SELECTION":
-      return { ...state, value: action.selection }
+      return { ...state, value: action.query }
 
     default:
-      throw new Error()
+      return state
   }
 }
 
