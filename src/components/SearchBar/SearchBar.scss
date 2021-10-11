@@ -1,1 +1,23 @@
-@import "../../../scss/index.scss";
+@import "../../scss/index.scss";
+
+.ui.search {
+  display: flex;
+  justify-content: center;
+  .icon.input {
+    width: 200px;
+    height: 200px;
+    margin-top: 15px;
+
+    > input {
+      background-color: $primary-color;
+      text-align: center;
+      color: $font-light;
+    }
+    > i.icon {
+      color: $font-light;
+    }
+  }
+}
+.ui.search.ui.loading.search .input>i.icon:after {
+    border-color: #ffffff transparent transparent ;
+}

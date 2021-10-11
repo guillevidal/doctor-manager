@@ -1,4 +1,14 @@
-const initialState = { loading: false, value: "", patient: {} }
+const initialState = {
+  loading: false,
+  value: "",
+  patient: {
+    name: "",
+    surname: "",
+    phone_number: "",
+    medical_insurance: "",
+    age: "",
+  },
+}
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -7,7 +17,7 @@ const reducer = (state = initialState, action) => {
     case "START_SEARCH":
       return { ...state, loading: true, value: action.query }
     case "FINISH_SEARCH":
-      return { ...state, loading: false, patient: action.query }
+      return { ...state, loading: false, patient: { ...action.query } }
 
     default:
       return state
