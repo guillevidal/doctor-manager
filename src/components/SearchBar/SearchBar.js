@@ -60,8 +60,8 @@ function SearchExampleStandard() {
 
       const re = new RegExp(_.escapeRegExp(data.value), "i")
       const isMatch = (result) => re.test(result.title)
-
-      dispatch(finishSearch(_.filter(source, isMatch)))
+      const probandolpm = _.filter(source, isMatch)
+      dispatch(finishSearch(probandolpm))
     }, 300)
   }, [])
   React.useEffect(() => {
