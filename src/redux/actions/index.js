@@ -17,10 +17,3 @@ export function finishSearch(data) {
     query: data,
   }
 }
-
-export function updateSelection(data) {
-  return {
-    type: "UPDATE_SELECTION",
-    query: data,
-  }
-}

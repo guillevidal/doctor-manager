@@ -1,50 +1,17 @@
-import _ from "lodash"
-import faker from "faker"
 import React from "react"
-import {
-  cleanQuery,
-  startSearch,
-  finishSearch,
-  updateSelection,
-} from "../../redux/actions"
+import { cleanQuery, startSearch, finishSearch } from "../../redux/actions"
 import { useDispatch, useSelector } from "react-redux"
 import { Search, Grid, Header, Segment } from "semantic-ui-react"
-
-const source = _.times(5, () => ({
-  title: faker.company.companyName(),
-  description: faker.company.catchPhrase(),
-  image: faker.internet.avatar(),
-  price: faker.finance.amount(0, 100, 2, "$"),
-}))
-
-// const initialState = {
-//   loading: false,
-//   results: [],
-//   value: "",
-// };
-
-// function exampleReducer(state, action) {
-//   switch (action.type) {
-//     case "CLEAN_QUERY":
-//       return initialState;
-//     case "START_SEARCH":
-//       return { ...state, loading: true, value: action.query };
-//     case "FINISH_SEARCH":
-//       return { ...state, loading: false, results: action.results };
-//     case "UPDATE_SELECTION":
-//       return { ...state, value: action.selection };
-
-//     default:
-//       throw new Error();
-//   }
-// }
+import firebase from "../../utils/Firebase"
+import "firebase/auth"
+import "firebase/firestore"
+import "firebase/storage"
+const db = firebase.firestore(firebase)
 
 function SearchExampleStandard() {
-  // const [state, dispatch] = React.useReducer(exampleReducer, initialState)
-  // const { loading, results, value } = state
   const loading = useSelector((state) => state.loading)
-  const results = useSelector((state) => state.results)
   const value = useSelector((state) => state.value)
+  const patient = useSelector((state) => state.patient)
   const dispatch = useDispatch()
 
   const timeoutRef = React.useRef()
@@ -52,16 +19,23 @@ function SearchExampleStandard() {
     clearTimeout(timeoutRef.current)
     dispatch(startSearch(data.value))
 
-    timeoutRef.current = setTimeout(() => {
+    timeoutRef.current = setTimeout(async () => {
       if (data.value.length === 0) {
         dispatch(cleanQuery())
         return
       }
-
-      const re = new RegExp(_.escapeRegExp(data.value), "i")
-      const isMatch = (result) => re.test(result.title)
-      const probandolpm = _.filter(source, isMatch)
-      dispatch(finishSearch(probandolpm))
+      if (data.value.length > 7) {
+        try {
+          const patientFromDb = await db
+            .collection("pacientes")
+            .doc(data.value)
+            .get()
+          const patientFound = patientFromDb.data()
+          dispatch(finishSearch(patientFound))
+        } catch (error) {
+          dispatch(finishSearch({}))
+        }
+      }
     }, 300)
   }, [])
   React.useEffect(() => {
@@ -75,12 +49,9 @@ function SearchExampleStandard() {
       <Grid.Column width={6}>
         <Search
           loading={loading}
-          onResultSelect={(e, data) =>
-            dispatch(updateSelection(data.result.title))
-          }
           onSearchChange={handleSearchChange}
-          results={results}
           value={value}
+          showNoResults={false}
         />
       </Grid.Column>
 
@@ -88,11 +59,7 @@ function SearchExampleStandard() {
         <Segment>
           <Header>State</Header>
           <pre style={{ overflowX: "auto" }}>
-            {JSON.stringify({ loading, results, value }, null, 2)}
-          </pre>
-          <Header>Options</Header>
-          <pre style={{ overflowX: "auto" }}>
-            {JSON.stringify(source, null, 2)}
+            {JSON.stringify({ loading, value, patient }, null, 2)}
           </pre>
         </Segment>
       </Grid.Column>
