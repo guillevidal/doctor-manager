@@ -1,23 +1,46 @@
 @import "../../scss/index.scss";
 
-.ui.search {
+.search_wrapper {
   display: flex;
   justify-content: center;
-  .icon.input {
-    width: 200px;
-    height: 200px;
-    margin-top: 15px;
+  .ui.search {
+    display: flex;
+    justify-content: center;
+    .icon.input {
+      width: 200px;
+      height: 200px;
+      margin-top: 15px;
 
-    > input {
-      background-color: $primary-color;
-      text-align: center;
-      color: $font-light;
-    }
-    > i.icon {
-      color: $font-light;
+      > input {
+        background-color: $primary-color;
+        text-align: center;
+        color: $font-light;
+      }
+      > i.icon {
+        color: $font-light;
+      }
     }
   }
-}
-.ui.search.ui.loading.search .input>i.icon:after {
-    border-color: #ffffff transparent transparent ;
+  .ui.search.ui.loading.search .input > i.icon:after {
+    border-color: $background-light transparent transparent;
+  }
+  .error-text {
+    text-align: center;
+    color: $danger;
+    background-color: $background-light;
+    border: 2px solid $background-summer-sky;
+    margin: 50px 0px 0px 50px !important;
+    width: 200px;
+    height: 150px;
+    margin-top: 15px;
+    box-sizing: border-box;
+    i {
+      color: $danger;
+      padding-top: 20px;
+    }
+    p {
+      height: 50px;
+      padding-top: 50px;
+    }
+  }
 }
