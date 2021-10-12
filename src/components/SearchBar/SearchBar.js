@@ -36,12 +36,8 @@ function SearchExampleStandard() {
               const patientFound = patient.data()
               dispatch(finishSearch(patientFound))
             } else {
-              throw new Error("No such document!")
+              toast.error("El paciente en cuestion no esta registrado")
             }
-          })
-          .catch((error) => {
-            toast.error("El paciente en cuestion no esta registrado")
-            throw error
           })
       }
     }, 300)

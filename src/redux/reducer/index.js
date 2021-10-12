@@ -2,11 +2,22 @@ const initialState = {
   loading: false,
   value: "",
   patient: {
-    name: "",
-    surname: "",
-    phone_number: "",
-    medical_insurance: "",
-    age: "",
+    info_personal: {
+      name: "...",
+      surname: "",
+      dni: "...",
+      birthdate: { seconds: "..." },
+      address: "...",
+      phone_number: "...",
+    },
+    medical_record: {
+      general_practitioner: "general_practitioner",
+      general_practitioner_phone: "general_practitioner_phone",
+      medical_treatment: "medical_treatment",
+      allergies: "allergies",
+      affections: "affectionsArr",
+      tooth_info: "tooth_info",
+    },
   },
 }
 
