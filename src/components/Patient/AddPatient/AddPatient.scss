@@ -1,1 +1,28 @@
 @import "../../../scss/index.scss";
+
+.register-form {
+  .ui.form {
+    .field {
+      .input {
+        input {
+          background-color: $background-grey-light;
+          color: $font-malachite;
+        }
+        input::placeholder {
+          color: $font-light;
+        }
+        i {
+          color: $font-sky;
+        }
+      }
+    }
+  }
+  .ui.checkbox {
+    display: block;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    label {
+      color: white;
+    }
+  }
+}

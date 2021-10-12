@@ -1,72 +1,31 @@
-import React, { useState, useContext } from "react"
-import { DataContext } from "../../../context/DataContext"
-
+import React, { useState } from "react"
 import {
   Button,
-  Icon,
   Input,
   Form,
   Grid,
   Checkbox,
   Dropdown,
 } from "semantic-ui-react"
-//
 import { Formik, Field } from "formik"
 import * as Yup from "yup"
-//
 import { toast } from "react-toastify"
-//
 import { withRouter } from "react-router-dom"
+import DatePicker from "react-modern-calendar-datepicker"
 //
-import { getEdad } from "../../../utils/utils"
-//
-import DatePicker, { registerLocale } from "react-datepicker"
-import es from "date-fns/locale/es"
-//
+import { options, phoneRegExp } from "./variables"
 import firebase from "../../../utils/Firebase"
+//
+//
 import "firebase/auth"
 import "firebase/firestore"
 import "firebase/storage"
 //
-import "react-datepicker/dist/react-datepicker.css"
-//
+import "react-modern-calendar-datepicker/lib/DatePicker.css"
 import "./AddPatient.scss"
-//
-registerLocale("es", es)
 
 // Const global scope
 const db = firebase.firestore(firebase)
-const phoneRegExp =
-  /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
-const options = [
-  { key: "pc", text: "Problemas cardiacos", value: "Problemas cardiacos" },
-  { key: "hep", text: "Hepatitis", value: "Hepatitis" },
-  { key: "art", text: "Artritis", value: "Artritis" },
-  {
-    key: "psa",
-    text: "Presion sanguinea alta",
-    value: "Presion sanguinea alta",
-  },
-  { key: "ulce", text: "Úlcera de estómago", value: "Úlcera de estómago" },
-  { key: "canc", text: "Cáncer", value: "Cáncer" },
-  {
-    key: "psb",
-    text: "Presión sanguinea baja",
-    value: "Presión sanguinea baja",
-  },
-  { key: "dc", text: "Dolor de cabeza", value: "Dolor de cabeza" },
-  { key: "db", text: "Diabetes", value: "Diabetes" },
-  {
-    key: "enfv",
-    text: "Enfermedades venéreas",
-    value: "Enfermedades venéreas",
-  },
-  { key: "vih", text: "SIDA", value: "SIDA" },
-  { key: "altn", text: "Alt. Nerviosas", value: "Alt. Nerviosas" },
-  { key: "fbr", text: "Fiebre reumática", value: "Fiebre reumática" },
-  { key: "epil", text: "Epilepsia", value: "Epilepsia" },
-  { key: "sn", text: "Sinusitis", value: "Sinusitis" },
-]
 
 const AddPatient = (
   props,
@@ -76,11 +35,11 @@ const AddPatient = (
     dni = "",
     birthdate = "",
     phone_number = "",
-    location,
+    address = "",
     job = "",
     medical_insurance = "",
-    gp = "", // Medico de cabecera
-    gp_phone = "",
+    general_practitioner = "", // Medico de cabecera
+    general_practitioner_phone = "",
     medical_treatment = "", // Recibe algun tratamiento medico? Cual?
     allergies = "", // Alergia a algun medicamento?
     tooth_info = "", // Cuando se lastima o extrae algun diente sangra y necesita atencion?
@@ -95,17 +54,18 @@ const AddPatient = (
   let affectionsArr = []
   // Estados
   const [isLoading, setIsLoading] = useState(false)
-  const [open, setOpen] = useState(false)
   const [openCheck, setOpenCheck] = useState(false)
   const [openCheckA, setOpenCheckA] = useState(false)
   const [openCheckTooth, setOpenCheckTooth] = useState(false)
-  // eslint-disable-next-line no-unused-vars
-  const { render, setRender } = useContext(DataContext)
-
+  const [selectedDay, setSelectedDay] = useState(null)
   // Handlers
   const handleChangeDropdown = (e, { value }) => {
     affectionsArr = []
     affectionsArr = value
+  }
+  const formatInputValue = () => {
+    if (!selectedDay) return ""
+    return `${selectedDay.day}/${selectedDay.month}/${selectedDay.year}`
   }
 
   return (
@@ -116,11 +76,11 @@ const AddPatient = (
         dni,
         birthdate,
         phone_number,
-        location,
+        address,
         job,
         medical_insurance,
-        gp,
-        gp_phone,
+        general_practitioner,
+        general_practitioner_phone,
         medical_treatment,
         allergies,
         tooth_info,
@@ -134,27 +94,29 @@ const AddPatient = (
           .min(4, "Debe tener al menos 4 caracteres")
           .max(15, "Debe tener 15 caracteres o menos")
           .required("Debes completar este campo"),
-        birthdate: Yup.date().required("Debes compltear este campo"),
         dni: Yup.string()
           .required("Debes completar este campo")
           .min(7, "Un dni tiene al menos 7 caracteres")
           .max(8, "Un dni tiene hasta 8 caracteres")
           .matches(phoneRegExp, "DNI no valido,introduzca solo numeros"),
         phone_number: Yup.string()
+          .min(10, "Los numeros tienen como minimo 10 caracteres")
           .max(10, "máximo 10 caracteres")
           .matches(
             phoneRegExp,
             "Numero de teléfono no valido,introduzca solo numeros"
           ),
-        medical_insurance: Yup.string().max(
-          15,
-          "Debe tener 15 caracteres o menos"
-        ),
-        gp: Yup.string()
+        address: Yup.string().max(20, "Debe tener menos de 20 caracteres"),
+        // medical_insurance: Yup.string().max(
+        //   15,
+        //   "Debe tener 15 caracteres o menos"
+        // ),
+        general_practitioner: Yup.string()
           .min(4, "Debe tener al menos 4 caracteres")
           .max(20, "Debe tener 20 caracteres o menos")
           .required("Debes completar este campo"),
-        gp_phone: Yup.string()
+        general_practitioner_phone: Yup.string()
+          .min(10, "Los numeros tienen como minimo 10 caracteres")
           .max(10, "máximo 10 caracteres")
           .matches(
             phoneRegExp,
@@ -173,15 +135,20 @@ const AddPatient = (
           surname,
           birthdate,
           dni,
-          medical_insurance,
+          address,
+          // medical_insurance,
           phone_number,
-          gp,
-          gp_phone,
+          general_practitioner,
+          general_practitioner_phone,
           medical_treatment,
           allergies,
         } = values
-        const age = getEdad(birthdate)
 
+        const nativeBirthdate = new Date(
+          birthdate.year,
+          birthdate.month - 1,
+          birthdate.day
+        )
         if (openCheckTooth) {
           values.tooth_info = "Si"
         } else {
@@ -192,19 +159,23 @@ const AddPatient = (
 
         const data = {
           user_id: user.uid,
-          name: name,
-          surname: surname,
-          dni: dni,
-          birthdate: birthdate,
-          age: age,
-          phone_number: phone_number,
-          medical_insurance: medical_insurance,
-          gp: gp,
-          gp_phone: gp_phone,
-          medical_treatment: medical_treatment,
-          allergies: allergies,
-          affections: affectionsArr,
-          tooth_info: tooth_info,
+          info_personal: {
+            name: name,
+            surname: surname,
+            dni: dni,
+            birthdate: nativeBirthdate,
+            address: address,
+            phone_number: phone_number,
+          },
+          medical_record: {
+            general_practitioner: general_practitioner,
+            general_practitioner_phone: general_practitioner_phone,
+            medical_treatment: medical_treatment,
+            allergies: allergies,
+            affections: affectionsArr,
+            tooth_info: tooth_info,
+          },
+          // medical_insurance: medical_insurance,
         }
         await db
           .collection("pacientes")
@@ -221,7 +192,6 @@ const AddPatient = (
             setIsLoading(false)
           })
 
-        setRender(false)
         setShowModal(false)
       }}
     >
@@ -297,6 +267,7 @@ const AddPatient = (
                             {...field}
                             placeholder="Numero de teléfono o celular"
                             icon="phone"
+                            maxLength="10"
                           />
                           {errors.phone_number && touched.phone_number ? (
                             <div className="error-text">
@@ -307,20 +278,17 @@ const AddPatient = (
                       )}
                     </Field>
                     {/* --- */}
-                    <Field name="medical_insurance">
+                    <Field name="address">
                       {({ field }) => (
                         <Form.Field>
                           <Input
                             type="text"
                             {...field}
-                            placeholder="Obra social"
+                            placeholder="Domicilio"
                             icon="clipboard"
                           />
-                          {errors.medical_insurance &&
-                          touched.medical_insurance ? (
-                            <div className="error-text">
-                              {errors.medical_insurance}
-                            </div>
+                          {errors.address && touched.address ? (
+                            <div className="error-text">{errors.address}</div>
                           ) : null}
                         </Form.Field>
                       )}
@@ -329,29 +297,16 @@ const AddPatient = (
                     <Field name="birthdate">
                       {({ field }) => (
                         <Form.Field>
-                          <Icon
-                            name="calendar alternate"
-                            size="large"
-                            className="icon"
-                            onClick={() => setOpen(!open)}
-                          />
                           <DatePicker
                             {...field}
-                            open={open}
-                            readOnly
-                            locale="es"
-                            selected={
-                              (field.value && new Date(field.value)) || null
-                            }
-                            popperModifiers
-                            peekNextMonth
-                            placeholderText="12/31/2000"
-                            showYearDropdown
-                            showMonthDropdown
-                            dropdownMode="select"
-                            onChange={(val) => {
-                              setFieldValue(field.name, val)
+                            value={selectedDay}
+                            formatInputText={formatInputValue}
+                            onChange={(value) => {
+                              setSelectedDay(value)
+                              setFieldValue(field.name, value)
                             }}
+                            inputPlaceholder="Fecha de nacimiento"
+                            shouldHighlightWeekends
                           />
 
                           {errors.birthdate && touched.birthdate ? (
@@ -365,7 +320,7 @@ const AddPatient = (
                   {/* --- */}
                   <Grid.Column>
                     <h1>Ficha Medica</h1>
-                    <Field name="gp">
+                    <Field name="general_practitioner">
                       {({ field }) => (
                         <Form.Field>
                           <Input
@@ -374,14 +329,17 @@ const AddPatient = (
                             placeholder="Nombre completo de medico de cabecera"
                             icon="user circle"
                           />
-                          {errors.gp && touched.gp ? (
-                            <div className="error-text">{errors.gp}</div>
+                          {errors.general_practitioner &&
+                          touched.general_practitioner ? (
+                            <div className="error-text">
+                              {errors.general_practitioner}
+                            </div>
                           ) : null}
                         </Form.Field>
                       )}
                     </Field>
                     {/* --- */}
-                    <Field name="gp_phone">
+                    <Field name="general_practitioner_phone">
                       {({ field }) => (
                         <Form.Field>
                           <Input
@@ -389,9 +347,13 @@ const AddPatient = (
                             {...field}
                             placeholder="Numero de teléfono o celular medico de cabecera"
                             icon="phone"
+                            maxLength="10"
                           />
-                          {errors.gp_phone && touched.gp_phone ? (
-                            <div className="error-text">{errors.gp_phone}</div>
+                          {errors.general_practitioner_phone &&
+                          touched.general_practitioner_phone ? (
+                            <div className="error-text">
+                              {errors.general_practitioner_phone}
+                            </div>
                           ) : null}
                         </Form.Field>
                       )}
