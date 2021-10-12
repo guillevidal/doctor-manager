@@ -3,8 +3,19 @@
 .register-form {
   .ui.form {
     .field {
+      .DatePicker {
+        width: 100%;
+        input {
+          background-color: $background-grey-light;
+          color: $font-malachite;
+        }
+        input::placeholder {
+          color: $font-light;
+        }
+      }
       .input {
         input {
+          text-align: center;
           background-color: $background-grey-light;
           color: $font-malachite;
         }
@@ -20,9 +31,47 @@
   .ui.checkbox {
     display: block;
     margin-top: 5px;
-    margin-bottom: 10px;
+    margin-bottom: 4px;
+
     label {
       color: white;
+    }
+    label:hover {
+      color: $font-sky;
+    }
+    label::before {
+      border-color: $border-grey-dark-light;
+      background-color: $background-primary;
+    }
+    label::after {
+      background-color: $background-malachite;
+    }
+
+    input:hover {
+      color: $font-sky;
+    }
+    input:focus ~ label {
+      color: $font-sky;
+    }
+  }
+  .ui.selection.dropdown {
+    background-color: $background-grey-light;
+    .label {
+      background-color: $background-grey-dark-light;
+      color: $font-light;
+    }
+    .icon {
+      color: $font-sky;
+    }
+    .menu {
+      background-color: $background-grey-light;
+      border-color: $background-summer-sky;
+      .item {
+        border-color: $background-malachite;
+        span {
+          color: $font-light;
+        }
+      }
     }
   }
 }

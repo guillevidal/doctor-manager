@@ -395,7 +395,7 @@ const AddPatient = (
                             <Input
                               type="text"
                               {...field}
-                              placeholder="¿cuales?"
+                              placeholder="¿Cuales?"
                               icon="clipboard"
                             />
                             {errors.allergies && touched.allergies ? (
