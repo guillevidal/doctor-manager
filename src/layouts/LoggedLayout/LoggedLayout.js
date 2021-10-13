@@ -14,15 +14,15 @@ export default function LoggedLayout(props) {
 
       <Grid className="logged-layout">
         <Grid.Row>
-          <Grid.Column width={4}>
+          <Grid.Column width={2}>
             <MenuLeft user={user} />
           </Grid.Column>
-          <Grid.Column className="content" width={7}>
+          <Grid.Column className="content" width={14}>
             <Routes user={user} setReloadApp={setReloadApp} />
           </Grid.Column>
-          <Grid.Column className="content" width={5}>
+          {/* <Grid.Column className="content" width={5}>
             <MenuLeft user={user} />
-          </Grid.Column>
+          </Grid.Column> */}
         </Grid.Row>
         <Grid.Row>
           <Grid.Column></Grid.Column>

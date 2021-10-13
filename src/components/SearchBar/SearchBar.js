@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { cleanQuery, startSearch, finishSearch } from "../../redux/actions"
 import { useDispatch, useSelector } from "react-redux"
-import { Search, Icon } from "semantic-ui-react"
+import { Search } from "semantic-ui-react"
 import firebase from "../../utils/Firebase"
 import "firebase/auth"
 import "firebase/firestore"
@@ -58,14 +58,10 @@ function SearchExampleStandard() {
         onSearchChange={handleSearchChange}
         maxLength={8}
         value={value}
-        showNoResults={false}
+        showNoResults={error}
+        noResultsMessage={"No se encuentra el paciente"}
       />
-      {error ? (
-        <div className="error-text">
-          <p>No se encuentra el paciente</p>
-          <Icon name="warning circle" size="big" />
-        </div>
-      ) : null}
+      <div className="search_wrapper__search"></div>
     </div>
   )
 }
