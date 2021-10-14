@@ -8,15 +8,14 @@
   min-height: 35.5vh;
   display: flex;
   align-items: center;
-  justify-content: center;
-
+  overflow: hidden;
   &__search {
     position: absolute;
     top: 0;
     left: 0;
     min-height: 37vh;
     left: auto;
-    min-width: 98%;
+    min-width: 100%;
     background-color: $background-dark;
     opacity: 0.6;
     z-index: 0;
@@ -25,6 +24,7 @@
     display: flex;
     justify-content: center;
     z-index: 1;
+    margin: 0 auto;
     > .results {
       border-color: $background-summer-sky;
       left: auto;
@@ -36,10 +36,12 @@
     }
     .icon.input {
       > input {
-        background-color: $background-summer-sky;
         text-align: center;
+        border: 2px solid black;
+        background-color: $background-grey-dark-light;
         color: $font-light;
-        padding-right: 15em !important;
+        font-size: 2em;
+        padding-right: 10em !important;
         line-height: 3em;
       }
       > i.icon {
