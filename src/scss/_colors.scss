@@ -4,18 +4,21 @@ $primary-color-hover: #1ed75f;
 $font-light: #fff;
 $font-grey: #9e9e9e;
 $font-dark: #000;
-$font-sky: $primary-color;
+$font-sky: #26c6da;
+$font-malachite: #1ed75f;
 
 $border-light-dark: #9e9e9e;
 $border-grey-light: #3b3b3b;
+$border-grey-dark-light: #141414;
+$border-white-ghost: #f8f7ff;
 
-$background-primary: $primary-color;
+$background-primary: #26c6da;
 $background-light: #fff;
 // grey
 $background-grey-light: #3b3b3b;
 $background-grey: #2d2d2d;
 $background-grey-dark: #101010;
-$background-greu-medium: #1c1c1c;
+$background-grey-medium: #1c1c1c;
 $background-white-ghost: #f8f7ff;
 // black
 $background-grey-dark-light: #141414;
@@ -25,4 +28,6 @@ $background-grey-light-hover: #494949;
 $background-grey-hover: #3c3c3c;
 //
 $background-blue-aqua: #00c2cb;
-$danger: #f00;
+$background-summer-sky: #26c6da;
+$background-malachite: #1ed75f;
+$danger: red;

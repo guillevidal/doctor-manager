@@ -1,1 +1,56 @@
-@import "../../../scss/index.scss";
+@import "../../scss/index.scss";
+
+.search_wrapper {
+  background-image: url("../../assets/jpg/background.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  min-height: 35.5vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  &__search {
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-height: 37vh;
+    left: auto;
+    min-width: 100%;
+    background-color: $background-dark;
+    opacity: 0.6;
+    z-index: 0;
+  }
+  .ui.search {
+    display: flex;
+    justify-content: center;
+    z-index: 1;
+    margin: 0 auto;
+    > .results {
+      border-color: $background-summer-sky;
+      left: auto;
+      > .message {
+        .header {
+          color: $danger;
+        }
+      }
+    }
+    .icon.input {
+      > input {
+        text-align: center;
+        border: 2px solid black;
+        background-color: $background-grey-dark-light;
+        color: $font-light;
+        font-size: 2em;
+        padding-right: 10em !important;
+        line-height: 3em;
+      }
+      > i.icon {
+        font-size: 2em;
+        color: $font-light;
+      }
+    }
+  }
+  .ui.search.ui.loading.search .input > i.icon:after {
+    border-color: $background-light transparent transparent;
+  }
+}
