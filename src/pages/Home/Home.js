@@ -14,8 +14,8 @@ const Home = () => {
     switch (activeItem) {
       case "personal_info":
         return <Card />
-      case "a":
-        return <h1>A la cami</h1>
+      case "medical_insurance":
+        return <h1>Ficha Medica</h1>
     }
   }
   useEffect(() => {}, [])
