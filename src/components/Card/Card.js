@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { useSelector } from "react-redux"
-import { Divider, Header, Icon, Table } from "semantic-ui-react"
+import { Table } from "semantic-ui-react"
 import { getEdad } from "../../utils/utils"
 
 import "./Card.scss"
@@ -20,21 +20,6 @@ const Card = () => {
 
   return (
     <div className="card_wrapper">
-      <Divider horizontal>
-        <Header as="h4">
-          <Icon name="tag" />
-          Información personal
-        </Header>
-      </Divider>
-
-      <p>Acá se muestra la información básica del paciente</p>
-
-      <Divider horizontal>
-        <Header as="h4">
-          <Icon name="info circle" />
-          Info general
-        </Header>
-      </Divider>
       <div className="card_wrapper_table">
         <Table definition>
           <Table.Body>

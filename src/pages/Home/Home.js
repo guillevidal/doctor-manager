@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react"
 import { Grid } from "semantic-ui-react"
 import SearchExampleStandard from "../../components/SearchBar"
-import Card from "../../components/Card"
-
 import MenuOptionsCard from "../../components/MenuOptionsCard"
+import Card from "../../components/Card"
+import MedicalInsuranceCard from "../../components/Medical_Insurance_Card/MedicalInsuranceCard"
+
 // css
 import "react-confirm-alert/src/react-confirm-alert.css"
 
@@ -15,7 +16,7 @@ const Home = () => {
       case "personal_info":
         return <Card />
       case "medical_insurance":
-        return <h1>Ficha Medica</h1>
+        return <MedicalInsuranceCard />
     }
   }
   useEffect(() => {}, [])
