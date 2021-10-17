@@ -11,12 +11,12 @@ const initialState = {
       phone_number: "...",
     },
     medical_record: {
-      general_practitioner: "general_practitioner",
-      general_practitioner_phone: "general_practitioner_phone",
-      medical_treatment: "medical_treatment",
-      allergies: "allergies",
-      affections: "affectionsArr",
-      tooth_info: "tooth_info",
+      general_practitioner: "...",
+      general_practitioner_phone: "...",
+      medical_treatment: "...",
+      allergies: "...",
+      affections: "...",
+      tooth_info: "...",
     },
   },
 }

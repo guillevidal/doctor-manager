@@ -173,7 +173,7 @@ const AddPatient = (
             medical_treatment: medical_treatment,
             allergies: allergies,
             affections: affectionsArr,
-            tooth_info: tooth_info,
+            tooth_info: values.tooth_info,
           },
           // medical_insurance: medical_insurance,
         }
