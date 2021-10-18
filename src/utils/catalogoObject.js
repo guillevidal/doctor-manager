@@ -1,5 +1,5 @@
 module.exports = {
-  consultas: [
+  catalogo: [
     {
       codigo: "0101",
       descripcion: "Examen-Diagnostico-Fichado y plan de tratamiento",
@@ -9,6 +9,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "consultas",
     },
     {
       codigo: "0103",
@@ -19,6 +20,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "consultas",
     },
     {
       codigo: "0104",
@@ -30,6 +32,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "consultas",
     },
     {
       codigo: "0105",
@@ -40,9 +43,8 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "consultas",
     },
-  ],
-  operatoria: [
     {
       codigo: "0201",
       descripcion: "obturacion con amalgama cavidad simple",
@@ -52,6 +54,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "operatoria",
     },
     {
       codigo: "0202",
@@ -62,6 +65,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "operatoria",
     },
     {
       codigo: "0203",
@@ -72,6 +76,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "operatoria",
     },
     {
       codigo: "0204",
@@ -82,6 +87,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "operatoria",
     },
     {
       codigo: "0209",
@@ -93,6 +99,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "operatoria",
     },
     {
       codigo: "0215",
@@ -103,6 +110,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "operatoria",
     },
     {
       codigo: "0216",
@@ -113,6 +121,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "operatoria",
     },
     {
       codigo: "0217",
@@ -123,6 +132,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "operatoria",
     },
     {
       codigo: "0219",
@@ -133,6 +143,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "operatoria",
     },
     {
       codigo: "0220",
@@ -143,9 +154,8 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "operatoria",
     },
-  ],
-  endodoncia: [
     {
       codigo: "0301",
       descripcion: "tratamiento pulpar de 1 conducto",
@@ -155,6 +165,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "endodoncia",
     },
     {
       codigo: "0302",
@@ -165,6 +176,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "endodoncia",
     },
     {
       codigo: "0303",
@@ -175,6 +187,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "endodoncia",
     },
     {
       codigo: "0304",
@@ -185,6 +198,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "endodoncia",
     },
     {
       codigo: "0305",
@@ -195,6 +209,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "endodoncia",
     },
     {
       codigo: "0306",
@@ -205,6 +220,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "endodoncia",
     },
     {
       codigo: "0307",
@@ -215,6 +231,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "endodoncia",
     },
     {
       codigo: "0308",
@@ -225,9 +242,8 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "endodoncia",
     },
-  ],
-  protesis: [
     {
       codigo: "040101",
       descripcion: "incrustacion cavidad simple",
@@ -237,6 +253,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "protesis",
     },
     {
       codigo: "040102",
@@ -247,6 +264,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "protesis",
     },
     {
       codigo: "040103",
@@ -257,6 +275,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "protesis",
     },
     {
       codigo: "040104",
@@ -267,6 +286,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "protesis",
     },
     {
       codigo: "040105",
@@ -277,6 +297,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "protesis",
     },
     {
       codigo: "040106",
@@ -287,6 +308,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "protesis",
     },
     {
       codigo: "040108",
@@ -297,6 +319,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "protesis",
     },
     {
       codigo: "040109",
@@ -307,6 +330,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "protesis",
     },
     {
       codigo: "040110",
@@ -317,6 +341,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "protesis",
     },
     {
       codigo: "040111",
@@ -327,6 +352,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "protesis",
     },
     {
       codigo: "040112",
@@ -337,6 +363,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "protesis",
     },
     {
       codigo: "040113",
@@ -347,6 +374,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "protesis",
     },
     {
       codigo: "040114",
@@ -358,6 +386,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "protesis",
     },
     {
       codigo: "040115",
@@ -368,6 +397,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "protesis",
     },
     {
       codigo: "040116",
@@ -378,6 +408,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "endodoncia",
     },
     {
       codigo: "040117",
@@ -388,6 +419,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "endodoncia",
     },
     {
       codigo: "040118",
@@ -398,6 +430,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "protesis",
     },
     {
       codigo: "040119",
@@ -408,6 +441,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "protesis",
     },
     {
       codigo: "040120",
@@ -418,6 +452,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "protesis",
     },
     {
       codigo: "040121",
@@ -428,6 +463,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "protesis",
     },
     {
       codigo: "040122",
@@ -438,6 +474,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "protesis",
     },
     {
       codigo: "040123",
@@ -448,6 +485,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "protesis",
     },
     {
       codigo: "040124",
@@ -458,6 +496,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "protesis",
     },
     {
       codigo: "040125",
@@ -468,6 +507,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "protesis",
     },
     {
       codigo: "040101",
@@ -478,6 +518,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "protesis",
     },
     {
       codigo: "040102",
@@ -488,6 +529,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "protesis",
     },
     {
       codigo: "040103",
@@ -498,6 +540,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "protesis",
     },
     {
       codigo: "040104",
@@ -508,6 +551,7 @@ module.exports = {
       costo_total: "$4500",
       honor_prof: "3000",
       total_arancel: "7500",
+      tipo: "protesis",
     },
   ],
 }

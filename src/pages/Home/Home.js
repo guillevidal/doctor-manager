@@ -6,7 +6,7 @@ import Personal_Info_Display from "../../components/Personal_Info_Display"
 
 import AffectionsDisplay from "../../components/AffectionsDisplay"
 import Medical_Record_Display from "../../components/Medical_Records_Display"
-import catalogo from "../../utils/catalogoObject"
+import { catalogo } from "../../utils/catalogoObject"
 import { useDispatch } from "react-redux"
 import { catalogue } from "../../redux/actions"
 import InfiniteScroll from "react-infinite-scroll-component"
