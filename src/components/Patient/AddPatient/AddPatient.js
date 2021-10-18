@@ -6,6 +6,7 @@ import {
   Grid,
   Checkbox,
   Dropdown,
+  Divider,
 } from "semantic-ui-react"
 import { Formik, Field } from "formik"
 import * as Yup from "yup"
@@ -37,7 +38,8 @@ const AddPatient = (
     phone_number = "",
     address = "",
     job = "",
-    medical_insurance = "",
+    health_insurance = "",
+    health_insurance_cod = "",
     general_practitioner = "", // Medico de cabecera
     general_practitioner_phone = "",
     medical_treatment = "", // Recibe algun tratamiento medico? Cual?
@@ -78,7 +80,8 @@ const AddPatient = (
         phone_number,
         address,
         job,
-        medical_insurance,
+        health_insurance,
+        health_insurance_cod,
         general_practitioner,
         general_practitioner_phone,
         medical_treatment,
@@ -107,10 +110,14 @@ const AddPatient = (
             "Numero de teléfono no valido,introduzca solo numeros"
           ),
         address: Yup.string().max(20, "Debe tener menos de 20 caracteres"),
-        // medical_insurance: Yup.string().max(
-        //   15,
-        //   "Debe tener 15 caracteres o menos"
-        // ),
+        health_insurance: Yup.string().max(
+          15,
+          "Debe tener 15 caracteres o menos"
+        ),
+        health_insurance_cod: Yup.string().max(
+          15,
+          "Debe tener 15 caracteres o menos"
+        ),
         general_practitioner: Yup.string()
           .min(4, "Debe tener al menos 4 caracteres")
           .max(20, "Debe tener 20 caracteres o menos")
@@ -136,12 +143,13 @@ const AddPatient = (
           birthdate,
           dni,
           address,
-          // medical_insurance,
           phone_number,
           general_practitioner,
           general_practitioner_phone,
           medical_treatment,
           allergies,
+          health_insurance,
+          health_insurance_cod,
         } = values
 
         const nativeBirthdate = new Date(
@@ -175,7 +183,10 @@ const AddPatient = (
             affections: affectionsArr,
             tooth_info: values.tooth_info,
           },
-          // medical_insurance: medical_insurance,
+          health_insurance: {
+            health_insurance: health_insurance,
+            health_insurance_cod: health_insurance_cod,
+          },
         }
         await db
           .collection("pacientes")
@@ -424,6 +435,52 @@ const AddPatient = (
                     {/* --- */}
                   </Grid.Column>
                 </Grid.Row>
+                <Divider></Divider>
+                <Grid.Row columns={1}>
+                  <Grid.Column>
+                    <h1>Seguro Medico</h1>
+                    <Field name="health_insurance">
+                      {({ field }) => (
+                        <Form.Field>
+                          <Input
+                            type="text"
+                            {...field}
+                            placeholder="Seguro medico"
+                            icon="phone"
+                            maxLength="10"
+                          />
+                          {errors.health_insurance &&
+                          touched.health_insurance ? (
+                            <div className="error-text">
+                              {errors.health_insurance}
+                            </div>
+                          ) : null}
+                        </Form.Field>
+                      )}
+                    </Field>
+                    <Field name="health_insurance_cod">
+                      {({ field }) => (
+                        <Form.Field>
+                          <Input
+                            type="text"
+                            {...field}
+                            placeholder="Codigo de seguro medico"
+                            icon="phone"
+                            maxLength="10"
+                          />
+                          {errors.health_insurance_cod &&
+                          touched.health_insurance_cod ? (
+                            <div className="error-text">
+                              {errors.health_insurance_cod}
+                            </div>
+                          ) : null}
+                        </Form.Field>
+                      )}
+                    </Field>
+                  </Grid.Column>
+                </Grid.Row>
+                <Divider></Divider>
+
                 {/* --- */}
                 <Grid.Row columns={1}>
                   <Grid.Column>
