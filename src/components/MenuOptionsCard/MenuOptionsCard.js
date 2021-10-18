@@ -22,6 +22,12 @@ function MenuOptionsCard(props) {
           onClick={handleItemClick}
         />
         <Menu.Item
+          name="Afecciones"
+          value={"affections"}
+          active={activeItem === "affections"}
+          onClick={handleItemClick}
+        />
+        <Menu.Item
           name="Seguro medico"
           value={"health_insurance"}
           active={activeItem === "health_insurance"}
