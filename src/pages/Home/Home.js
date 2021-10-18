@@ -4,10 +4,10 @@ import SearchExampleStandard from "../../components/SearchBar"
 import MenuOptionsCard from "../../components/MenuOptionsCard"
 import Card from "../../components/Card"
 import MedicalInsuranceCard from "../../components/Medical_Insurance_Card/MedicalInsuranceCard"
-
+import Affections_Card from "../../components/Affections_Card/Affections_Card"
+import Heatlh_Insurance_Card from "../../components/Heatlh_Insurance_Card"
 // css
 import "react-confirm-alert/src/react-confirm-alert.css"
-import Affections_Card from "../../components/Affections_Card/Affections_Card"
 
 const Home = () => {
   const [activeItem, setActiveItem] = useState("personal_info")
@@ -20,6 +20,8 @@ const Home = () => {
         return <MedicalInsuranceCard />
       case "affections":
         return <Affections_Card />
+      case "health_insurance":
+        return <Heatlh_Insurance_Card />
     }
   }
   useEffect(() => {}, [])
