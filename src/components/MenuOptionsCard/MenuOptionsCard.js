@@ -17,8 +17,8 @@ function MenuOptionsCard(props) {
         />
         <Menu.Item
           name="Ficha medica"
-          value={"medical_insurance"}
-          active={activeItem === "medical_insurance"}
+          value={"medical_record"}
+          active={activeItem === "medical_record"}
           onClick={handleItemClick}
         />
         <Menu.Item

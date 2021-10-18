@@ -5,7 +5,7 @@ import { Label } from "semantic-ui-react"
 
 import "./Affections_Card.scss"
 
-const Affections_Card = () => {
+const Affections_Display = () => {
   const patient = useSelector((state) => state.patient)
 
   return (
@@ -23,4 +23,4 @@ const Affections_Card = () => {
   )
 }
 
-export default Affections_Card
+export default Affections_Display
