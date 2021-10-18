@@ -122,7 +122,7 @@ export default function LoginForm(props) {
       )}
 
       <div className="login-form__options">
-        <p onClick={() => setSelectedForm(null)}>Vovler</p>
+        <p onClick={() => setSelectedForm(null)}>Volver</p>
         <p>
           ¿No tienes cuenta?{" "}
           <span onClick={() => setSelectedForm("register")}>Regístrarte</span>

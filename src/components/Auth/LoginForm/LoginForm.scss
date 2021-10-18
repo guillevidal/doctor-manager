@@ -26,7 +26,8 @@
           &:hover,
           &:active,
           &:focus {
-            background-color: $background-grey-hover;
+            background-color: $background-grey;
+            color: white;
             border: 0;
           }
         }
