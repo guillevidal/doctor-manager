@@ -18,6 +18,10 @@ const initialState = {
       affections: "...",
       tooth_info: "...",
     },
+    health_insurance: {
+      health_insurance: "...",
+      health_insurance_cod: "...",
+    },
   },
 }
 
