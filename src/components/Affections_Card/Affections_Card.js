@@ -9,14 +9,16 @@ const Affections_Card = () => {
   const patient = useSelector((state) => state.patient)
 
   return (
-    <div>
-      {patient.medical_record.affections.map((affection) => {
-        return (
-          <Label color="red" key={affection} size="huge">
-            {affection}
-          </Label>
-        )
-      })}
+    <div className="medical_record">
+      <div className="medical_record_labels">
+        {patient.medical_record.affections.map((affection) => {
+          return (
+            <Label key={affection} color="red" size="huge">
+              {affection}
+            </Label>
+          )
+        })}
+      </div>
     </div>
   )
 }

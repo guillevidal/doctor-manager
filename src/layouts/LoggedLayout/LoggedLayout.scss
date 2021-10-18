@@ -1,7 +1,7 @@
 @import "../../scss/index.scss";
 
 .ui.grid.logged-layout {
-  background-color: $background-white-ghost;
+  background-color: $background-light;
   min-height: 85vh;
   margin: 0px;
   padding: 0px;
@@ -15,11 +15,16 @@
     }
     &:last-of-type {
       height: 15vh;
-      background-color: $primary-color;
+      background-color: black;
       position: absolute;
       bottom: 0;
+      overflow: hidden;
+      .logo_div {
+        display: flex;
+        justify-content: center;
+      }
     }
-    > .wide{
+    > .wide {
       height: 80vh;
     }
     > .column {

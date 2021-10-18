@@ -446,7 +446,7 @@ const AddPatient = (
                             type="text"
                             {...field}
                             placeholder="Seguro medico"
-                            icon="phone"
+                            icon="clipboard"
                             maxLength="10"
                           />
                           {errors.health_insurance &&
@@ -465,7 +465,7 @@ const AddPatient = (
                             type="text"
                             {...field}
                             placeholder="Codigo de seguro medico"
-                            icon="phone"
+                            icon="clipboard"
                             maxLength="10"
                           />
                           {errors.health_insurance_cod &&
