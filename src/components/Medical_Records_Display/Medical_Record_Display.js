@@ -2,9 +2,9 @@ import React, { useEffect } from "react"
 import { useSelector } from "react-redux"
 import { Table } from "semantic-ui-react"
 
-import "./MedicalInsuranceCard.scss"
+import "./Medical_Record_Display.scss"
 
-const MedicalInsuranceCard = () => {
+const Medical_Record_Display = () => {
   const patient = useSelector((state) => state.patient)
   const {
     general_practitioner,
@@ -49,4 +49,4 @@ const MedicalInsuranceCard = () => {
   )
 }
 
-export default MedicalInsuranceCard
+export default Medical_Record_Display

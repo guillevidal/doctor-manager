@@ -3,9 +3,9 @@ import { Grid } from "semantic-ui-react"
 import SearchExampleStandard from "../../components/SearchBar"
 import MenuOptionsCard from "../../components/MenuOptionsCard"
 import Card from "../../components/Card"
-import MedicalInsuranceCard from "../../components/Medical_Insurance_Card/MedicalInsuranceCard"
-import Affections_Card from "../../components/Affections_Card/Affections_Card"
-import Heatlh_Insurance_Card from "../../components/Heatlh_Insurance_Card"
+import Heatlh_Insurance_Display from "../../components/Heatlh_Insurance_Card"
+import AffectionsDisplay from "../../components/AffectionsDisplay"
+import Medical_Record_Display from "../../components/Medical_Records_Display"
 // css
 import "react-confirm-alert/src/react-confirm-alert.css"
 
@@ -17,11 +17,11 @@ const Home = () => {
       case "personal_info":
         return <Card />
       case "medical_insurance":
-        return <MedicalInsuranceCard />
+        return <Medical_Record_Display />
       case "affections":
-        return <Affections_Card />
+        return <AffectionsDisplay />
       case "health_insurance":
-        return <Heatlh_Insurance_Card />
+        return <Heatlh_Insurance_Display />
     }
   }
   useEffect(() => {}, [])

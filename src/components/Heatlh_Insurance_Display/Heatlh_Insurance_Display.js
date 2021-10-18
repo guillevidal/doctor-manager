@@ -2,9 +2,9 @@ import React, { useEffect } from "react"
 import { useSelector } from "react-redux"
 import { Table } from "semantic-ui-react"
 
-import "./Heatlh_Insurance_Card.scss"
+import "./Heatlh_Insurance_Display.scss"
 
-const Heatlh_Insurance_Card = () => {
+const Heatlh_Insurance_Display = () => {
   const patient = useSelector((state) => state.patient)
   const { health_insurance, health_insurance_cod } = patient.health_insurance
   useEffect(() => {}, [])
@@ -29,4 +29,4 @@ const Heatlh_Insurance_Card = () => {
   )
 }
 
-export default Heatlh_Insurance_Card
+export default Heatlh_Insurance_Display
