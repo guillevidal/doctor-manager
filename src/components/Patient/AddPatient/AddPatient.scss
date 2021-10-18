@@ -6,21 +6,21 @@
       .DatePicker {
         width: 100%;
         input {
+          text-align: left;
           background-color: $background-grey-light;
-          color: $font-malachite;
+          color: $font-light;
         }
         input::placeholder {
-          color: $font-light;
+          color: $font-light-opaco;
         }
       }
       .input {
         input {
-          text-align: center;
           background-color: $background-grey-light;
-          color: $font-malachite;
+          color: $font-light;
         }
         input::placeholder {
-          color: $font-light;
+          color: $font-light-opaco;
         }
         i {
           color: $font-sky;
@@ -41,10 +41,10 @@
     }
     label::before {
       border-color: $border-grey-dark-light;
-      background-color: $background-primary;
+      background-color: $background-grey-light;
     }
     label::after {
-      background-color: $background-malachite;
+      background-color: $background-grey-light;
     }
 
     input:hover {
