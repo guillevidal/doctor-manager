@@ -1,5 +1,5 @@
-{
-  [
+module.exports = {
+  catalogo: [
     {
       codigo: "0101",
       descripcion: "Examen-Diagnostico-Fichado y plan de tratamiento",
@@ -24,7 +24,8 @@
     },
     {
       codigo: "0104",
-      descripcion: "consulta de urgencia que no constituya paso intermedio de tratamiento",
+      descripcion:
+        "consulta de urgencia que no constituya paso intermedio de tratamiento",
       costos_variables: "$2500",
       costos_fijos: "2000",
       costo_taller: "...",
@@ -90,7 +91,8 @@
     },
     {
       codigo: "0209",
-      descripcion: "reconstruccion de angulos con material estetico en dientes anteriores",
+      descripcion:
+        "reconstruccion de angulos con material estetico en dientes anteriores",
       costos_variables: "$2500",
       costos_fijos: "2000",
       costo_taller: "...",
@@ -376,7 +378,8 @@
     },
     {
       codigo: "040114",
-      descripcion: "tramo de puente de porcelana sobre metal por elemento a reemplazar c/u",
+      descripcion:
+        "tramo de puente de porcelana sobre metal por elemento a reemplazar c/u",
       costos_variables: "$2500",
       costos_fijos: "2000",
       costo_taller: "...",
@@ -550,5 +553,5 @@
       total_arancel: "7500",
       tipo: "protesis",
     },
-  ]
+  ],
 }
