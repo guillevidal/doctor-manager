@@ -3,9 +3,9 @@ import { useSelector } from "react-redux"
 import { Table } from "semantic-ui-react"
 import { getEdad } from "../../utils/utils"
 
-import "./Card.scss"
+import "./Personal_Info_Display.scss"
 
-const Card = () => {
+const Personal_Info_Display = () => {
   const patient = useSelector((state) => state.patient)
   const [edad, setEdad] = useState("...")
   const { name, surname, dni, birthdate, address, phone_number } =
@@ -52,4 +52,4 @@ const Card = () => {
   )
 }
 
-export default Card
+export default Personal_Info_Display

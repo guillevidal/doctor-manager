@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import { Grid } from "semantic-ui-react"
 import SearchExampleStandard from "../../components/SearchBar"
 import MenuOptionsCard from "../../components/MenuOptionsCard"
-import Card from "../../components/Card"
+import Personal_Info_Display from "../../components/Personal_Info_Display"
 import Heatlh_Insurance_Display from "../../components/Heatlh_Insurance_Card"
 import AffectionsDisplay from "../../components/AffectionsDisplay"
 import Medical_Record_Display from "../../components/Medical_Records_Display"
@@ -15,7 +15,7 @@ const Home = () => {
   const handlerForm = () => {
     switch (activeItem) {
       case "personal_info":
-        return <Card />
+        return <Personal_Info_Display />
       case "medical_insurance":
         return <Medical_Record_Display />
       case "affections":
