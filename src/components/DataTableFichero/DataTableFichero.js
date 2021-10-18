@@ -99,6 +99,7 @@ const DataTableFichero = () => {
       subHeaderComponent={subHeaderComponentMemo}
       persistTableHead
       pagination
+      paginationPerPage={5}
     />
   )
 }
