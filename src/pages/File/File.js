@@ -1,9 +1,10 @@
 import React from "react"
+import DataTableFichero from "../../components/DataTableFichero"
 
 import "./File.scss"
 
 export const File = (props) => {
-  return <h1>Archivo</h1>
+  return <DataTableFichero />
 }
 
 export default File
