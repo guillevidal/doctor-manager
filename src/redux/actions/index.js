@@ -17,3 +17,9 @@ export function finishSearch(data) {
     query: data,
   }
 }
+export function catalogue(data) {
+  return {
+    type: "CATALOGUE",
+    query: data,
+  }
+}

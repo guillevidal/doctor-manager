@@ -1,6 +1,7 @@
 const initialState = {
   loading: false,
   value: "",
+  catalogue: {},
   patient: {
     info_personal: {
       name: "...",
@@ -33,6 +34,8 @@ const reducer = (state = initialState, action) => {
       return { ...state, loading: true, value: action.query }
     case "FINISH_SEARCH":
       return { ...state, loading: false, patient: { ...action.query } }
+    case "CATALOGUE":
+      return { ...state, catalogue: { ...action.query } }
 
     default:
       return state
