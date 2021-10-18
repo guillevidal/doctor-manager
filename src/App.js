@@ -1,24 +1,17 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { ToastContainer } from "react-toastify"
 import firebase from "./utils/Firebase"
-import catalogoObject from "./utils/catalogoObject"
 import "firebase/auth"
 import Auth from "./pages/Auth"
-import { catalogue } from "./redux/actions"
 import LoggedLayout from "./layouts/LoggedLayout"
 import { DataProvider } from "./context/DataContext"
 import store from "./redux/store"
-import { Provider, useDispatch } from "react-redux"
+import { Provider } from "react-redux"
 
 function App() {
   const [user, setUser] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const [reloadApp, setReloadApp] = useState(false)
-  const dispatch = useDispatch()
-  const fullCatalogo = catalogoObject()
-  useEffect(() => {
-    dispatch(catalogue(fullCatalogo))
-  }, [])
 
   firebase.auth().onAuthStateChanged((currentUser) => {
     if (currentUser !== null) {

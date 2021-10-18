@@ -3,11 +3,14 @@ import { Grid } from "semantic-ui-react"
 import SearchExampleStandard from "../../components/SearchBar"
 import MenuOptionsCard from "../../components/MenuOptionsCard"
 import Personal_Info_Display from "../../components/Personal_Info_Display"
-import Heatlh_Insurance_Display from "../../components/Heatlh_Insurance_Card"
+
 import AffectionsDisplay from "../../components/AffectionsDisplay"
 import Medical_Record_Display from "../../components/Medical_Records_Display"
+import catalogo from "../../utils/catalogoObject"
+import { useDispatch } from "react-redux"
 // css
 import "react-confirm-alert/src/react-confirm-alert.css"
+import { catalogue } from "../../redux/actions"
 
 const Home = () => {
   const [activeItem, setActiveItem] = useState("personal_info")
@@ -20,10 +23,15 @@ const Home = () => {
         return <Medical_Record_Display />
       case "affections":
         return <AffectionsDisplay />
-      case "health_insurance":
-        return <Heatlh_Insurance_Display />
+      default:
+        return true
     }
   }
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(catalogue(catalogo))
+  }, [])
   useEffect(() => {}, [])
   return (
     <Grid>
