@@ -16,7 +16,7 @@ const Home = () => {
     switch (activeItem) {
       case "personal_info":
         return <Personal_Info_Display />
-      case "medical_insurance":
+      case "medical_record":
         return <Medical_Record_Display />
       case "affections":
         return <AffectionsDisplay />
