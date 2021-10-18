@@ -4,6 +4,7 @@ import Routes from "../../routes/Routes"
 import { BrowserRouter as Router } from "react-router-dom"
 import MenuLeft from "../../components/MenuLeft"
 import TopBar from "../../components/TopBar"
+import YourSvg from "../../assets/png/logo.png"
 import "./LoggedLayout.scss"
 export default function LoggedLayout(props) {
   const { user, setReloadApp } = props
@@ -25,7 +26,11 @@ export default function LoggedLayout(props) {
           </Grid.Column> */}
         </Grid.Row>
         <Grid.Row>
-          <Grid.Column></Grid.Column>
+          <Grid.Column>
+            <div className="logo_div">
+              <img src={YourSvg} />
+            </div>
+          </Grid.Column>
         </Grid.Row>
       </Grid>
     </Router>

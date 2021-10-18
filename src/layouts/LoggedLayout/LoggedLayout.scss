@@ -15,9 +15,14 @@
     }
     &:last-of-type {
       height: 15vh;
-      background-color: $primary-color;
+      background-color: black;
       position: absolute;
       bottom: 0;
+      overflow: hidden;
+      .logo_div {
+        display: flex;
+        justify-content: center;
+      }
     }
     > .wide {
       height: 80vh;
