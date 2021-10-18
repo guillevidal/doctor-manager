@@ -35,7 +35,6 @@ const Home = () => {
   useEffect(() => {
     dispatch(catalogue(catalogo))
   }, [])
-  useEffect(() => {}, [])
   return (
     <Grid>
       <Grid.Column className="grid_search" width={16}>
