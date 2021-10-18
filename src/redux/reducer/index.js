@@ -15,7 +15,7 @@ const initialState = {
       general_practitioner_phone: "...",
       medical_treatment: "...",
       allergies: "...",
-      affections: "...",
+      affections: [],
       tooth_info: "...",
     },
   },
