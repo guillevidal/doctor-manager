@@ -1,13 +1,15 @@
 import React, { useEffect } from "react"
 import { Menu } from "semantic-ui-react"
 
+import "./MenuOptionsCard.scss"
+
 function MenuOptionsCard(props) {
   const { setActiveItem, activeItem } = props
 
   const handleItemClick = (e, { name, value }) => setActiveItem(value)
   useEffect(() => {}, [activeItem])
   return (
-    <div>
+    <div className="menu_options">
       <Menu pointing secondary>
         <Menu.Item
           name="Información Personal"

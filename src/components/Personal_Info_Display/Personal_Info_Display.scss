@@ -1,14 +1,23 @@
 @import "../../scss/index.scss";
 
 .card_wrapper {
-  width: 90%;
-  margin-top: 40px;
-  text-align: center;
-
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  padding-top: 2px;
   &_table {
-    .ui.table {
-      width: 60%;
-      margin: 0 auto;
+    width: 50%;
+  }
+}
+
+@media (min-height: 600px) {
+  .card_wrapper {
+    height: 100vh;
+
+    &_table {
+      height: 100%;
     }
   }
 }

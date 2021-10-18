@@ -10,11 +10,11 @@
     padding: 0;
 
     &:first-of-type {
-      height: 80vh;
+      height: 85vh;
       overflow: hidden;
     }
     &:last-of-type {
-      height: 15vh;
+      height: 10vh;
       background-color: black;
       position: absolute;
       bottom: 0;
@@ -25,7 +25,7 @@
       }
     }
     > .wide {
-      height: 80vh;
+      height: 85vh;
     }
     > .column {
       padding: 0;
